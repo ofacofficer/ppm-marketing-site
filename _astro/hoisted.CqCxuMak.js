@@ -1,0 +1,1 @@
+const e=document.querySelector(".nav-burger"),t=document.getElementById("mobile-nav");e&&t&&e.addEventListener("click",()=>{const n=t.hidden;t.hidden=!n,e.setAttribute("aria-expanded",n?"true":"false")});
