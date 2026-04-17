@@ -13,7 +13,7 @@
   --teal:      #8DCFDD;
   --ice:       #F1F4FA;
   /* Secondary */
-  --slate:     #717F89;
+  --slate:     #63717B;
   --lt-teal:   #B0D5DF;
   --silver:    #A8B1BA;
   /* Accent */
@@ -932,3 +932,251 @@ a.method-value:hover { color: var(--teal); }
 .svc-detail-card h2 { color: var(--white); }
 .svc-detail-card p { color: var(--cream-mid); }
 .svc-detail-card li { color: var(--cream-mid); font-size: 0.875rem; }
+
+
+/* ══════════════════════════════════════════════
+   UI/UX PRO MAX AUDIT FIXES
+   ══════════════════════════════════════════════ */
+
+/* FIX 1: Slate body text fails WCAG 4.5:1 on white/ice (was 4.1:1)
+   Darkened from #717F89 → #63717B (5.0:1 on white, 4.6:1 on ice) */
+
+/* FIX 2: Ensure all dark-section headings inherit correctly */
+main[style*="background:var(--navy)"] h1,
+main[style*="background:var(--navy)"] h2 { color: var(--white); }
+main[style*="background:var(--navy)"] p { color: var(--text-muted); }
+main[style*="background:var(--navy)"] .text-sm { color: var(--text-muted); }
+
+/* FIX 3: Services page — card section backgrounds on dark main */
+main[style*="background:var(--navy)"] section[style*="background:var(--white)"] h1,
+main[style*="background:var(--navy)"] section[style*="background:var(--white)"] h2,
+main[style*="background:var(--navy)"] section[style*="background:var(--white)"] h3 { color: var(--navy); }
+main[style*="background:var(--navy)"] section[style*="background:var(--white)"] p { color: var(--slate); }
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] h1,
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] h2,
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] h3 { color: var(--navy); }
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] p { color: var(--slate); }
+
+/* FIX 4: Service detail cards — proper styling */
+.svc-detail {
+  background: var(--navy-mid);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+.svc-detail h2 { color: var(--white); font-size: 1.2rem; margin-bottom: 12px; }
+.svc-detail p { color: var(--cream-mid); font-size: 0.875rem; line-height: 1.65; }
+.svc-detail ul { margin: 16px 0 0 20px; }
+.svc-detail li {
+  color: var(--cream-mid);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  margin-bottom: 6px;
+}
+
+/* FIX 5: Contact form field-group spacing */
+.field-group {
+  margin-bottom: 16px;
+}
+.field-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.field-group input,
+.field-group select,
+.field-group textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 14px;
+  background: var(--navy-light);
+  border: 1.5px solid var(--border-mid);
+  border-radius: var(--r);
+  color: var(--cream);
+  font-size: 14px;
+  font-family: var(--font);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field-group input:focus,
+.field-group select:focus,
+.field-group textarea:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(141,207,221,0.15);
+}
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+  color: rgba(245,241,232,0.3);
+}
+.field-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.field-group select {
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23A8B1BA' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+}
+
+/* FIX 6: About page — founder section layout */
+.about-section {
+  background: var(--navy-mid);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+}
+.about-section h2 { color: var(--white); }
+.about-section h3 { color: var(--cream); }
+.about-section p { color: var(--cream-mid); line-height: 1.7; }
+.about-section li { color: var(--cream-mid); }
+
+/* FIX 7: Blog hub — category cards grid */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 600px) {
+  .blog-grid { grid-template-columns: 1fr; }
+}
+.blog-card {
+  background: var(--navy-mid);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: border-color 0.2s, transform 0.2s;
+  text-decoration: none;
+  display: block;
+}
+.blog-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.blog-card h2 { color: var(--white); font-size: 1.1rem; margin-bottom: 4px; }
+.blog-card p { color: var(--cream-mid); font-size: 0.85rem; max-width: none; }
+.blog-card .card-count {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+/* FIX 8: Service areas FAQ section */
+.areas-faq { background: var(--navy); }
+.areas-faq h2 { color: var(--white); }
+.areas-faq details { border-bottom: 1px solid var(--border-mid); padding: 16px 0; }
+.areas-faq summary {
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--cream);
+  list-style: none;
+}
+.areas-faq summary::-webkit-details-marker { display: none; }
+.areas-faq details p {
+  margin-top: 12px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+}
+
+/* FIX 9: Smooth transitions for FAQ expand */
+details > div,
+details > p {
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* FIX 10: Blog prose on dark backgrounds */
+main[style*="background:var(--navy)"] .prose h2 { color: var(--white); }
+main[style*="background:var(--navy)"] .prose h3 { color: var(--cream); }
+main[style*="background:var(--navy)"] .prose p { color: var(--cream-mid); }
+main[style*="background:var(--navy)"] .prose li { color: var(--cream-mid); }
+main[style*="background:var(--navy)"] .prose strong { color: var(--white); }
+main[style*="background:var(--navy)"] .prose a { color: var(--teal); }
+main[style*="background:var(--navy)"] .prose a:hover { color: var(--gold); }
+main[style*="background:var(--navy)"] .prose th {
+  background: var(--navy-mid);
+  color: var(--cream-mid);
+  border-bottom-color: var(--border-mid);
+}
+main[style*="background:var(--navy)"] .prose td {
+  color: var(--cream-mid);
+  border-bottom-color: var(--border-mid);
+}
+main[style*="background:var(--navy)"] .prose blockquote {
+  border-left-color: var(--gold);
+  background: var(--navy-mid);
+  color: var(--cream-mid);
+}
+main[style*="background:var(--navy)"] .prose ul,
+main[style*="background:var(--navy)"] .prose ol {
+  color: var(--cream-mid);
+}
+
+/* FIX 11: CTA sections on dark pages — ensure gold buttons visible */
+main[style*="background:var(--navy)"] .btn-gold,
+main[style*="background:var(--navy)"] .btn-primary {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+}
+
+/* FIX 12: Tenants page — details summary on ice bg */
+.tenant-card a.btn { text-decoration: none; }
+main[style*="background:var(--navy)"] details summary { color: var(--navy); }
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] details summary { color: var(--navy); }
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] details p { color: var(--slate); }
+main[style*="background:var(--navy)"] section[style*="background:var(--ice)"] details a { color: var(--deep-teal); }
+
+/* FIX 13: Rent control lookup — input on dark bg */
+main[style*="background:var(--navy)"] section[style*="background:var(--white)"] input {
+  border-color: var(--border);
+  color: var(--navy);
+  background: var(--white);
+}
+
+/* FIX 14: Mobile CTA bar — ensure gold border top */
+.mobile-cta-bar { border-top: 2px solid var(--gold); }
+
+/* FIX 15: Homepage "How It Works" — consistent with light section */
+main:not([style*="background:var(--navy)"]) .section-sm h2,
+main:not([style*="background:var(--navy)"]) .section-sm h3 { color: var(--navy); }
+
+/* FIX 16: Footer link hover states — gold accent on hover */
+.footer-col a:hover { color: var(--teal); }
+
+/* FIX 17: Focus ring visibility — gold outline on all interactive */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+details summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* FIX 18: Print styles — ensure readability */
+@media print {
+  body { background: white; color: black; }
+  .nav-bar, .site-footer, .mobile-cta-bar, .exit-popup-overlay,
+  .desktop-sticky { display: none !important; }
+  main[style*="background:var(--navy)"] { background: white !important; }
+  main[style*="background:var(--navy)"] h1,
+  main[style*="background:var(--navy)"] h2,
+  main[style*="background:var(--navy)"] h3 { color: black !important; }
+  main[style*="background:var(--navy)"] p { color: #333 !important; }
+}
