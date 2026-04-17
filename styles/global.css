@@ -1180,3 +1180,233 @@ details summary:focus-visible {
   main[style*="background:var(--navy)"] h3 { color: black !important; }
   main[style*="background:var(--navy)"] p { color: #333 !important; }
 }
+
+
+/* ══════════════════════════════════════════════
+   LIGHT-THEME SUBPAGE OVERRIDES
+   Replaces dark navy-mid cards with white/ice cards + navy text
+   ══════════════════════════════════════════════ */
+
+/* Fee card — light version */
+.fee-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.fee-range { color: var(--navy); }
+.fee-sub { color: var(--slate); }
+.fee-label { color: var(--gold); }
+.fee-detail-label { color: var(--slate); }
+.fee-detail { color: var(--slate); line-height: 1.6; }
+
+/* No-fees card — light */
+.no-fees-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.no-fees-label { color: var(--slate); }
+.no-fee-item { color: var(--navy); }
+
+/* Included card — light */
+.included-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.included-card h2 { color: var(--navy); }
+.included-item { color: var(--navy); }
+
+/* CTA card — gold tint background */
+.cta-card {
+  background: var(--gold-tint);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  margin-top: 20px;
+}
+.cta-card-label { color: var(--gold); }
+.cta-card .text-muted { color: var(--slate) !important; }
+
+/* Pricing FAQ — light */
+.pricing-faqs {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+}
+.faq-question { color: var(--navy); }
+details[open] .faq-question { color: var(--deep-teal); }
+.faq-answer p { color: var(--slate) !important; max-width: none; }
+
+/* Area rows — light */
+.area-row {
+  background: var(--white);
+  border: 1px solid var(--border);
+}
+.area-row:hover {
+  background: var(--ice);
+  border-color: var(--teal);
+}
+.area-name { color: var(--navy); }
+.area-note { color: var(--slate); }
+.area-arrow { color: var(--deep-teal); }
+
+/* Blog cards — light */
+.blog-card, .blog-cat-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.blog-card:hover, .blog-cat-card:hover {
+  border-color: var(--teal);
+  box-shadow: 0 4px 12px rgba(1,46,75,0.1);
+}
+.blog-card h2, .blog-cat-card h2 { color: var(--navy); }
+.blog-card p, .blog-cat-card p { color: var(--slate); }
+.blog-card .card-count { color: var(--deep-teal); }
+
+/* About section — light */
+.about-section, .founder-card, .work-pillar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.founder-card h3, .work-pillar h3 { color: var(--navy); }
+.founder-card p, .work-pillar p { color: var(--slate); }
+.founder-initials {
+  background: var(--ice);
+  border: 2px solid var(--gold);
+  color: var(--gold);
+}
+
+/* Contact form — light */
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.form-title { color: var(--navy); }
+.contact-info h2 { color: var(--navy); }
+.method-label { color: var(--slate); }
+.method-value { color: var(--navy); }
+.what-to-expect h3 { color: var(--navy); }
+.step-title { color: var(--navy); }
+.step-num {
+  background: var(--ice);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+}
+
+/* Form inputs — light */
+.field-group label { color: var(--slate); }
+.field-group input,
+.field-group select,
+.field-group textarea {
+  background: var(--ice);
+  border: 1.5px solid var(--border);
+  color: var(--navy);
+}
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+  color: var(--silver);
+}
+
+/* Service detail cards — light */
+.svc-detail {
+  background: var(--white);
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.svc-detail h2 { color: var(--navy); }
+.svc-detail p, .svc-detail li { color: var(--slate); }
+
+/* Service areas FAQ — light */
+.areas-faq { background: var(--ice); }
+.areas-faq h2 { color: var(--navy); }
+.areas-faq summary { color: var(--navy); }
+.areas-faq details p { color: var(--slate); }
+.areas-faq details { border-bottom-color: var(--border); }
+
+/* Blog prose on light backgrounds */
+.prose h2 { color: var(--navy); }
+.prose h3 { color: var(--navy); }
+.prose p { color: var(--slate); }
+.prose li { color: var(--slate); }
+.prose strong { color: var(--navy); }
+.prose a { color: var(--deep-teal); }
+.prose a:hover { color: var(--navy); }
+
+/* Content sections between hero and footer — ensure light bg */
+main > section:not(.pricing-hero):not(.about-hero):not(.contact-hero):not(.blog-hero):not(.services-hero):not(.on-dark):not(.cta-band):not(.tenant-hero) {
+  background: var(--ice);
+}
+
+/* Hero sections stay dark */
+.pricing-hero, .about-hero, .contact-hero, .blog-hero, .services-hero {
+  background: var(--navy);
+}
+.pricing-hero h1, .about-hero h1, .contact-hero h1, .blog-hero h1, .services-hero h1 { color: var(--white); }
+.pricing-hero p, .about-hero p, .contact-hero p, .blog-hero p, .services-hero p { color: rgba(255,255,255,0.6); }
+
+/* City page heroes */
+.city-hero {
+  background: var(--navy);
+  padding: 64px 0;
+  border-bottom: 1px solid var(--border);
+}
+.city-hero h1 { color: var(--white); }
+.city-hero p { color: rgba(255,255,255,0.6); }
+.city-hero .badge { color: var(--gold); }
+
+/* Breadcrumb bar */
+.breadcrumb-bar {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: var(--slate);
+}
+.breadcrumb a { color: var(--deep-teal); }
+.breadcrumb a:hover { color: var(--navy); }
+
+/* City page stat cards — light */
+.city-stat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(1,46,75,0.06);
+}
+.city-stat h3 { color: var(--navy); }
+.city-stat p { color: var(--slate); }
+.city-stat .stat-value { color: var(--navy); font-weight: 700; }
+
+/* Service area hero (list page) */
+.areas-hero {
+  background: var(--navy);
+  padding: 80px 0 64px;
+}
+.areas-hero h1 { color: var(--white); }
+.areas-hero p { color: rgba(255,255,255,0.6); }
+
+/* Blog pillar page hero */
+.pillar-hero {
+  background: var(--navy);
+}
+.pillar-hero h1 { color: var(--white); }
+.pillar-hero p { color: rgba(255,255,255,0.6); }
