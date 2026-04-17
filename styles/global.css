@@ -1410,3 +1410,85 @@ main > section:not(.pricing-hero):not(.about-hero):not(.contact-hero):not(.blog-
 }
 .pillar-hero h1 { color: var(--white); }
 .pillar-hero p { color: rgba(255,255,255,0.6); }
+
+
+/* ══════════════════════════════════════════════
+   HIGH-SPECIFICITY LIGHT-THEME OVERRIDES
+   These use !important to beat astro-scoped inline styles
+   ══════════════════════════════════════════════ */
+
+/* FAQ items: white bg, navy text — overrides any scoped navy bg */
+[class*="faq-item"] {
+  background: var(--white) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+[class*="faq-question"] {
+  color: var(--navy) !important;
+}
+details[open] [class*="faq-question"] {
+  color: var(--deep-teal) !important;
+}
+[class*="faq-answer"] p {
+  color: var(--slate) !important;
+}
+[class*="faq-question"]::after {
+  color: var(--gold) !important;
+}
+
+/* Pricing FAQs container */
+[class*="pricing-faqs"] {
+  border-color: var(--border) !important;
+}
+
+/* CTA/primary buttons must always be gold */
+.btn-primary,
+a.btn-primary,
+[class*="btn-primary"] {
+  background: var(--gold) !important;
+  color: var(--navy) !important;
+  border: 2px solid var(--gold) !important;
+}
+.btn-primary:hover,
+a.btn-primary:hover {
+  background: #D4B65A !important;
+  border-color: #D4B65A !important;
+}
+
+/* Pillar blocks on about page — ice bg, navy text */
+[class*="pillar-block"] {
+  background: var(--ice) !important;
+  border-left: 2px solid var(--gold) !important;
+}
+[class*="pillar-title"] {
+  color: var(--navy) !important;
+}
+[class*="pillar-block"] .text-muted,
+[class*="pillar-block"] .text-sm {
+  color: var(--slate) !important;
+}
+
+/* Founder name — navy on white card */
+[class*="founder-name"] {
+  color: var(--navy) !important;
+}
+
+/* Blog post header — keep navy bg, white text */
+[class*="post-header"] {
+  background: var(--navy) !important;
+}
+[class*="post-title"] {
+  color: var(--white) !important;
+}
+[class*="post-header"] .badge {
+  color: var(--gold) !important;
+}
+
+/* text-muted on light backgrounds = slate */
+.text-muted {
+  color: var(--slate) !important;
+}
+
+/* Ensure all content sections have explicit light bg */
+.about-story, .how-section, .area-section, .post-body {
+  background: var(--white);
+}
