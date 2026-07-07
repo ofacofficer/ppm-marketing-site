@@ -31,7 +31,7 @@ Get a Free Rental Analysis
 <a href="https://njppm.managebuilding.com/Resident/portal/login" target="_blank" rel="noopener" style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);padding:6px 0;">Tenant Login</a>
 </div> </nav> </div> </header> <main id="main">    <section class="hero" data-astro-cid-j7pv25f6> <div class="wrap hero-wrap" data-astro-cid-j7pv25f6> <div class="hero-left" data-astro-cid-j7pv25f6> <div class="eyebrow eyebrow-light" data-astro-cid-j7pv25f6>Northern &amp; Central New Jersey</div> <h1 class="hero-h1" data-astro-cid-j7pv25f6>Property Management<br data-astro-cid-j7pv25f6>That Thinks Ahead</h1> <p class="hero-tag" data-astro-cid-j7pv25f6>Your Properties, Proactively Managed</p> <p class="hero-sub" data-astro-cid-j7pv25f6>
 Most NJ landlords don't hate owning rental property. <strong data-astro-cid-j7pv25f6>They hate managing it.</strong> PPM takes the whole job off your plate — from the first showing to the last lease renewal.
-</p> <!-- Enhancement #4: Inline form replaces card link --> <form class='hero-form' data-astro-cid-j7pv25f6 id='hero-form' method='POST' name='rental-analysis'> <input type="hidden" name="form-name" value="rental-analysis" data-astro-cid-j7pv25f6> <input type="hidden" name="bot-field" data-astro-cid-j7pv25f6> <div class="hero-form-row" data-astro-cid-j7pv25f6> <input type="text" name="address" placeholder="Property address" class="hero-input" required aria-label="Property address" data-astro-cid-j7pv25f6> <input type="email" name="email" placeholder="Your email" class="hero-input" required aria-label="Your email address" data-astro-cid-j7pv25f6> </div> <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;min-height:48px;" data-astro-cid-j7pv25f6>
+</p> <!-- Enhancement #4: Inline form replaces card link --> <form class='hero-form' data-astro-cid-j7pv25f6 id='hero-form' method='POST' name='hero-rental-analysis' data-netlify="true" netlify-honeypot="bot-field"> <input type="hidden" name="form-name" value="hero-rental-analysis" data-astro-cid-j7pv25f6> <input type="hidden" name="bot-field" data-astro-cid-j7pv25f6> <div class="hero-form-row" data-astro-cid-j7pv25f6> <input type="text" name="address" placeholder="Property address" class="hero-input" required aria-label="Property address" data-astro-cid-j7pv25f6> <input type="email" name="email" placeholder="Your email" class="hero-input" required aria-label="Your email address" data-astro-cid-j7pv25f6> </div> <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;min-height:48px;" data-astro-cid-j7pv25f6>
 Get My Free Rental Analysis →
 </button> <p class="hero-form-note" data-astro-cid-j7pv25f6>No cost. No commitment. NJ landlords only.</p>
 <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:6px;display:flex;align-items:center;gap:5px;">
@@ -388,5 +388,97 @@ if(e.target===this)this.classList.remove("visible");
 });
 })();
 </script>
+<script>(function(){
+  function buildHeroPayload(fields){
+    fields = fields || {};
+    var payload = {};
+    if(fields.email) payload.email = fields.email;
+    if(fields.address) payload.property_address = fields.address;
+    payload.source = 'web_form';
+    payload.website = fields.website || '';
+    return payload;
+  }
 
+  if(typeof module !== 'undefined' && module.exports){
+    module.exports = {buildHeroPayload: buildHeroPayload};
+  }
+
+  var LEAD_ENDPOINT = 'https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/lead-intake';
+
+  function fieldValue(form, name){
+    var el = form.querySelector('[name="' + name + '"]');
+    return el ? el.value : '';
+  }
+
+  function showThankYou(form){
+    var success = document.getElementById('form-success');
+    if(success){
+      success.innerHTML = '✓ Got it — we’ll be in touch within one business day. Want to talk sooner? Call <a href="tel:9733308261" class="text-gold" style="font-weight:700;">(973) 330-8261</a>.';
+      success.classList.add('visible');
+      form.style.display = 'none';
+    } else {
+      form.innerHTML = '<p class="hero-form-note" style="font-size:14px;">✓ Got it — we’ll be in touch within one business day. Want to talk sooner? Call <a href="tel:9733308261" class="text-gold" style="font-weight:700;">(973) 330-8261</a>.</p>';
+    }
+  }
+
+  function initHeroForm(){
+    var form = document.querySelector("form[name='hero-rental-analysis']");
+    if(!form) return;
+
+    form.addEventListener('submit', function(e){
+      // Supersede the legacy #hero-form handler in /_astro/hoisted.BTNikoDM.js
+      // (registered later, since module scripts run after this inline script).
+      if(typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+      if(form.getAttribute('data-fallback') === 'true'){
+        return;
+      }
+      e.preventDefault();
+
+      var submitBtn = form.querySelector('button[type="submit"]');
+      var originalBtnText = submitBtn ? submitBtn.textContent : '';
+
+      var payload = buildHeroPayload({
+        email: fieldValue(form, 'email'),
+        address: fieldValue(form, 'address'),
+        website: fieldValue(form, 'bot-field')
+      });
+
+      if(submitBtn){
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+
+      var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var timeoutId = controller ? setTimeout(function(){ controller.abort(); }, 8000) : null;
+
+      fetch(LEAD_ENDPOINT, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload),
+        signal: controller ? controller.signal : undefined
+      }).then(function(response){
+        if(timeoutId) clearTimeout(timeoutId);
+        if(!response.ok) throw new Error('lead-intake responded with non-2xx status');
+        return response.json();
+      }).then(function(data){
+        if(!data || data.ok !== true) throw new Error('lead-intake did not confirm success');
+        showThankYou(form);
+      }).catch(function(){
+        if(timeoutId) clearTimeout(timeoutId);
+        if(submitBtn){
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+        form.setAttribute('data-fallback', 'true');
+        form.submit();
+      });
+    });
+  }
+
+  // Run immediately: this inline script sits after the form in the document,
+  // and registering now (during parse) guarantees our submit listener runs
+  // before the legacy module handler, which executes only after parsing.
+  initHeroForm();
+})();</script>
 </body></html>  
