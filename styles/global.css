@@ -19,6 +19,7 @@
   /* Accent */
   --gold:      #C9A84C;
   --gold-tint: #F5EDD4;
+  --gold-dark: #766023; /* AA-safe gold for small text on light backgrounds (--gold fails 4.5:1 there) */
   --deep-teal: #1A6B7A;
   /* Neutrals */
   --white:     #ffffff;
@@ -285,10 +286,10 @@ html { scroll-behavior: smooth; }
 }
 .proof-badge {
   display: flex; align-items: center; gap: 8px;
-  font-size: 12px; font-weight: 600; color: var(--slate);
+  font-size: 12px; font-weight: 600; color: var(--silver);
 }
 .proof-badge-val {
-  font-size: 14px; font-weight: 700; color: var(--navy);
+  font-size: 14px; font-weight: 700; color: var(--white);
 }
 .proof-badge-stars {
   display: flex; gap: 2px;
@@ -398,7 +399,7 @@ body.page-contact .desktop-sticky { display: none !important; }
   font-size: 13px; color: var(--silver);
   margin-top: 8px; margin-bottom: 32px;
 }
-.blog-byline-name { color: var(--slate); font-weight: 600; }
+.blog-byline-name { color: var(--teal); font-weight: 600; }
 
 /* ── Tenant page styles ──────────────────────── */
 .tenant-hero { background: var(--navy); padding: clamp(64px,8vw,96px) 0 clamp(48px,6vw,72px); }
@@ -1347,7 +1348,7 @@ details[open] .faq-question { color: var(--deep-teal); }
 .prose a:hover { color: var(--navy); }
 
 /* Content sections between hero and footer — ensure light bg */
-main > section:not(.pricing-hero):not(.about-hero):not(.contact-hero):not(.blog-hero):not(.services-hero):not(.on-dark):not(.cta-band):not(.tenant-hero) {
+main > section:not(.hero):not(.pricing-hero):not(.about-hero):not(.contact-hero):not(.blog-hero):not(.services-hero):not(.on-dark):not(.cta-band):not(.tenant-hero):not(.pillar-hero):not(.city-hero):not(.areas-hero) {
   background: var(--ice);
 }
 
