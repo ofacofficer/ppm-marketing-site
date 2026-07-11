@@ -1,5 +1,17 @@
 {
   "trailingSlash": true,
+  "redirects": [
+    {
+      "source": "/post/a-guide-to-property-management-fees-in-new-jersey",
+      "destination": "/blog/property-management-costs/",
+      "permanent": true
+    },
+    {
+      "source": "/post/:slug*",
+      "destination": "/blog/",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
