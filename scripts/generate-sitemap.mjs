@@ -17,15 +17,17 @@ const urls = [];
     if (statSync(abs).isDirectory()) {
       walk(abs, rel === '' ? name : `${rel}/${name}`);
     } else if (name === 'index.html') {
-      urls.push(rel === '' ? `${BASE}/` : `${BASE}/${rel}/`);
+      const loc = rel === '' ? `${BASE}/` : `${BASE}/${rel}/`;
+      const lastmod = statSync(abs).mtime.toISOString().slice(0, 10); // YYYY-MM-DD from file mtime
+      urls.push({ loc, lastmod });
     }
   }
 })(ROOT, '');
-urls.sort();
+urls.sort((a, b) => a.loc.localeCompare(b.loc));
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}
+${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n')}
 </urlset>
 `;
 writeFileSync(join(ROOT, 'sitemap.xml'), xml);
