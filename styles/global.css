@@ -312,7 +312,7 @@ html { scroll-behavior: smooth; }
   -webkit-appearance: none;
 }
 .hero-input::placeholder { color: var(--slate); }
-.hero-input:focus { outline: none; border-color: var(--teal); background: var(--white); }
+.hero-input:focus { outline: 2px solid var(--gold); outline-offset: 2px; border-color: var(--teal); background: var(--white); }
 .hero-form-note {
   font-size: 11px; color: rgba(255,255,255,0.75);
   text-align: center; letter-spacing: 0.02em; max-width: none;
@@ -1196,7 +1196,7 @@ details summary:focus-visible {
 }
 .fee-range { color: var(--navy); }
 .fee-sub { color: var(--slate); }
-.fee-label { color: var(--gold); }
+.fee-label { color: var(--gold-dark); }
 .fee-detail-label { color: var(--slate); }
 .fee-detail { color: var(--slate); line-height: 1.6; }
 
