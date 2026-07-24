@@ -90,6 +90,15 @@ Residential property management for NJ landlords and investors. Northern &amp; C
 
     payload.source = 'web_form';
     payload.website = fields.website || '';
+
+    // Carry the proposal token (?ref=) so an accepted proposal links back to its deal.
+    try {
+      if (typeof location !== 'undefined') {
+        var ref = new URLSearchParams(location.search).get('ref');
+        if (ref) payload.proposal_ref = ref;
+      }
+    } catch (e) { /* no-op */ }
+
     return payload;
   }
 
