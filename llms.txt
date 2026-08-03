@@ -22,5 +22,10 @@
 - [Property Management Costs & Fees in NJ](https://www.njpropertymanager.com/blog/property-management-costs/) · [Is hiring a property manager worth it?](https://www.njpropertymanager.com/blog/property-management-costs/is-it-worth-it/)
 - [NJ Landlord Compliance Checklist](https://www.njpropertymanager.com/landlord-checklist/)
 
+## Legal
+- [Privacy Policy](https://www.njpropertymanager.com/privacy/): what we collect across the site, owner/resident portals, and PPM Platform; how AI is used; retention schedule; NJ Data Privacy Act rights. We do not sell personal information.
+- [End-User License Agreement](https://www.njpropertymanager.com/eula/): license terms for the PPM owner portal, resident portal, and PPM AI Operating System.
+- [Terms of Use](https://www.njpropertymanager.com/terms/) · [Accessibility Statement](https://www.njpropertymanager.com/accessibility/)
+
 ## Notes
 - Guides are informational, not legal advice; verify current rules with the municipality or a qualified attorney.
