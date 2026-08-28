@@ -13,7 +13,7 @@
 <meta name="twitter:description" content="Ready to move forward? Confirm your details, e-sign the management agreement, and we handle onboarding from there. Get started with PPM. Call (973) 330-8261.">
 <meta name="twitter:image" content="https://www.njpropertymanager.com/og-image.jpg">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": ["LocalBusiness", "ProfessionalService"], "@id": "https://www.njpropertymanager.com/#business", "name": "Proactive Property Management", "alternateName": "PPM", "url": "https://www.njpropertymanager.com", "telephone": "+1-973-330-8261", "email": "contact@njppm.com", "address": {"@type": "PostalAddress", "addressLocality": "Jersey City", "addressRegion": "NJ", "addressCountry": "US"}}</script>
-<script defer src="/_vercel/insights/script.js"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Get Started with Proactive Property Management","url":"https://www.njpropertymanager.com/get-started/"}</script></head> <body class="page-contact"> <a href="#main" class="skip-link">Skip to content</a> <!-- NAV: Navy background per brand guidelines --> <header class="nav-bar" role="banner"> <div class="wrap nav-inner"> <a href="/" class="nav-logo" aria-label="Proactive Property Management — home"> <!-- House-P logomark in brand colors: Teal house, Gold square, White P --> <img src="/images/logo-white-horizontal.png" alt="Proactive Property Management" height="32" style="height:32px;width:auto;"> </a> <nav class="nav-links" aria-label="Primary navigation"> <a href="/services/">Services</a> <a href="/service-areas/">Areas</a> <a href="/pricing/">Pricing</a>
+<script defer src="/_vercel/insights/script.js"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Get Started with Proactive Property Management","url":"https://www.njpropertymanager.com/get-started/"}</script><script defer src="/js/attribution.js"></script></head> <body class="page-contact"> <a href="#main" class="skip-link">Skip to content</a> <!-- NAV: Navy background per brand guidelines --> <header class="nav-bar" role="banner"> <div class="wrap nav-inner"> <a href="/" class="nav-logo" aria-label="Proactive Property Management — home"> <!-- House-P logomark in brand colors: Teal house, Gold square, White P --> <img src="/images/logo-white-horizontal.png" alt="Proactive Property Management" height="32" style="height:32px;width:auto;"> </a> <nav class="nav-links" aria-label="Primary navigation"> <a href="/services/">Services</a> <a href="/service-areas/">Areas</a> <a href="/pricing/">Pricing</a>
 <a href="/blog/">Resources</a> <a href="/about/">About</a> </nav> <div class="nav-end"> <a href="tel:9733308261" class="nav-phone" aria-label="Call (973) 330-8261"> <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.58a16 16 0 0 0 6.29 6.29l.95-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
 (973) 330-8261
 </a> <div style="display:flex;gap:8px;align-items:center;">
@@ -99,6 +99,12 @@ Residential property management for NJ landlords and investors. Northern &amp; C
       }
     } catch (e) { /* no-op */ }
 
+    // First-touch attribution (see /js/attribution.js) — best-effort, never blocks a submit.
+    try {
+      var attr = (typeof window !== 'undefined' && window.ppmAttribution) ? window.ppmAttribution() : null;
+      if (attr) payload.attribution = attr;
+    } catch (e) { /* no-op */ }
+
     return payload;
   }
 
@@ -135,7 +141,7 @@ Residential property management for NJ landlords and investors. Northern &amp; C
   function showThankYou(form){if(window.va)va('event',{name:'lead_submit'});
     var card = form.closest('.form-card');
     if(!card) return;
-    card.innerHTML = '<h2 class="form-title">You're on the way</h2>' +
+    card.innerHTML = '<h2 class="form-title">You&rsquo;re on the way</h2>' +
       '<p class="text-muted text-sm">Thanks &mdash; we will confirm your details and send next steps by email, usually the same business day, including your management agreement to e-sign. Need to talk sooner? Call us at <a href="tel:9733308261" class="text-gold">(973) 330-8261</a>.</p>';
   }
 

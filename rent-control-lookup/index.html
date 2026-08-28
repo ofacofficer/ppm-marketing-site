@@ -13,7 +13,7 @@
 <meta name="twitter:description" content="Look up whether a New Jersey municipality has rent control and what that means for rent increases. A free lookup tool for NJ landlords.">
 <meta name="twitter:image" content="https://www.njpropertymanager.com/og-image.jpg">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": ["LocalBusiness", "ProfessionalService"], "@id": "https://www.njpropertymanager.com/#business", "name": "Proactive Property Management", "alternateName": "PPM", "url": "https://www.njpropertymanager.com", "telephone": "+1-973-330-8261", "email": "contact@njppm.com", "address": {"@type": "PostalAddress", "addressLocality": "Jersey City", "addressRegion": "NJ", "addressCountry": "US"}}</script>
-<script defer src="/_vercel/insights/script.js"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.njpropertymanager.com/"},{"@type":"ListItem","position":2,"name":"Rent Control Lookup","item":"https://www.njpropertymanager.com/rent-control-lookup/"}]}</script></head> <body> <a href="#main" class="skip-link">Skip to content</a> <!-- NAV: Navy background per brand guidelines --> <header class="nav-bar" role="banner"> <div class="wrap nav-inner"> <a href="/" class="nav-logo" aria-label="Proactive Property Management — home"> <!-- House-P logomark in brand colors: Teal house, Gold square, White P --> <img src="/images/logo-white-horizontal.png" alt="Proactive Property Management" height="32" style="height:32px;width:auto;"> </a> <nav class="nav-links" aria-label="Primary navigation"> <a href="/services/">Services</a> <a href="/service-areas/">Areas</a> <a href="/pricing/">Pricing</a>
+<script defer src="/_vercel/insights/script.js"></script><script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.njpropertymanager.com/"},{"@type":"ListItem","position":2,"name":"Rent Control Lookup","item":"https://www.njpropertymanager.com/rent-control-lookup/"}]}</script><script defer src="/js/attribution.js"></script></head> <body> <a href="#main" class="skip-link">Skip to content</a> <!-- NAV: Navy background per brand guidelines --> <header class="nav-bar" role="banner"> <div class="wrap nav-inner"> <a href="/" class="nav-logo" aria-label="Proactive Property Management — home"> <!-- House-P logomark in brand colors: Teal house, Gold square, White P --> <img src="/images/logo-white-horizontal.png" alt="Proactive Property Management" height="32" style="height:32px;width:auto;"> </a> <nav class="nav-links" aria-label="Primary navigation"> <a href="/services/">Services</a> <a href="/service-areas/">Areas</a> <a href="/pricing/">Pricing</a>
 <a href="/blog/">Resources</a> <a href="/about/">About</a> </nav> <div class="nav-end"> <a href="tel:9733308261" class="nav-phone" aria-label="Call (973) 330-8261"> <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.58a16 16 0 0 0 6.29 6.29l.95-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
 (973) 330-8261
 </a> <div style="display:flex;gap:8px;align-items:center;">
@@ -61,6 +61,37 @@ Get a Free Rental Analysis
 </div>
 </section>
 
+<section class="section-sm" style="background:var(--white);border-top:1px solid var(--border);">
+<div class="wrap" style="max-width:720px;">
+<div id="rc-lead-card" style="background:var(--ice);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px;">
+<div class="eyebrow">Free Compliance Assessment</div>
+<h2 style="margin-top:8px;">Want us to handle compliance for your rental?</h2>
+<p style="font-size:14px;margin:12px 0 24px;max-width:56ch;">We track every NJ rent control ordinance — caps, exemptions, registration deadlines — so rent increases stay legal. Tell us where to reach you and we&rsquo;ll send a free assessment of what applies to your property. No cost, no commitment.</p>
+<form id="rc-lead-form" method="POST" name="rent-control-assessment" style="display:flex;flex-direction:column;gap:14px;">
+<p aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;margin:0;"><label for="rc-website">Website</label><input type="text" id="rc-website" name="website" tabindex="-1" autocomplete="off"></p>
+<div>
+<label for="rc-lead-name" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Your name</label>
+<input type="text" id="rc-lead-name" name="name" required placeholder="Dan Rivera" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+</div>
+<div>
+<label for="rc-lead-email" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Email address</label>
+<input type="email" id="rc-lead-email" name="email" required placeholder="you@example.com" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+</div>
+<div>
+<label for="rc-lead-phone" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Phone number <span style="font-weight:400;color:var(--slate);">(optional)</span></label>
+<input type="tel" id="rc-lead-phone" name="phone" placeholder="(973) 555-0100" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+</div>
+<div>
+<label for="rc-lead-address" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Property address <span style="font-weight:400;color:var(--slate);">(optional)</span></label>
+<input type="text" id="rc-lead-address" name="address" placeholder="123 Main St, Jersey City NJ" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+</div>
+<button type="submit" class="btn btn-gold" style="justify-content:center;">Get My Free Assessment</button>
+<p style="font-size:12px;color:var(--slate);text-align:center;margin:0;">We respond within one business day. No spam, ever.</p>
+</form>
+</div>
+</div>
+</section>
+
 <section class="section-sm" style="background:var(--ice);border-top:1px solid var(--border);">
 <div class="wrap" style="text-align:center;">
 <h2>Not sure how rent control affects your property?</h2>
@@ -87,6 +118,135 @@ input.addEventListener("blur",function(){setTimeout(closeList,140)});
 document.addEventListener("click",function(e){if(e.target!==input&&!listbox.contains(e.target))closeList()});
 function row(label,val){return'<div style="font-weight:600;color:var(--navy);">'+label+'</div><div style="color:var(--slate);">'+val+'</div>'}
 function showResult(municipality){dflt.style.display="none";var canonical=ALL.find(function(m){return m.toLowerCase()===municipality.toLowerCase()});var info=canonical?DATA[canonical]:null;var name=canonical||municipality;var html;if(info&&info.controlled){html='<div style="border:2px solid var(--gold);border-radius:var(--r-lg);overflow:hidden;"><div style="background:var(--gold-tint);padding:20px 28px;display:flex;align-items:center;gap:12px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><span style="font-weight:700;color:var(--navy);font-size:16px;">'+name+'</span><br><span style="font-size:13px;font-weight:600;color:var(--gold);">Rent control applies</span></div></div><div style="padding:24px 28px;"><div style="display:grid;grid-template-columns:140px 1fr;gap:12px 20px;font-size:14px;">'+row("Allowable increase",info.cap)+row("Exemptions",info.exemptions)+row("Registration",info.registration)+row("Administering body",info.board)+'</div><p style="margin-top:16px;font-size:13px;color:var(--slate);background:var(--ice);padding:14px 16px;border-radius:var(--r);line-height:1.6;">'+info.notes+'</p></div></div>'}else if(canonical){html='<div style="border:2px solid var(--teal);border-radius:var(--r-lg);overflow:hidden;"><div style="background:rgba(141,207,221,0.1);padding:20px 28px;display:flex;align-items:center;gap:12px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--deep-teal)" stroke-width="2" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><div><span style="font-weight:700;color:var(--navy);font-size:16px;">'+name+'</span><br><span style="font-size:13px;font-weight:600;color:var(--deep-teal);">No municipal rent control</span></div></div><div style="padding:24px 28px;"><p style="font-size:14px;color:var(--slate);line-height:1.7;">This municipality does not have a rent control ordinance on record. Standard New Jersey landlord-tenant law applies. You may increase rent with proper written notice at lease renewal, subject to the NJ Anti-Eviction Act and any applicable lease terms.</p><p style="font-size:13px;color:var(--silver);margin-top:12px;">Note: Municipal ordinances can change. Verify with your local municipality for the most current rules.</p></div></div>'}else{html='<div style="border:2px solid var(--border);border-radius:var(--r-lg);overflow:hidden;"><div style="background:var(--ice);padding:20px 28px;display:flex;align-items:center;gap:12px;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--slate)" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><div><span style="font-weight:700;color:var(--navy);font-size:16px;">'+name+'</span><br><span style="font-size:13px;font-weight:600;color:var(--slate);">Not recognized</span></div></div><div style="padding:24px 28px;"><p style="font-size:14px;color:var(--slate);line-height:1.7;">We could not match {NAME} to a New Jersey municipality on file. Check the spelling or try the full municipal name (for example, ’Township’ or ’City’ may be part of it). We track rent control across all NJ municipalities — <a href="/contact/" style="color:var(--deep-teal);font-weight:600;">get a free rental analysis</a> and we’ll confirm exactly what applies to your property.</p></div></div>'.replace(/\{NAME\}/g,name)}result.innerHTML=html;result.style.display="block"}
+})();
+</script>
+<script>(function(){
+  var LEAD_ENDPOINTS = ['/api/lead/', 'https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/lead-intake'];
+
+  function splitName(rawName){
+    var name = (rawName || '').trim();
+    if(!name) return {};
+    var i = name.search(/\s/);
+    if(i === -1) return {first_name: name};
+    var first = name.slice(0, i);
+    var rest = name.slice(i + 1).trim();
+    var out = {first_name: first};
+    if(rest) out.last_name = rest;
+    return out;
+  }
+
+  function buildPayload(fields){
+    fields = fields || {};
+    var payload = {};
+    var nameParts = splitName(fields.name);
+    if(nameParts.first_name) payload.first_name = nameParts.first_name;
+    if(nameParts.last_name) payload.last_name = nameParts.last_name;
+    if(fields.email) payload.email = fields.email;
+    if(fields.phone) payload.phone = fields.phone;
+    if(fields.address) payload.property_address = fields.address;
+
+    var message = 'Requested a free rent control compliance assessment via the Rent Control Lookup tool.';
+    var looked = (fields.lookup || '').trim();
+    if(looked) message += '\n\nMunicipality looked up: ' + looked;
+    payload.message = message;
+
+    payload.source = 'rent_control_lookup';
+    payload.website = fields.website || '';
+
+    // First-touch attribution (see /js/attribution.js) — best-effort, never blocks a submit.
+    try {
+      var attr = (typeof window !== 'undefined' && window.ppmAttribution) ? window.ppmAttribution() : null;
+      if (attr) payload.attribution = attr;
+    } catch (e) { /* no-op */ }
+
+    return payload;
+  }
+
+  if(typeof module !== 'undefined' && module.exports){
+    module.exports = {splitName: splitName, buildPayload: buildPayload, LEAD_ENDPOINTS: LEAD_ENDPOINTS};
+  }
+
+  function postLead(url, payload){
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = controller ? setTimeout(function(){ controller.abort(); }, 8000) : null;
+    return fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    }).then(function(response){
+      if(!response.ok) throw new Error('non-2xx from ' + url);
+      return response.json();
+    }).then(function(data){
+      if(!data || data.ok !== true) throw new Error('not confirmed by ' + url);
+      if(timeoutId) clearTimeout(timeoutId);
+      return data;
+    }, function(err){
+      if(timeoutId) clearTimeout(timeoutId);
+      throw err;
+    });
+  }
+
+  function fieldValue(id){
+    var el = document.getElementById(id);
+    return el ? el.value : '';
+  }
+
+  var form = (typeof document !== 'undefined') ? document.getElementById('rc-lead-form') : null;
+  if(!form) return;
+
+  function showThankYou(){if(window.va)va('event',{name:'lead_submit'});
+    var card = document.getElementById('rc-lead-card');
+    if(!card) return;
+    card.innerHTML = '<div class="eyebrow">Free Compliance Assessment</div>' +
+      '<h2 style="margin-top:8px;">Request received</h2>' +
+      '<p style="font-size:14px;margin-top:12px;">Thanks &mdash; we&rsquo;ll review the rent control rules that apply to your property and reply by email, usually the same business day. Need an answer sooner? Call <a href="tel:9733308261" style="color:var(--deep-teal);font-weight:600;">(973) 330-8261</a>.</p>';
+  }
+
+  function showError(){
+    var note = document.getElementById('rc-lead-error');
+    if(!note){
+      note = document.createElement('p');
+      note.id = 'rc-lead-error';
+      note.setAttribute('role', 'alert');
+      note.style.cssText = 'font-size:13px;color:var(--slate);margin-top:12px;text-align:center;';
+      form.appendChild(note);
+    }
+    note.innerHTML = 'Something went wrong sending your request &mdash; call <a href="tel:9733308261" style="color:var(--deep-teal);font-weight:600;">(973) 330-8261</a> or email <a href="mailto:contact@njppm.com" style="color:var(--deep-teal);font-weight:600;">contact@njppm.com</a> and we&rsquo;ll take care of it.';
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var originalBtnText = submitBtn ? submitBtn.textContent : '';
+
+    var payload = buildPayload({
+      name: fieldValue('rc-lead-name'),
+      email: fieldValue('rc-lead-email'),
+      phone: fieldValue('rc-lead-phone'),
+      address: fieldValue('rc-lead-address'),
+      lookup: fieldValue('rc-search'),
+      website: fieldValue('rc-website')
+    });
+
+    if(submitBtn){
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending…';
+    }
+
+    postLead(LEAD_ENDPOINTS[0], payload).catch(function(){
+      return postLead(LEAD_ENDPOINTS[1], payload);
+    }).then(function(){
+      showThankYou();
+    }).catch(function(){
+      if(submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
+      showError();
+    });
+  });
 })();
 </script>
 
