@@ -19,7 +19,15 @@
 //   "datePublished": "2026-07-11",
 //   "body": "<h2 id=...>...</h2><p>...</p>..."             // article HTML
 // }
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+//
+// Site-structure checks (mirrored in the OS's website-publish function, which renders the same
+// JSON): the pillar must be an existing hub page, every internal link in the body must point at
+// a page that exists (with its trailing slash, so no redirect hop), and JSON-LD in the body may
+// only describe this site, and no reviewer note ([Attorney Review Required], [VERIFY]) may be
+// left in the copy. Each of these shipped broken once: posts invented pillar paths whose
+// hubs 404'd, linked to /contact and /blog/evictions, and embedded a LocalBusiness on a domain
+// that isn't ours.
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -28,6 +36,36 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const BASE = 'https://www.njpropertymanager.com';
 const TEMPLATE = readFileSync(join(ROOT, 'scripts/templates/post.html'), 'utf8');
 
+// Types the template already emits for every post; a second copy in the body only conflicts.
+const TEMPLATE_LD_TYPES = new Set(['LocalBusiness', 'ProfessionalService', 'LegalService', 'Organization', 'BreadcrumbList', 'WebSite', 'BlogPosting', 'Article']);
+
+function siteProblems(c, pageExists) {
+  const problems = [];
+  const pillar = String(c.pillar.path).replace(/^\/+|\/+$/g, '');
+  if (!pageExists(pillar)) problems.push(`pillar "${pillar}" has no hub page — use an existing pillar or publish its hub first`);
+  const self = String(c.path).replace(/^\/+|\/+$/g, '');
+  for (const [, href] of String(c.body).matchAll(/href="(\/[^"#?]*)/g)) {
+    if (/\.[a-z0-9]+$/i.test(href) || href.startsWith('/api/')) continue;
+    if (!href.endsWith('/')) { problems.push(`link ${href} needs a trailing slash`); continue; }
+    const target = href.replace(/^\/+|\/+$/g, '');
+    if (target !== self && !pageExists(target)) problems.push(`link ${href} points at a page that does not exist`);
+  }
+  for (const [marker] of String(c.body).matchAll(/\[(?:attorney review|verify|todo|insert|tbd|citation needed)[^\]]*\]?/gi))
+    problems.push(`draft marker left in the body: ${marker.slice(0, 60)}`);
+  for (const [, blob] of String(c.body).matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
+    let ld;
+    try { ld = JSON.parse(blob); } catch { problems.push('body JSON-LD is not valid JSON'); continue; }
+    const nodes = Array.isArray(ld['@graph']) ? ld['@graph'] : [ld];
+    for (const n of nodes) {
+      const types = [].concat(n['@type'] || []);
+      if (types.some((t) => TEMPLATE_LD_TYPES.has(t))) problems.push(`body JSON-LD repeats ${types.join('/')}, which the template already emits`);
+    }
+    for (const url of blob.match(/https?:\/\/[^"\s]+/g) || [])
+      if (!url.startsWith(BASE) && !url.startsWith('https://schema.org')) problems.push(`body JSON-LD names a URL off this site: ${url}`);
+  }
+  return problems;
+}
+
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
 function render(contentPath) {
@@ -35,6 +73,8 @@ function render(contentPath) {
   for (const k of ['path', 'title', 'description', 'pillar', 'author', 'authorType', 'datePublished', 'body'])
     if (!c[k]) throw new Error(`${contentPath}: missing "${k}"`);
   if (c.description.length > 165) throw new Error(`${contentPath}: description too long (${c.description.length})`);
+  const problems = siteProblems(c, (rel) => existsSync(join(ROOT, rel, 'index.html')));
+  if (problems.length) throw new Error(`${contentPath}:\n  ${problems.join('\n  ')}`);
 
   const url = `${BASE}/${c.path}/`;
   const pillarPath = `/${c.pillar.path}/`;
@@ -102,5 +142,9 @@ const files = args.includes('--all')
   ? readdirSync(join(ROOT, 'content/blog')).filter((f) => f.endsWith('.json')).map((f) => join(ROOT, 'content/blog', f))
   : args;
 if (!files.length) { console.error('usage: node scripts/new-post.mjs <content.json ...> | --all'); process.exit(1); }
-files.forEach(render);
+// Render what passes, report what doesn't, and fail the run if anything was refused.
+const failed = files.filter((f) => {
+  try { render(f); return false; } catch (e) { console.error(`REFUSED ${e.message}`); return true; }
+});
 execFileSync('node', [join(ROOT, 'scripts/generate-sitemap.mjs')], { stdio: 'inherit' });
+if (failed.length) process.exit(1);
