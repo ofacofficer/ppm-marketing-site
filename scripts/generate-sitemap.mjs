@@ -17,17 +17,18 @@ const urls = [];
     if (statSync(abs).isDirectory()) {
       walk(abs, rel === '' ? name : `${rel}/${name}`);
     } else if (name === 'index.html') {
-      const loc = rel === '' ? `${BASE}/` : `${BASE}/${rel}/`;
-      const lastmod = statSync(abs).mtime.toISOString().slice(0, 10); // YYYY-MM-DD from file mtime
-      urls.push({ loc, lastmod });
+      // No <lastmod>: file mtime is the checkout time, not an edit time, so every clone would
+      // claim every page changed today and teach Google to ignore the field. Matches the OS's
+      // website-publish, which regenerates this file on each publish.
+      urls.push(rel === '' ? `${BASE}/` : `${BASE}/${rel}/`);
     }
   }
 })(ROOT, '');
-urls.sort((a, b) => a.loc.localeCompare(b.loc));
+urls.sort();
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod></url>`).join('\n')}
+${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}
 </urlset>
 `;
 writeFileSync(join(ROOT, 'sitemap.xml'), xml);
