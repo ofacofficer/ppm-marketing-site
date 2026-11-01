@@ -1,0 +1,13 @@
+# Duplicate posts consolidated 2026-11-01 (Dan approved): one page per topic.
+# The kept page is the one the legacy Wix redirects and internal links already point at,
+# so no ranking signal moves; the retired URLs never served on the live domain.
+from,to,kind
+/blog/nj-eviction-process-timeline,/blog/nj-landlord-law/nj-eviction-timeline/,redirect
+/blog/evictions-timeline/nj-eviction-process-timeline,/blog/nj-landlord-law/nj-eviction-timeline/,redirect
+/blog/evictions-timeline,/blog/nj-landlord-law/nj-eviction-timeline/,redirect
+/blog/nj-landlord-law/eviction-process-nj,/blog/nj-landlord-law/nj-eviction-timeline/,redirect
+/blog/nj-landlord-law/nj-security-deposit-rules-2026,/blog/nj-landlord-law/security-deposit-rules/,redirect
+/blog/security-deposits/nj-security-deposit-rules-landlord,/blog/nj-landlord-law/security-deposit-rules/,redirect
+/blog/security-deposits,/blog/nj-landlord-law/security-deposit-rules/,redirect
+/blog/city-landing-pages/property-management-hoboken-nj,/service-areas/hoboken/,redirect
+/blog/city-landing-pages,/service-areas/,redirect

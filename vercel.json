@@ -1,6 +1,15 @@
 {
   "trailingSlash": true,
   "redirects": [
+    {"source":"/blog/nj-eviction-process-timeline/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},
+    {"source":"/blog/evictions-timeline/nj-eviction-process-timeline/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},
+    {"source":"/blog/evictions-timeline/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},
+    {"source":"/blog/nj-landlord-law/eviction-process-nj/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},
+    {"source":"/blog/nj-landlord-law/nj-security-deposit-rules-2026/","destination":"/blog/nj-landlord-law/security-deposit-rules/","permanent":true},
+    {"source":"/blog/security-deposits/nj-security-deposit-rules-landlord/","destination":"/blog/nj-landlord-law/security-deposit-rules/","permanent":true},
+    {"source":"/blog/security-deposits/","destination":"/blog/nj-landlord-law/security-deposit-rules/","permanent":true},
+    {"source":"/blog/city-landing-pages/property-management-hoboken-nj/","destination":"/service-areas/hoboken/","permanent":true},
+    {"source":"/blog/city-landing-pages/","destination":"/service-areas/","permanent":true},
     {"source":"/blog-categories-sitemap.xml","destination":"/sitemap.xml","permanent":true},
     {"source":"/blog-feed.xml","destination":"/blog/","permanent":true},
     {"source":"/blog-posts-sitemap.xml","destination":"/sitemap.xml","permanent":true},
