@@ -1,9 +1,6 @@
 {
   "trailingSlash": true,
   "redirects": [
-    {"source":"/:path*","has":[{"type":"host","value":"ppm-marketing-site.vercel.app"}],"destination":"https://www.njpropertymanager.com/:path*","permanent":true},
-    {"source":"/:path*","has":[{"type":"host","value":"ppm-marketing-site-ofacofficers-projects.vercel.app"}],"destination":"https://www.njpropertymanager.com/:path*","permanent":true},
-    {"source":"/:path*","has":[{"type":"host","value":"ppm-marketing-site-git-main-ofacofficers-projects.vercel.app"}],"destination":"https://www.njpropertymanager.com/:path*","permanent":true},
     {"source":"/blog/nj-eviction-process-timeline/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},
     {"source":"/blog/evictions-timeline/nj-eviction-process-timeline/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},
     {"source":"/blog/evictions-timeline/","destination":"/blog/nj-landlord-law/nj-eviction-timeline/","permanent":true},

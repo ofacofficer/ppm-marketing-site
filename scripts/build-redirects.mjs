@@ -70,32 +70,9 @@ export function toVercelSource(from) {
   return from.endsWith('/') ? from : `${from}/`;
 }
 
-// The production alias redirects to the real domain (cutover 2026-11-03), so the vercel.app copy
-// can't compete with it in search or be bookmarked; the noindex header on *.vercel.app already kept
-// it out of the index. Only the PRODUCTION aliases: per-branch preview hosts stay reachable, because
-// check-redirects.mjs verifies every legacy URL on a preview before merge. Emitted first, so it wins
-// over the legacy rows; the path and query string carry over (an old proposal link with ?ref= still
-// lands on its page).
-// One rule per alias, each value the bare hostname. Two earlier forms deployed without error and
-// matched nothing on 2026-11-03: an anchored alternation regex (#27) and the escaped form from
-// Vercel's docs, `ppm-marketing-site\\.vercel\\.app` (#28), while legacy path rules fired on the
-// same host. A bare hostname matches whether Vercel reads the value as an exact string or as a
-// regex (an unescaped dot still matches a dot).
-const PRODUCTION_ALIASES = [
-  'ppm-marketing-site.vercel.app',
-  'ppm-marketing-site-ofacofficers-projects.vercel.app',
-  'ppm-marketing-site-git-main-ofacofficers-projects.vercel.app',
-];
-export const HOST_REDIRECTS = PRODUCTION_ALIASES.map((host) => ({
-  source: '/:path*',
-  has: [{ type: 'host', value: host }],
-  destination: 'https://www.njpropertymanager.com/:path*',
-  permanent: true,
-}));
-
 function render(rows, config) {
-  const redirects = [...HOST_REDIRECTS, ...rows.filter((r) => r.kind === 'redirect')
-    .map((r) => ({ source: toVercelSource(r.from), destination: r.to, permanent: true }))];
+  const redirects = rows.filter((r) => r.kind === 'redirect')
+    .map((r) => ({ source: toVercelSource(r.from), destination: r.to, permanent: true }));
   const next = { ...config, redirects };
   // One redirect per line keeps the diff of a single mapping change to a single line.
   const body = JSON.stringify(next, null, 2).replace(
