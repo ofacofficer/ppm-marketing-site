@@ -76,14 +76,20 @@ export function toVercelSource(from) {
 // check-redirects.mjs verifies every legacy URL on a preview before merge. Emitted first, so it wins
 // over the legacy rows; the path and query string carry over (an old proposal link with ?ref= still
 // lands on its page).
-export const HOST_REDIRECTS = [
-  {
-    source: '/:path*',
-    has: [{ type: 'host', value: '^ppm-marketing-site(-ofacofficers-projects|-git-main-ofacofficers-projects)?\\.vercel\\.app$' }],
-    destination: 'https://www.njpropertymanager.com/:path*',
-    permanent: true,
-  },
+// One rule per alias, each value a plain escaped hostname: the form Vercel documents for this
+// (docs: Redirects, "host-scoped permanent redirect"). The first version used one anchored regex
+// with an alternation; it deployed without error and matched nothing (2026-11-03).
+const PRODUCTION_ALIASES = [
+  'ppm-marketing-site.vercel.app',
+  'ppm-marketing-site-ofacofficers-projects.vercel.app',
+  'ppm-marketing-site-git-main-ofacofficers-projects.vercel.app',
 ];
+export const HOST_REDIRECTS = PRODUCTION_ALIASES.map((host) => ({
+  source: '/:path*',
+  has: [{ type: 'host', value: host.replace(/\./g, '\\.') }],
+  destination: 'https://www.njpropertymanager.com/:path*',
+  permanent: true,
+}));
 
 function render(rows, config) {
   const redirects = [...HOST_REDIRECTS, ...rows.filter((r) => r.kind === 'redirect')
