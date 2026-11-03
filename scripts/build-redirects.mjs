@@ -70,9 +70,24 @@ export function toVercelSource(from) {
   return from.endsWith('/') ? from : `${from}/`;
 }
 
+// The production alias redirects to the real domain (cutover 2026-11-03), so the vercel.app copy
+// can't compete with it in search or be bookmarked; the noindex header on *.vercel.app already kept
+// it out of the index. Only the PRODUCTION aliases: per-branch preview hosts stay reachable, because
+// check-redirects.mjs verifies every legacy URL on a preview before merge. Emitted first, so it wins
+// over the legacy rows; the path and query string carry over (an old proposal link with ?ref= still
+// lands on its page).
+export const HOST_REDIRECTS = [
+  {
+    source: '/:path*',
+    has: [{ type: 'host', value: '^ppm-marketing-site(-ofacofficers-projects|-git-main-ofacofficers-projects)?\\.vercel\\.app$' }],
+    destination: 'https://www.njpropertymanager.com/:path*',
+    permanent: true,
+  },
+];
+
 function render(rows, config) {
-  const redirects = rows.filter((r) => r.kind === 'redirect')
-    .map((r) => ({ source: toVercelSource(r.from), destination: r.to, permanent: true }));
+  const redirects = [...HOST_REDIRECTS, ...rows.filter((r) => r.kind === 'redirect')
+    .map((r) => ({ source: toVercelSource(r.from), destination: r.to, permanent: true }))];
   const next = { ...config, redirects };
   // One redirect per line keeps the diff of a single mapping change to a single line.
   const body = JSON.stringify(next, null, 2).replace(
