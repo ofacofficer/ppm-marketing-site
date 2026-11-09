@@ -1,7 +1,11 @@
 ---
 // A service-area (town) page, rendered from content/areas/<town>.json. Adding a town is one JSON
-// file plus its hero photo in public/images/service-areas/; the URL, nav-free layout, sidebar, CTA,
-// LocalBusiness/ProfessionalService and BreadcrumbList JSON-LD all come from here.
+// file plus its hero photo in public/images/service-areas/; the URL, layout, CTA,
+// ProfessionalService and BreadcrumbList JSON-LD all come from here.
+//
+// Phase 4 (DESIGN.md §6 "No overlap"): the top section is option C (pale sky field, navy type) and
+// the photo has its own column instead of sitting behind the headline (REDESIGN_PLAN.md F9). A CC
+// BY-SA photo shows its credit as a visible caption (public/images/service-areas/CREDITS.md).
 import Base from './Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import CtaBand from '../components/CtaBand.astro';
@@ -13,7 +17,7 @@ import areaCss from '../styles/area.css?raw';
 export interface AreaData {
   name: string;
   county: string;
-  /** Shows the "Rent Control Municipality" badge in the hero. */
+  /** True when the town has a municipal rent control ordinance (the hero says so and links the lookup). */
   rentControl: boolean;
   seo: { title: string; description: string; social?: { title?: string; description?: string }; twitter?: { site?: boolean; title?: string; description?: string } };
   h1: string;
@@ -23,6 +27,7 @@ export interface AreaData {
   breadcrumbHubLabel: string;
   /** The town's own copy for the main column (services, market, at-a-glance, rent-control notes). */
   contentHtml: string;
+  /** ctaText is kept in the data for the OS publisher's schema; the page no longer renders a sidebar CTA. */
   sidebar: { ctaText: string; nearbyLabel: string; nearby: { href: string; label: string }[]; guides: { href: string; label: string }[] };
   cta: { heading: string; text: string };
 }
@@ -32,6 +37,7 @@ const url = `${site.baseUrl}/service-areas/${slug}/`;
 const cid = 'area';
 const s = scope(cid);
 const heroImg = area.hero && `/images/service-areas/${area.hero.image}-hero`;
+const lookupHref = `/rent-control-lookup/?town=${encodeURIComponent(area.name)}`;
 const jsonLd = [
   {
     '@context': 'https://schema.org', '@type': 'ProfessionalService',
@@ -51,5 +57,52 @@ const jsonLd = [
 ];
 ---
 <Base title={area.seo.title} description={area.seo.description} canonical={url} og={area.seo.social} twitter={area.seo.twitter} jsonLd={jsonLd} css={areaCss}>
-<main id="main">   <Breadcrumbs variant="area" cid={cid} items={[{ href: '/', label: 'Home' }, { href: '/service-areas/', label: area.breadcrumbHubLabel }]} current={area.name} /> <section class={area.hero ? 'city-hero has-photo' : 'city-hero'} {...s}> {area.hero && <><picture><source type="image/webp" srcset={`${heroImg}-768.webp 768w, ${heroImg}.webp ${area.hero.webpWidth}w`} sizes="100vw"><img class="hero-photo" src={`${heroImg}.jpg`} alt={area.hero.alt} width={area.hero.width} height={area.hero.height} fetchpriority="high" decoding="async"></picture><div class="hero-scrim"></div>{area.hero.creditHtml && <div class="hero-credit" set:html={area.hero.creditHtml} />} </>}<div class="container" style={area.hero ? 'position:relative;z-index:2;' : undefined} {...s}> <span class="badge" {...s}>{area.county}</span>{area.rentControl && <><span class="badge" style="margin-left:8px;border-color:var(--error);color:var(--white);" {...s}> Rent Control Municipality</span></>} <h1 style="margin-top:16px;" {...s}>{area.h1}</h1> <p style="margin-top:16px;max-width:56ch;" {...s}>{area.intro}</p> <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:28px;" {...s}> <a href="/contact/" class="btn btn-primary" {...s}>Get a free rental analysis</a> <a href={`tel:${site.phone.tel}`} class="btn btn-ghost" {...s}>{site.phone.display}</a> </div> </div> </section> <section style="padding:64px 0;" {...s}> <div class="container city-grid" {...s}> <div class="prose-content" {...s}> <Fragment set:html={expandTokens(area.contentHtml)} /> </div> <aside class="city-sidebar" {...s}> <div class="sidebar-cta" {...s}> <div class="sidebar-cta-label" {...s}>Free rental analysis</div> <p class="text-sm text-muted" {...s}>{area.sidebar.ctaText}</p> <a href="/contact/" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:16px;" {...s}>Get a free rental analysis</a> <div class="sidebar-contact" {...s}> <a href={`tel:${site.phone.tel}`} {...s}>{site.phone.display}</a> <a href={`mailto:${site.email}`} {...s}>{site.email}</a> </div> </div> <div class="nearby-areas" {...s}> <div class="nearby-label" {...s}>{area.sidebar.nearbyLabel}</div> {area.sidebar.nearby.map((l) => <><a href={l.href} {...s}>{l.label}</a> </>)}</div> <div class="nearby-areas" {...s}> <div class="nearby-label" {...s}>Related guides</div> {area.sidebar.guides.map((l) => <><a href={l.href} {...s}>{l.label}</a> </>)}</div> </aside> </div> </section> <CtaBand variant="area" cid={cid} heading={area.cta.heading} text={area.cta.text} button={{ href: '/contact/', label: site.nav.cta.label }} />  </main>
+<main id="main">
+<Breadcrumbs variant="area" cid={cid} items={[{ href: '/', label: 'Home' }, { href: '/service-areas/', label: area.breadcrumbHubLabel }]} current={area.name} />
+<section class={area.hero ? 'city-hero area-hero' : 'city-hero area-hero no-photo'} aria-labelledby="area-title">
+  <div class="wrap area-hero-grid">
+    <div class="area-hero-text">
+      <p class="area-county">{area.county}</p>
+      <h1 id="area-title">{area.h1}</h1>
+      <p class="lead">{area.intro}</p>
+      <p class="area-rc">
+        {area.rentControl
+          ? <>{area.name} has a municipal rent control ordinance. <a href={lookupHref}>Look up {area.name} in our rent control lookup</a></>
+          : <a href={lookupHref}>Check rent control for {area.name}</a>}
+      </p>
+      <div class="area-actions">
+        <a href={site.nav.cta.href} class="btn btn-primary">{site.nav.cta.label}</a>
+        <a href={`tel:${site.phone.tel}`} class="btn btn-ghost">{site.phone.display}</a>
+      </div>
+    </div>
+    {area.hero && (
+      <figure class="area-photo">
+        <picture>
+          <source type="image/webp" srcset={`${heroImg}-768.webp 768w, ${heroImg}.webp ${area.hero.webpWidth}w`} sizes="(min-width: 1024px) 560px, 100vw">
+          <img src={`${heroImg}.jpg`} alt={area.hero.alt} width={area.hero.width} height={area.hero.height} fetchpriority="high" decoding="async">
+        </picture>
+        {area.hero.creditHtml && <figcaption class="area-credit" set:html={area.hero.creditHtml} />}
+      </figure>
+    )}
+  </div>
+</section>
+<section class="area-body">
+  <div class="wrap area-grid">
+    <div class="prose-content area-prose">
+      <Fragment set:html={expandTokens(area.contentHtml)} />
+    </div>
+    <aside class="area-aside" aria-label="More about this area">
+      <nav aria-labelledby="area-nearby">
+        <h2 id="area-nearby" class="area-aside-head">{area.sidebar.nearbyLabel}</h2>
+        <ul>{area.sidebar.nearby.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+      <nav aria-labelledby="area-guides">
+        <h2 id="area-guides" class="area-aside-head">Related guides</h2>
+        <ul>{area.sidebar.guides.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+      </nav>
+    </aside>
+  </div>
+</section>
+<CtaBand variant="area" cid={cid} heading={area.cta.heading} text={area.cta.text} button={{ href: site.nav.cta.href, label: site.nav.cta.label }} />
+</main>
 </Base>
