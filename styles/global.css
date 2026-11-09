@@ -186,19 +186,9 @@ p + p { margin-top: 1em; }
 }
 .skip-link:focus { top: 16px !important; }
 
-/* 2. Scroll-triggered fade-up animations */
-.reveal {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-@media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-}
+/* 2. Scroll-triggered fade-up removed 2026-11-09: it hid content until JS ran
+   (blank page for no-JS crawlers). DESIGN.md §7 — content is visible by default. */
+.reveal { opacity: 1; transform: none; }
 
 /* 3. Service cards — teal left border + arrow on hover */
 /* (handled in page <style>) */
@@ -1494,3 +1484,10 @@ a.btn-primary:hover {
 
 .hero-credit{position:absolute;right:10px;bottom:8px;z-index:3;font-size:10px;line-height:1.3;color:rgba(255,255,255,0.6);text-shadow:0 1px 2px rgba(0,0,0,.6);max-width:62%;text-align:right;letter-spacing:.01em}
 .hero-credit a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
+/* Phone overflow guard (2026-11-09). Grid items default to min-width:auto, so a long word or a
+   wide table widened the whole grid past the screen at 320–390px (pricing, blog posts).
+   Let grid children shrink, wrap long words, and scroll wide tables inside their own box. */
+.pillar-grid > *, .pricing-grid > *, .post-grid > * { min-width: 0; }
+.prose-content { overflow-wrap: break-word; }
+.prose-content table { display: block; max-width: 100%; overflow-x: auto; }
