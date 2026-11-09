@@ -146,17 +146,52 @@ main details[open] > summary:not([class])::after { content: "\2212"; }
 @media (max-width: 360px) { .fee-range { white-space: normal; } }
 
 /* ── Inner-page top sections on the pale sky field (option C; colours flip in tokens.css) ── */
-:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type) {
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, .page-hero, main > section.on-dark:first-of-type) {
   background: var(--sky-field) !important; border-bottom: var(--rule) !important;
 }
-:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, .page-hero, main > section.on-dark:first-of-type)
   :is(h1, h2, h3, h4, strong) { color: var(--ink) !important; }
-:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, .page-hero, main > section.on-dark:first-of-type)
   :is(p, .post-meta, .post-meta *, .blog-byline, li) { color: var(--ink-muted) !important; }
-:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, .page-hero, main > section.on-dark:first-of-type)
   :is(.badge, .eyebrow, .eyebrow-light, .blog-byline-name, p a:not(.btn)) { color: var(--accent-text) !important; }
-:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, .page-hero, main > section.on-dark:first-of-type)
   .badge[style*="border-color:var(--error)"] { color: var(--error) !important; }
 /* Area pages: the photo stays, under a pale-sky veil strong enough for AA on every pixel behind text. */
 .city-hero .hero-scrim { background: rgba(205,233,240,0.94) !important; }
 .city-hero .hero-credit { color: var(--ink-soft-on-sky); text-shadow: none; }
+
+/* ── Phase 3 shared pieces ─────────────────────────────────────────── */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Inner-page top section (option C): pale sky field, navy type, sky rule under it. */
+.page-hero { padding: clamp(48px, 7vw, 88px) 0 clamp(40px, 5vw, 64px); }
+.page-hero .lead { margin-top: 16px; max-width: 52ch; font-size: var(--fs-lead); font-weight: 500; line-height: 1.5; }
+
+/* FAQ list (FaqList.astro): native <details>, Mist Line rules, + becomes − with a 160ms turn. */
+.qa-list { max-width: 760px; margin-top: 24px; }
+.qa { border-bottom: 1px solid var(--border); }
+.qa:first-child { border-top: 1px solid var(--border); }
+.qa-q {
+  list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  min-height: 44px; padding: 18px 0; cursor: pointer; font-weight: 500; font-size: 1.0625rem; color: var(--navy); line-height: 1.4;
+}
+.qa-q::-webkit-details-marker { display: none; }
+.qa-q::after { content: "+"; flex-shrink: 0; color: var(--accent-text); font-size: 1.25rem; line-height: 1; transition: transform 160ms ease; }
+.qa[open] > .qa-q::after { content: "\2212"; transform: rotate(180deg); }
+.qa-a p { padding-bottom: 20px; }
+
+/* Post byline (one line: author and date; Phase 3 removed the duplicate meta line). */
+p.blog-byline { display: block; margin: 16px 0 0; max-width: none; font-size: 0.9375rem; }
+
+/* Nav between tablet and wide desktop: tighter spacing so the links, logins and the CTA fit without
+   sideways scroll (it overflowed from 769px to 1180px before Phase 3; the CTA label is now longer). */
+@media (min-width: 769px) and (max-width: 1240px) {
+  .nav-inner { gap: 16px; }
+  .nav-links { gap: 16px; }
+  .nav-end { gap: 12px; }
+  .nav-end .btn { padding: 9px 14px !important; }
+}
+@media (min-width: 769px) and (max-width: 1140px) { .nav-phone { display: none; } }
+/* 769–1000px: the section links move into the menu (burger) so the logins and the CTA keep their place. */
+@media (min-width: 769px) and (max-width: 1000px) { .nav-links { display: none; } .nav-burger { display: flex; margin-left: 0; } .nav-end { margin-left: auto; } }

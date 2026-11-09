@@ -1,43 +1,165 @@
 ---
-// /services/: a one-off page. The body is src/bodies/services/main.html,
-// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
-import Page from '../../layouts/Page.astro';
+// /services/ (Phase 3): the home page's Fill / Run / Protect structure in depth. Every service keeps
+// the anchor id the rest of the site links to (#tenant-placement, #rent-collection, #maintenance,
+// #financial-reporting, #lease-management, #compliance).
+//
+// Copy note: the strings below are live site copy (Blake drafts, Dan approves, the CCO checks claims).
+import Base from '../../layouts/Base.astro';
 import { site } from '../../site.config.mjs';
-import main from '../../bodies/services/main.html?raw';
 import css from '../../bodies/services/page.css?raw';
 
+const groups = [
+  {
+    key: 'fill', title: 'Fill it', sub: 'Finding and placing the right tenant.',
+    services: [
+      {
+        id: 'tenant-placement', title: 'Tenant placement',
+        desc: 'Marketing, showings and thorough screening for income, credit, background and rental history. We fill vacancies with the right tenants.',
+        bullets: [
+          'Listing across Zillow, Realtor.com, Apartments.com, and more',
+          'Professional photography and listing copy',
+          'Income verification (3x monthly rent standard)',
+          'Credit check, background check, eviction history',
+          'Prior landlord reference checks',
+          'NJ-compliant lease execution and move-in inspection',
+        ],
+      },
+    ],
+  },
+  {
+    key: 'run', title: 'Run it', sub: 'The month-to-month work of a rental.',
+    services: [
+      {
+        id: 'rent-collection', title: 'Rent collection',
+        desc: 'Online rent collection, with disbursements straight to you.',
+        bullets: [
+          'Online tenant payment portal (ACH and card)',
+          'Automated late fee enforcement per NJ law',
+          'Direct owner disbursements',
+          'Transaction history in the owner portal (Buildium)',
+          'Monthly reconciliation and statement',
+        ],
+      },
+      {
+        id: 'maintenance', title: 'Maintenance coordination',
+        desc: '24/7 tenant maintenance requests, a trusted vendor network, and your approval on significant repairs.',
+        bullets: [
+          '24/7 tenant maintenance request handling',
+          'Vendor network across Northern & Central NJ',
+          'Owner approval on repairs above stated threshold',
+          'Documented work orders and vendor invoices',
+          'No markup on contractor costs — you see the actual invoice',
+          'Preventive maintenance scheduling',
+        ],
+      },
+      {
+        id: 'financial-reporting', title: 'Financial reporting',
+        desc: 'Monthly statements and 24/7 owner portal access, so you can see how your property is doing.',
+        bullets: [
+          'Monthly owner statements',
+          'Annual summary for tax preparation',
+          '24/7 owner portal access (Buildium)',
+          'Rent roll and expense tracking',
+          'Year-end 1099 preparation',
+        ],
+      },
+    ],
+  },
+  {
+    key: 'protect', title: 'Protect it', sub: 'Leases and New Jersey law.',
+    services: [
+      {
+        id: 'lease-management', title: 'Lease management',
+        desc: 'NJ-compliant lease preparation, renewals and enforcement.',
+        bullets: [
+          'NJ-compliant lease drafting',
+          'Lease renewal management and negotiation',
+          'Rent increase notices per NJ law',
+          'Lease violation notices and enforcement',
+          'Rent control compliance where applicable',
+        ],
+      },
+      {
+        id: 'compliance', title: 'Legal compliance',
+        desc: 'New Jersey landlord-tenant law is detailed. We handle the compliance work.',
+        bullets: [
+          'NJ security-deposit compliance (interest, notices, and timely returns)',
+          'Required landlord disclosures (Truth in Renting, flood zone, lead paint)',
+          'Rent control registration and compliance',
+          'Habitability standards monitoring',
+          'Eviction coordination when necessary',
+          'Ongoing NJ law monitoring and owner updates',
+        ],
+      },
+    ],
+  },
+];
+
 const page = {
-  "title": "Property Management Services | Northern & Central NJ | PPM",
-  "description": "Full-service residential property management for NJ landlords — tenant placement, rent collection, maintenance, financial reporting, and compliance.",
-  "canonical": "https://www.njpropertymanager.com/services/",
-  "og": {
-    "title": "Property Management Services NJ | Full-Service | PPM",
-    "description": "Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting. One flat fee covers everything for NJ landlords."
+  title: 'Property Management Services | Northern & Central NJ | PPM',
+  description: 'Full-service residential property management for NJ landlords — tenant placement, rent collection, maintenance, financial reporting, and compliance.',
+  canonical: 'https://www.njpropertymanager.com/services/',
+  og: {
+    title: 'Property Management Services NJ | Full-Service | PPM',
+    description: 'Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting. One management fee for NJ landlords.',
   },
-  "twitter": {
-    "site": true
-  },
-  "jsonLd": [
+  twitter: { site: true },
+  jsonLd: [
     {
-      "@context": "https://schema.org",
-      "@type": [
-        "LocalBusiness",
-        "ProfessionalService"
-      ],
-      "@id": "https://www.njpropertymanager.com/#business",
-      "name": "Proactive Property Management",
-      "alternateName": "PPM",
-      "url": "https://www.njpropertymanager.com",
-      "telephone": site.phone.e164,
-      "email": site.email,
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Jersey City",
-        "addressRegion": "NJ",
-        "addressCountry": "US"
-      }
-    }
-  ]
+      '@context': 'https://schema.org',
+      '@type': ['LocalBusiness', 'ProfessionalService'],
+      '@id': 'https://www.njpropertymanager.com/#business',
+      name: 'Proactive Property Management',
+      alternateName: 'PPM',
+      url: 'https://www.njpropertymanager.com',
+      telephone: site.phone.e164,
+      email: site.email,
+      address: { '@type': 'PostalAddress', addressLocality: 'Jersey City', addressRegion: 'NJ', addressCountry: 'US' },
+    },
+  ],
+  css,
 };
 ---
-<Page {...page} main={main} css={css} />
+<Base {...page}>
+<main id="main">
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Property management services for New Jersey landlords</h1>
+    <p class="lead">Full-service residential property management for NJ landlords and investors. One management fee covers everything below.</p>
+    <nav class="svc-jump" aria-label="On this page">
+      <ul>{groups.map((g) => <li><a href={`#${g.key}`}>{g.title}</a></li>)}</ul>
+    </nav>
+  </div>
+</section>
+
+{groups.map((g) => (
+<section class="svc-group" id={g.key} aria-labelledby={`${g.key}-title`}>
+  <div class="wrap svc-grid">
+    <div class="svc-head">
+      <h2 id={`${g.key}-title`}>{g.title}</h2>
+      <p>{g.sub}</p>
+    </div>
+    <div class="svc-list">
+      {g.services.map((s) => (
+        <div class="svc-item" id={s.id}>
+          <h3>{s.title}</h3>
+          <p>{s.desc}</p>
+          <ul class="svc-bullets">{s.bullets.map((b) => <li>{b}</li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+))}
+
+<section class="svc-close" aria-labelledby="svc-close-title">
+  <div class="wrap svc-close-inner">
+    <div>
+      <h2 id="svc-close-title">One management fee covers all of the above.</h2>
+      <p>No hidden fees, no technology fees, no maintenance markups. Get a free rental analysis and we’ll quote the fee for your property. <a href="/pricing/">See how pricing works</a></p>
+    </div>
+    <a href={site.nav.cta.href} class="btn btn-gold">{site.nav.cta.label}</a>
+  </div>
+</section>
+</main>
+</Base>

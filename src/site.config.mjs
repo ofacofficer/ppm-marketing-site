@@ -72,7 +72,7 @@ export const site = {
       { href: '/blog/', label: 'Resources' },
       { href: '/about/', label: 'About' },
     ],
-    cta: { href: '/contact/', label: 'Free Rental Analysis', mobileLabel: 'Get a Free Rental Analysis' },
+    cta: { href: '/contact/', label: 'Get a free rental analysis', mobileLabel: 'Get a free rental analysis' },
   },
 
   footer: {
@@ -94,7 +94,7 @@ export const site = {
           { href: '/service-areas/hoboken/', label: 'Hoboken' },
           { href: '/service-areas/newark/', label: 'Newark' },
           { href: '/service-areas/parsippany/', label: 'Parsippany' },
-          { href: '/service-areas/', label: 'All Areas →' },
+          { href: '/service-areas/', label: 'All Areas' },
         ],
       },
       {

@@ -1,16 +1,160 @@
-.hero[data-astro-cid-j7pv25f6]{background:var(--navy);overflow:hidden}.hero-wrap[data-astro-cid-j7pv25f6]{--hero-col:400px;--hero-gap:60px;display:grid;grid-template-columns:1fr var(--hero-col);gap:var(--hero-gap);align-items:start;padding-top:clamp(48px,8vw,100px);padding-bottom:clamp(48px,8vw,100px)}@media (max-width: 960px){.hero-wrap[data-astro-cid-j7pv25f6]{grid-template-columns:1fr;gap:40px}.hero-right[data-astro-cid-j7pv25f6]{max-width:480px}}.hero-h1[data-astro-cid-j7pv25f6]{color:var(--white);margin-bottom:12px}.hero-tag[data-astro-cid-j7pv25f6]{font-size:13px;font-weight:500;color:var(--teal);letter-spacing:0;margin-bottom:16px}.hero-sub[data-astro-cid-j7pv25f6]{font-size:16px;color:#fffc;max-width:48ch;margin-bottom:24px}.hero-sub[data-astro-cid-j7pv25f6] strong[data-astro-cid-j7pv25f6]{color:var(--white);font-weight:700}.hero-proof[data-astro-cid-j7pv25f6]{display:flex;gap:12px 20px;flex-wrap:wrap;margin-top:20px}.proof-item[data-astro-cid-j7pv25f6]{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:500;color:#ffffffbf}.hero-right[data-astro-cid-j7pv25f6]{display:flex;flex-direction:column;gap:14px}.hero-card[data-astro-cid-j7pv25f6]{background:var(--white);border-radius:var(--r-lg);padding:28px;box-shadow:var(--shadow-card)}.hc-tag[data-astro-cid-j7pv25f6]{font-size:10px;font-weight:700;letter-spacing:0;color:var(--deep-teal);margin-bottom:10px}.hc-title[data-astro-cid-j7pv25f6]{font-size:20px;font-weight:700;color:var(--navy);line-height:1.25;margin-bottom:8px}.hc-sub[data-astro-cid-j7pv25f6]{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:20px;max-width:none}.hc-cta[data-astro-cid-j7pv25f6]{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;background:var(--navy);color:var(--white);padding:12px 18px;border-radius:var(--r);font-size:13px;font-weight:700;letter-spacing:0;transition:background .15s}.hc-cta[data-astro-cid-j7pv25f6]:hover{background:var(--navy)}.hc-contact[data-astro-cid-j7pv25f6]{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:12px;color:var(--silver)}.hc-contact[data-astro-cid-j7pv25f6] a[data-astro-cid-j7pv25f6]{color:var(--deep-teal);font-weight:500;transition:color .15s}.hc-contact[data-astro-cid-j7pv25f6] a[data-astro-cid-j7pv25f6]:hover{color:var(--navy)}.hero-stats[data-astro-cid-j7pv25f6]{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;background:var(--navy);border:1px solid var(--navy);border-radius:var(--r-lg);overflow:hidden}.hs[data-astro-cid-j7pv25f6]{padding:18px 12px;text-align:center}.hs-n[data-astro-cid-j7pv25f6]{font-size:24px;font-weight:700;color:var(--white)}.hs-l[data-astro-cid-j7pv25f6]{font-size:10px;font-weight:700;letter-spacing:0;color:var(--teal);margin-top:4px}.hs-div[data-astro-cid-j7pv25f6]{width:1px;background:#8dcfdd26}.hero-ticker[data-astro-cid-j7pv25f6]{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;border-top:1px solid rgba(141,207,221,.15);padding:14px var(--gutter);gap:0}.hero-ticker[data-astro-cid-j7pv25f6]::-webkit-scrollbar{display:none}.ticker-city[data-astro-cid-j7pv25f6]{font-size:11px;font-weight:700;letter-spacing:0;color:rgba(255,255,255,.8);flex-shrink:0;padding:0 16px;border-right:1px solid rgba(141,207,221,.15)}.ticker-city[data-astro-cid-j7pv25f6]:first-child{padding-left:0}.ticker-city[data-astro-cid-j7pv25f6]:last-child{border-right:none}.ticker-city[data-astro-cid-j7pv25f6].hi{color:var(--teal)}.svc-head[data-astro-cid-j7pv25f6]{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:48px;flex-wrap:wrap}.svc-grid[data-astro-cid-j7pv25f6]{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}@media (max-width: 860px){.svc-grid[data-astro-cid-j7pv25f6]{grid-template-columns:repeat(2,1fr)}}@media (max-width: 520px){.svc-grid[data-astro-cid-j7pv25f6]{grid-template-columns:1fr}}.svc[data-astro-cid-j7pv25f6]{padding:28px 24px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--white);display:flex;flex-direction:column}.svc[data-astro-cid-j7pv25f6]:nth-child(3n){border-right:none}.svc[data-astro-cid-j7pv25f6]:nth-last-child(-n+3){border-bottom:none}@media (max-width: 860px){.svc[data-astro-cid-j7pv25f6]:nth-child(3n){border-right:1px solid var(--border)}.svc[data-astro-cid-j7pv25f6]:nth-child(2n){border-right:none}.svc[data-astro-cid-j7pv25f6]:nth-last-child(-n+2){border-bottom:none}.svc[data-astro-cid-j7pv25f6]:nth-last-child(3){border-bottom:1px solid var(--border)}}@media (max-width: 520px){.svc[data-astro-cid-j7pv25f6]{border-right:none}.svc[data-astro-cid-j7pv25f6]:last-child{border-bottom:none}.svc[data-astro-cid-j7pv25f6]:nth-last-child(2){border-bottom:1px solid var(--border)}}.svc-num[data-astro-cid-j7pv25f6]{font-size:11px;font-weight:700;color:var(--accent-text);letter-spacing:0;margin-bottom:10px}.svc-title[data-astro-cid-j7pv25f6]{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}.svc-body[data-astro-cid-j7pv25f6]{font-size:13px;color:var(--slate);line-height:1.65;max-width:none;flex:1}.why-grid[data-astro-cid-j7pv25f6]{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}@media (max-width: 800px){.why-grid[data-astro-cid-j7pv25f6]{grid-template-columns:1fr;gap:40px}}.why-right[data-astro-cid-j7pv25f6]{display:flex;flex-direction:column}.pillar[data-astro-cid-j7pv25f6]{display:flex;gap:18px;align-items:flex-start;padding:22px 0;border-bottom:1px solid rgba(141,207,221,.1)}.pillar[data-astro-cid-j7pv25f6]:first-child{border-top:1px solid rgba(141,207,221,.1)}.pillar[data-astro-cid-j7pv25f6]:last-child{border-bottom:none;padding-bottom:0}.pillar-num[data-astro-cid-j7pv25f6]{font-size:11px;font-weight:700;color:var(--accent-text);letter-spacing:0;flex-shrink:0;width:24px;padding-top:2px}.pillar-title[data-astro-cid-j7pv25f6]{font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px}.pillar-body[data-astro-cid-j7pv25f6]{font-size:13px;color:#ffffff8c;line-height:1.65;max-width:none}.areas-pills[data-astro-cid-j7pv25f6]{display:flex;flex-wrap:wrap;gap:8px}.area-pill[data-astro-cid-j7pv25f6]{display:inline-block;padding:8px 18px;border:1.5px solid var(--border);border-radius:100px;font-size:12px;font-weight:500;color:var(--slate);background:var(--white);transition:all .15s}.area-pill[data-astro-cid-j7pv25f6]:hover{border-color:var(--deep-teal);color:var(--deep-teal)}.cta-band[data-astro-cid-j7pv25f6]{background:var(--navy);border-top:2px solid var(--sky);padding:clamp(48px,7vw,80px) 0}.cta-inner[data-astro-cid-j7pv25f6]{display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}.cta-btns[data-astro-cid-j7pv25f6]{display:flex;gap:12px;flex-wrap:wrap;flex-shrink:0}@media (max-width: 640px){.cta-inner[data-astro-cid-j7pv25f6]{flex-direction:column;align-items:flex-start}.cta-btns[data-astro-cid-j7pv25f6]{width:100%}.cta-btns[data-astro-cid-j7pv25f6] .btn[data-astro-cid-j7pv25f6]{flex:1;justify-content:center}}.faq[data-astro-cid-j7pv25f6]{border-bottom:1px solid var(--border)}.faq[data-astro-cid-j7pv25f6]:first-child{border-top:1px solid var(--border)}.faq-q[data-astro-cid-j7pv25f6]{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 0;cursor:pointer;font-size:15px;font-weight:500;color:var(--navy);transition:color .15s;-webkit-tap-highlight-color:transparent;line-height:1.4}.faq-q[data-astro-cid-j7pv25f6]::-webkit-details-marker{display:none}.faq-q[data-astro-cid-j7pv25f6]:hover{color:var(--deep-teal)}details[data-astro-cid-j7pv25f6][open] .faq-q[data-astro-cid-j7pv25f6]{color:var(--deep-teal)}.faq-icon[data-astro-cid-j7pv25f6]{flex-shrink:0;color:var(--silver);transition:transform .2s ease;min-width:18px}details[data-astro-cid-j7pv25f6][open] .faq-icon[data-astro-cid-j7pv25f6]{transform:rotate(180deg);color:var(--deep-teal)}.faq-a[data-astro-cid-j7pv25f6]{padding:4px 0 18px}.faq-a[data-astro-cid-j7pv25f6] p[data-astro-cid-j7pv25f6]{font-size:14px;color:var(--slate);max-width:none;line-height:1.7;margin:0}
+/*
+  Home page (Phase 3): REDESIGN_PLAN.md §4, DESIGN.md §4–§7. Colours and geometry come from tokens.css.
+  The hero form's markup is held byte-identical (lead path), so it is styled from here, never edited;
+  !important appears only where that markup carries an inline style="".
+*/
 
-/* Home hero, option D (Dan, 2026-11-09): two-tone split. The left column stays Harbor Navy; the
-   right column (rental-analysis card + facts) sits on a solid Sky Rule panel that runs from the
-   middle of the column gap to the right viewport edge, full height of the hero grid. Hard edge,
-   no gradient. Geometry comes from the grid's own --hero-col / --hero-gap. */
-.hero-wrap[data-astro-cid-j7pv25f6]{position:relative;isolation:isolate}
-@media (min-width: 961px){
-.hero-wrap[data-astro-cid-j7pv25f6]::after{content:"";position:absolute;top:0;bottom:0;left:calc(100% - var(--gutter) - var(--hero-col) - var(--hero-gap) / 2);right:-50vw;background:var(--sky-rule);z-index:-1}
+/* ── 1. Hero, option D: navy column left, solid Sky Rule panel right (hard edge, no gradient) ── */
+.hero { background: var(--navy); overflow: hidden; }
+.hero-grid {
+  --hero-gap: clamp(40px, 5vw, 80px);
+  --hero-pad: clamp(48px, 7vw, 96px);
+  display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--hero-gap);
+  align-items: center; padding-top: var(--hero-pad); padding-bottom: var(--hero-pad);
+  position: relative; isolation: isolate;
 }
-/* Stacked (960px and below): the right column becomes a full-bleed sky band under the navy column. */
-@media (max-width: 960px){
-.hero-wrap[data-astro-cid-j7pv25f6]{padding-bottom:0}
-.hero-right[data-astro-cid-j7pv25f6]{max-width:none;margin:0 calc(-1 * var(--gutter));padding:32px var(--gutter) 40px;background:var(--sky-rule)}
-.hero-right[data-astro-cid-j7pv25f6] > *{width:100%;max-width:480px}
+.hero-panel { align-self: stretch; display: flex; align-items: center; position: relative; }
+.hero-panel::before {
+  content: ""; position: absolute; z-index: -1; background: var(--sky-rule);
+  top: calc(-1 * var(--hero-pad)); bottom: calc(-1 * var(--hero-pad));
+  left: calc(-1 * var(--hero-gap) / 2); right: -100vw;
 }
+.hero-title { color: var(--white); font-size: clamp(2.25rem, 4.2vw, 3.75rem); line-height: 1.12; max-width: 17ch; }
+.h1-photo {
+  display: inline-block; width: 1.7em; height: 1em; vertical-align: -0.12em; margin: 0 0.04em;
+  border-radius: 999px; object-fit: cover; background: var(--navy-light);
+}
+.hero-photo-row { display: none; }
+.hero-lead {
+  margin-top: 28px; max-width: 40ch; font-size: var(--fs-lead); font-weight: 500; line-height: 1.5;
+  color: rgba(255,255,255,0.88);
+}
+
+/* The form card: Paper White on the sky panel. */
+.hero-card {
+  width: 100%; max-width: 440px; background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-card); padding: 28px;
+}
+.hero-card-title { font-size: 1.375rem; line-height: 1.25; color: var(--navy); margin-bottom: 8px; }
+.hero-card .hero-form-row { flex-direction: column; gap: 10px; }
+.hero-card .hero-form-note { color: var(--pier-slate); text-align: left; font-size: 0.875rem; }
+.hero-card #hero-form p[style] { color: var(--pier-slate) !important; font-size: 0.875rem !important; }
+.hero-card .hero-form-success { color: var(--navy); background: var(--ice); border-color: var(--border); text-align: left; }
+
+/* The one load moment (DESIGN.md §7): the inline photos settle in, 80ms apart. Armed by html.js, so
+   without JavaScript they are simply there; reduced-motion users get no animation at all. */
+@keyframes ppm-photo-in { from { opacity: 0; transform: scale(0.92); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: no-preference) {
+  .js .h1-photo, .js .hero-photo-row img { animation: ppm-photo-in 520ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .js .h1-photo:nth-of-type(2), .js .hero-photo-row img:nth-child(2) { animation-delay: 80ms; }
+  .js .h1-photo:nth-of-type(3), .js .hero-photo-row img:nth-child(3) { animation-delay: 160ms; }
+}
+
+/* Stacked (960px and below): the sky panel becomes a full-bleed band under the navy column. */
+@media (max-width: 960px) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr); gap: 40px; padding-bottom: 0; }
+  .hero-panel { margin: 0 calc(-1 * var(--gutter)); padding: 32px var(--gutter) 40px; background: var(--sky-rule); }
+  .hero-panel::before { content: none; }
+  .hero-card { max-width: 520px; }
+  .hero-title { max-width: 20ch; }
+}
+/* Phones: the photos leave the headline and sit as a row beneath it. */
+@media (max-width: 767px) {
+  .h1-photo { display: none; }
+  .hero-photo-row { display: flex; gap: 10px; margin-top: 20px; }
+  .hero-photo-row img { width: 76px; height: 44px; border-radius: 999px; object-fit: cover; }
+  .hero-card { padding: 22px; }
+}
+
+/* ── 2. Fact line under the sky rule ── */
+.fact-line { border-top: var(--rule); background: var(--ice); }
+.fact-line p { padding: 18px 0; max-width: none; font-size: 0.9375rem; color: var(--pier-slate); }
+
+/* ── Shared block rhythm: a sky rule tops each major section ── */
+.block { padding: clamp(3rem, 8vw, 6rem) 0; }
+.block + .block, .block + .closing { border-top: var(--rule); }
+.block-title { margin-bottom: 12px; }
+.block-intro { margin-bottom: 8px; }
+.home .block p a:not(.btn) { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── 3. What we take off your plate: zig-zag, text 5 / image 6 ── */
+.zz { display: flex; flex-direction: column; gap: clamp(48px, 7vw, 88px); margin-top: clamp(32px, 5vw, 56px); }
+.zz-row { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.zz-flip { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); }
+.zz-flip .zz-text { order: 2; }
+.zz-title { font-size: clamp(1.5rem, 2.4vw, 1.875rem); letter-spacing: -0.01em; }
+.zz-sub { margin: 4px 0 14px; font-weight: 500; color: var(--navy); }
+.zz-links { list-style: none; display: flex; flex-wrap: wrap; gap: 0 24px; margin-top: 12px; }
+.zz-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+.zz-media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-lg); background: var(--border); }
+.zz-media figcaption { margin-top: 10px; font-size: 0.875rem; color: var(--pier-slate); }
+
+/* ── 4. How it starts: numbered nodes on the sky-rule timeline ── */
+.hs-steps { list-style: none; position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-top: 40px; }
+.hs-steps::before { content: ""; position: absolute; top: 20px; left: 0; right: 0; border-top: var(--rule); }
+.hs-step { position: relative; }
+.hs-step-n {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: var(--white);
+  font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.hs-step-title { margin: 20px 0 8px; }
+
+/* ── 5. New Jersey's rules: ledger table on navy ── */
+.rules { background: var(--navy); }
+.rules .block-intro { color: rgba(255,255,255,0.8); }
+.rules-table { width: 100%; border-collapse: collapse; margin-top: 32px; font-size: 0.9375rem; }
+.rules-table th, .rules-table td {
+  text-align: left; vertical-align: top; padding: 20px 24px 20px 0;
+  border-top: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.8); font-weight: 400;
+}
+.rules-table thead th { border-top: 0; padding-top: 0; font-weight: 500; color: var(--sky-rule); }
+.rules-table tbody th { width: 46%; }
+.rules-table td:nth-child(2) { width: 22%; font-variant-numeric: tabular-nums; }
+.rule-name { display: block; color: var(--white); font-weight: 700; font-size: 1.0625rem; line-height: 1.35; }
+.rule-detail { display: block; margin-top: 6px; line-height: 1.6; }
+.rules-more { margin-top: 28px; }
+.rules-more a, .rules-table a { color: var(--sky-rule) !important; }
+@media (max-width: 767px) {
+  .rules-table, .rules-table tbody, .rules-table tr, .rules-table th, .rules-table td { display: block; width: auto !important; }
+  .rules-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .rules-table tr { border-top: 1px solid rgba(255,255,255,0.15); padding: 20px 0; }
+  .rules-table th, .rules-table td { border: 0; padding: 0; }
+  .rules-table td { margin-top: 14px; }
+  .rules-table td::before { content: attr(data-label); display: block; font-size: 0.875rem; font-weight: 500; color: var(--sky-rule); }
+}
+
+/* ── 6. Is your town rent controlled? ── */
+.rc-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 64px); align-items: end; }
+.rc-form label { display: block; margin-bottom: 8px; }
+.rc-row { display: flex; gap: 12px; }
+.rc-row input { flex: 1; min-width: 0; padding: 0 14px; }
+
+/* ── 7. Where we work: a typographic county index ── */
+.counties { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 32px 40px; margin-top: 32px; }
+.county-name { font-size: 1rem; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.county ul { list-style: none; }
+.county li { color: var(--pier-slate); padding: 10px 0; line-height: 1.4; }
+.county li a { display: inline-block; }
+.where-all { margin-top: 28px; }
+.home .where-all a, .home .county a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── 9. Closing call to action ── */
+.closing { background: var(--white); padding: clamp(48px, 7vw, 80px) 0; }
+.closing-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap; }
+.closing p { margin-top: 8px; }
+
+@media (max-width: 767px) {
+  .zz-row, .zz-flip, .rc-grid { grid-template-columns: minmax(0, 1fr); }
+  .zz-flip .zz-text { order: 0; }
+  .zz-media { order: -1; }
+  .hs-steps { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+  .hs-steps::before { top: 0; bottom: 0; left: 19px; right: auto; border-top: 0; border-left: var(--rule); }
+  .hs-step { padding-left: 60px; }
+  .hs-step-n { position: absolute; left: 0; top: 0; }
+  .hs-step-title { margin-top: 6px; }
+  .rc-row { flex-direction: column; }
+  .closing .btn { width: 100%; }
+  .closing { padding-bottom: 96px; }
+}
+.reviews { padding: clamp(2.5rem, 5vw, 4rem) 0; }

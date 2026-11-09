@@ -1,126 +1,292 @@
 ---
-// Home page: a one-off page. The body is src/bodies/home/main.html,
-// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
-import Page from '../layouts/Page.astro';
+// Home page (Phase 3 layout, REDESIGN_PLAN.md §4 and DESIGN.md §4–§6): nine blocks, one job each.
+//
+// The rental-analysis form inside the hero card is src/bodies/home/hero-form.html, moved byte-for-byte
+// from the Phase 0 page with its success panel. HARD LINE: its ids, field names, hidden inputs,
+// honeypot and button are the live lead path; its script is LeadForm "home". Never edit those two
+// files without an orchestrator-supervised change (WEBSITE_RUNBOOK.md §1).
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import LeadForm from '../components/LeadForm.astro';
+import FaqList from '../components/FaqList.astro';
 import { site } from '../site.config.mjs';
-import main from '../bodies/home/main.html?raw';
-import afterFooter from '../bodies/home/after-footer.html?raw';
+import { homeFaq, njRules } from '../data/home.mjs';
+import { faqJsonLd } from '../lib/faq.mjs';
+import heroForm from '../bodies/home/hero-form.html?raw';
+import heroFormSuccess from '../bodies/home/hero-form-success.html?raw';
+
+const cta = site.nav.cta; // one name for the rental-analysis action, everywhere
+const googleReviews = 'https://www.google.com/search?q=Proactive+Property+Management+NJ+reviews';
+
+// "Where we work": every town page in content/areas, grouped by county, plus the towns the site
+// already names that have no page yet. A new town is one JSON file; the index follows.
+const areas = await getCollection('areas');
+const extraTowns = [{ name: 'Ledgewood', county: 'Morris County' }];
+const byCounty = new Map();
+for (const a of areas) {
+  const county = a.data.county;
+  if (!byCounty.has(county)) byCounty.set(county, []);
+  byCounty.get(county).push({ name: a.data.name, href: `/service-areas/${a.id}/` });
+}
+for (const t of extraTowns) {
+  if (!byCounty.has(t.county)) byCounty.set(t.county, []);
+  byCounty.get(t.county).push({ name: t.name });
+}
+const counties = [...byCounty.entries()]
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([county, towns]) => ({ county, towns: towns.sort((x, y) => x.name.localeCompare(y.name)) }));
+
+const photo = (slug) => `/images/service-areas/${slug}-hero-768.webp`;
+const heroPhotos = [
+  { town: 'Jersey City', src: photo('jersey-city'), w: 768, h: 348 },
+  { town: 'Hoboken', src: photo('hoboken'), w: 768, h: 512 },
+  { town: 'Newark', src: photo('newark'), w: 768, h: 576 },
+];
+
+const rows = [
+  {
+    key: 'fill',
+    title: 'Fill it',
+    sub: 'Tenant placement and leasing',
+    body: 'We market the unit, run the showings and screen every applicant for income, credit, background and rental history. Then we sign a New Jersey-compliant lease and do the move-in inspection.',
+    links: [{ href: '/services/#tenant-placement', label: 'How tenant placement works' }],
+    img: { src: photo('bayonne'), w: 768, h: 576, caption: 'The Bayonne Bridge, seen from Bayonne.' },
+  },
+  {
+    key: 'run',
+    title: 'Run it',
+    sub: 'Rent collection, maintenance and monthly statements',
+    body: 'Tenants pay online and we disburse to you directly. Tenants can send maintenance requests 24/7, repairs above your threshold wait for your approval, and you see the vendor’s actual invoice with no markup. Every month you get an owner statement.',
+    links: [
+      { href: '/services/#rent-collection', label: 'Rent collection' },
+      { href: '/services/#maintenance', label: 'Maintenance' },
+      { href: '/services/#financial-reporting', label: 'Statements' },
+    ],
+    img: { src: photo('hoboken'), w: 768, h: 512, caption: 'The Hoboken waterfront and Terminal clock tower.' },
+  },
+  {
+    key: 'protect',
+    title: 'Protect it',
+    sub: 'Leases and New Jersey compliance',
+    body: 'We prepare and renew leases, send rent increase notices under New Jersey law, and handle security deposits, required disclosures and rent control registration where it applies.',
+    links: [
+      { href: '/services/#lease-management', label: 'Lease management' },
+      { href: '/services/#compliance', label: 'Compliance' },
+    ],
+    img: { src: photo('woodbridge'), w: 768, h: 576, caption: 'The Jonathan Dunham House (c. 1671), a historic landmark in Woodbridge.' },
+  },
+];
+
+const steps = [
+  { title: 'Free rental analysis', body: 'Tell us about your property. We pull market data and tell you what it should rent for, with no cost and no pitch.' },
+  { title: 'Review the agreement', body: 'One management fee, clearly stated. No hidden fees, no technology fees, no maintenance markups. Month-to-month is available.' },
+  { title: 'We take over', body: 'Tenant communication, rent collection, maintenance, compliance and reporting come off your plate.' },
+];
 
 const page = {
-  "title": "NJ Property Management Company | Proactive Property Management",
-  "description": "NJ landlords: we handle tenants, rent, repairs, and paperwork — so you don't have to. Serving Northern & Central NJ since 2023. Free rental analysis.",
-  "canonical": "https://www.njpropertymanager.com/",
-  "og": {
-    "title": "Property Management That Thinks Ahead | PPM NJ",
-    "description": "NJ landlords: we handle tenants, rent, repairs, and paperwork — so you don't have to. Serving Northern & Central NJ. No hidden fees. No markups. Get a free rental analysis."
+  title: 'NJ Property Management Company | Proactive Property Management',
+  description: "NJ landlords: we handle tenants, rent, repairs, and paperwork — so you don't have to. Serving Northern & Central NJ. Free rental analysis.",
+  canonical: 'https://www.njpropertymanager.com/',
+  og: {
+    title: 'Property Management That Thinks Ahead | PPM NJ',
+    description: "NJ landlords: we handle tenants, rent, repairs, and paperwork — so you don't have to. Serving Northern & Central NJ. No hidden fees. No markups. Get a free rental analysis.",
   },
-  "twitter": {
-    "site": true
-  },
-  "jsonLd": [
+  twitter: { site: true },
+  jsonLd: [
+    faqJsonLd(homeFaq),
     {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "What does a property management company do?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "A property management company runs your rental on your behalf. That means finding and screening tenants, collecting rent, handling maintenance requests, enforcing the lease, and sending you a financial report every month. You stay the owner. We do the work."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How much does property management cost in New Jersey?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Most NJ property management companies charge between 8% and 12% of monthly collected rent, plus a one-time leasing fee when a new tenant is placed. Watch for setup fees, technology fees, or maintenance markups — those add up fast. PPM charges one management fee, no add-ons."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What areas of New Jersey does Proactive Property Management serve?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": `PPM serves landlords across Northern and Central New Jersey — Jersey City, Hoboken, Newark, Parsippany, Morristown, Edison, Woodbridge, Hackensack, Clifton, and dozens of surrounding towns. Call ${site.phone.display} to confirm coverage for your address.`
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "How do I get started with a property manager in NJ?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Three steps: (1) We do a free rental analysis — no cost, no commitment. We tell you what your property should rent for and what the current market looks like. (2) You review the management agreement. (3) We take over. Most owners are fully onboarded within one to two weeks."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What makes Proactive Property Management different?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "We're not a franchise. You get a direct line to the person managing your property — not a call center. One flat management fee — no markups, no surprises."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Does PPM handle evictions in New Jersey?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Our screening process keeps evictions rare, but when they happen, we manage the full process — proper notice, court filing, and coordination through to possession. NJ eviction law is strict and procedural; a misstep resets the clock and costs you months."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can you manage my property if I live out of state?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. A significant portion of our owners don't live in New Jersey. Your owner portal gives you real-time access to financials, maintenance updates, and lease documents from anywhere. We're your eyes and hands on the ground."
-          }
-        }
-      ]
+      '@context': 'https://schema.org',
+      '@type': 'RealEstateAgent',
+      '@id': 'https://www.njpropertymanager.com/#business',
+      name: 'Proactive Property Management',
+      url: 'https://www.njpropertymanager.com/',
+      logo: 'https://www.njpropertymanager.com/images/logo-mark-teal.png',
+      image: 'https://www.njpropertymanager.com/images/logo-mark-teal.png',
+      telephone: site.phone.e164,
+      email: site.email,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '525 Washington Boulevard',
+        addressLocality: 'Jersey City',
+        addressRegion: 'NJ',
+        postalCode: '07310',
+        addressCountry: 'US',
+      },
+      areaServed: { '@type': 'State', name: 'New Jersey' },
+      description: 'Residential property management for landlords across Northern and Central New Jersey.',
     },
     {
-      "@context": "https://schema.org",
-      "@type": "RealEstateAgent",
-      "@id": "https://www.njpropertymanager.com/#business",
-      "name": "Proactive Property Management",
-      "url": "https://www.njpropertymanager.com/",
-      "logo": "https://www.njpropertymanager.com/images/logo-mark-teal.png",
-      "image": "https://www.njpropertymanager.com/images/logo-mark-teal.png",
-      "telephone": site.phone.e164,
-      "email": site.email,
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "525 Washington Boulevard",
-        "addressLocality": "Jersey City",
-        "addressRegion": "NJ",
-        "postalCode": "07310",
-        "addressCountry": "US"
-      },
-      "areaServed": {
-        "@type": "State",
-        "name": "New Jersey"
-      },
-      "description": "Residential property management for landlords across Northern and Central New Jersey."
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      name: 'Proactive Property Management',
+      url: 'https://www.njpropertymanager.com/',
+      publisher: { '@type': 'Organization', name: 'Proactive Property Management' },
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Proactive Property Management",
-      "url": "https://www.njpropertymanager.com/",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Proactive Property Management"
-      }
-    }
   ],
-  "stylesheets": [
-    "/styles/home.css"
-  ],
-  "navScript": "home",
-  "footerTail": "home",
-  "leadScript": "home"
+  stylesheets: ['/styles/home.css'],
+  navScript: 'home' as const,
+  footerTail: 'home' as const,
 };
 ---
-<Page {...page} main={main} afterFooter={afterFooter} />
+<Base {...page}>
+<script is:inline slot="head">document.documentElement.classList.add('js')</script>
+<main id="main" class="home">
+
+<!-- 1. Hero, option D: navy column with the inline-photo headline; the form card on the sky panel. -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <h1 id="hero-title" class="hero-title">New Jersey property management for <img class="h1-photo" src={heroPhotos[0].src} alt="" width="160" height="110" decoding="async" fetchpriority="high"> Jersey City, <img class="h1-photo" src={heroPhotos[1].src} alt="" width="160" height="110" decoding="async"> Hoboken and <img class="h1-photo" src={heroPhotos[2].src} alt="" width="160" height="110" decoding="async"> Newark landlords.</h1>
+      <div class="hero-photo-row" aria-hidden="true">
+        {heroPhotos.map((p) => <img src={p.src} alt="" width="160" height="110" loading="lazy" decoding="async">)}
+      </div>
+      <p class="hero-lead">One management fee, based on the rent we actually collect. No maintenance markups and no technology fees.</p>
+    </div>
+    <div class="hero-panel">
+      <div class="hero-card">
+        <h2 class="hero-card-title">What should your property rent for?</h2>
+        <Fragment set:html={heroForm} />
+        <Fragment set:html={heroFormSuccess} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. Fact line under the sky rule. -->
+<div class="fact-line">
+  <div class="wrap">
+    <p>Our supervising broker is FPG Realty NJ LLC, license 2298176. Equal Housing Opportunity.</p>
+  </div>
+</div>
+
+<!-- 3. What we take off your plate: a two-column zig-zag. -->
+<section class="block plate" aria-labelledby="plate-title">
+  <div class="wrap">
+    <h2 id="plate-title" class="block-title">What we take off your plate</h2>
+    <div class="zz">
+      {rows.map((r, i) => (
+        <article class={`zz-row${i % 2 ? ' zz-flip' : ''}`} aria-labelledby={`zz-${r.key}`}>
+          <div class="zz-text">
+            <h3 id={`zz-${r.key}`} class="zz-title">{r.title}</h3>
+            <p class="zz-sub">{r.sub}</p>
+            <p>{r.body}</p>
+            <ul class="zz-links">
+              {r.links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+            </ul>
+          </div>
+          <figure class="zz-media">
+            <img src={r.img.src} alt="" width={r.img.w} height={r.img.h} loading="lazy" decoding="async">
+            <figcaption>{r.img.caption}</figcaption>
+          </figure>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- 4. How it starts: three steps on the sky-rule timeline. -->
+<section class="block steps-block" aria-labelledby="steps-title">
+  <div class="wrap">
+    <h2 id="steps-title" class="block-title">How it starts</h2>
+    <p class="block-intro">Most owners are fully onboarded within one to two weeks.</p>
+    <ol class="hs-steps">
+      {steps.map((s, i) => (
+        <li class="hs-step">
+          <span class="hs-step-n" aria-hidden="true">{i + 1}</span>
+          <h3 class="hs-step-title">{s.title}</h3>
+          <p>{s.body}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<!-- 5. New Jersey's rules: a ledger table on navy. -->
+<section class="block rules on-dark" aria-labelledby="rules-title">
+  <div class="wrap">
+    <h2 id="rules-title" class="block-title">New Jersey’s rules</h2>
+    <p class="block-intro">A few of the state laws every New Jersey landlord works under, the statute behind each, and what we do about it. This is general information, not legal advice.</p>
+    <table class="rules-table">
+      <caption class="sr-only">New Jersey landlord rules, their statutes, and what Proactive Property Management does about each</caption>
+      <thead><tr><th scope="col">Rule</th><th scope="col">Statute</th><th scope="col">What we do</th></tr></thead>
+      <tbody>
+        {njRules.map((r) => (
+          <tr>
+            <th scope="row" data-label="Rule"><span class="rule-name">{r.rule}</span><span class="rule-detail">{r.detail}</span></th>
+            <td data-label="Statute"><a href={r.source} rel="noopener" target="_blank">{r.statute}</a></td>
+            <td data-label="What we do">{r.weDo}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="rules-more"><a href="/blog/nj-landlord-law/">Read our New Jersey landlord law guide</a></p>
+  </div>
+</section>
+
+<!-- 6. Is your town rent controlled? A plain GET form; the tool page owns the lead capture. -->
+<section class="block rc" aria-labelledby="rc-title">
+  <div class="wrap rc-grid">
+    <div>
+      <h2 id="rc-title" class="block-title">Is your town rent controlled?</h2>
+      <p>Rent control in New Jersey is set town by town. Enter your town and our lookup shows what it has on file.</p>
+    </div>
+    <form class="rc-form" action="/rent-control-lookup/" method="get" role="search" aria-label="Rent control lookup">
+      <label for="rc-town">Town</label>
+      <div class="rc-row">
+        <input id="rc-town" name="town" type="text" autocomplete="address-level2" required minlength="2">
+        <button type="submit" class="btn btn-navy">Check my town</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- 7. Where we work: a typographic county index, generated from content/areas. -->
+<section class="block where" aria-labelledby="where-title">
+  <div class="wrap">
+    <h2 id="where-title" class="block-title">Where we work</h2>
+    <p class="block-intro">Northern and Central New Jersey. Call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a> to confirm coverage for your address.</p>
+    <div class="counties">
+      {counties.map((c) => (
+        <div class="county">
+          <h3 class="county-name">{c.county}</h3>
+          <ul>
+            {c.towns.map((t) => <li>{t.href ? <a href={t.href}>{t.name}</a> : t.name}</li>)}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <p class="where-all"><a href="/service-areas/">All service areas</a></p>
+  </div>
+</section>
+
+<!-- 8. Reviews: one plain line to Google until reviews are verified and quoted verbatim (D3). -->
+<section class="block reviews" aria-labelledby="reviews-title">
+  <div class="wrap">
+    <h2 id="reviews-title" class="block-title">Reviews</h2>
+    <p>Owners review us on Google. <a href={googleReviews} target="_blank" rel="noopener">Read our Google reviews</a></p>
+  </div>
+</section>
+
+<!-- 9. FAQ and the closing call to action, with the hero's label. -->
+<section class="block faq-block" aria-labelledby="faq-title">
+  <div class="wrap">
+    <h2 id="faq-title" class="block-title">Common questions</h2>
+    <FaqList items={homeFaq} openFirst />
+  </div>
+</section>
+<section class="closing" aria-labelledby="closing-title">
+  <div class="wrap closing-inner">
+    <div>
+      <h2 id="closing-title">Find out what your property should rent for.</h2>
+      <p>No cost and no commitment. Or call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a>.</p>
+    </div>
+    <a href={cta.href} class="btn btn-gold">{cta.label}</a>
+  </div>
+</section>
+
+<div class="mobile-cta-bar" role="complementary" aria-label="Contact options"> <a href={cta.href} class="btn btn-gold">{cta.label}</a> <a href={`tel:${site.phone.tel}`} class="mobile-cta-phone" aria-label={`Call ${site.phone.display}`}> <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.58a16 16 0 0 0 6.29 6.29l.95-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+{site.phone.display}
+</a> </div>
+</main>
+<Fragment slot="after-footer"><LeadForm script="home" /></Fragment>
+</Base>
