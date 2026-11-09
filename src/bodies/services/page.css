@@ -1,3 +1,21 @@
-
-.badge[data-astro-cid-52q5xhqt]{color:var(--accent-text)}
-.services-detail[data-astro-cid-52q5xhqt]{display:flex;flex-direction:column;gap:20px}.service-detail-card[data-astro-cid-52q5xhqt]{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:32px;display:grid;grid-template-columns:1fr 1fr;gap:24px 40px;align-items:start}@media (max-width:800px){.service-detail-card[data-astro-cid-52q5xhqt]{grid-template-columns:1fr}}.service-detail-header[data-astro-cid-52q5xhqt]{display:flex;align-items:center;gap:12px;grid-column:1/-1}.service-detail-icon[data-astro-cid-52q5xhqt]{font-size:1.8rem}.service-detail-title[data-astro-cid-52q5xhqt]{font-size:1.3rem;font-weight:700}.service-detail-desc[data-astro-cid-52q5xhqt]{font-size:.95rem;color:var(--slate);max-width:none}.service-detail-bullets[data-astro-cid-52q5xhqt]{list-style:none;display:flex;flex-direction:column;gap:8px}.service-detail-bullets[data-astro-cid-52q5xhqt] li[data-astro-cid-52q5xhqt]{display:flex;align-items:flex-start;gap:10px;font-size:.875rem;color:var(--slate)}.service-detail-bullets[data-astro-cid-52q5xhqt] li[data-astro-cid-52q5xhqt]:before{content:"✓";color:var(--accent-text);font-size:.75rem;flex-shrink:0;margin-top:3px}
+/* /services/ (Phase 3). Groups are separated by the sky rule; no cards (DESIGN.md §5, §6). */
+.svc-jump ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0 28px; margin-top: 20px; }
+.svc-jump a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; color: var(--tideline-teal); text-decoration: underline; text-underline-offset: 3px; }
+.svc-group { padding: clamp(3rem, 7vw, 5.5rem) 0; scroll-margin-top: 72px; }
+.svc-group + .svc-group { border-top: var(--rule); }
+.svc-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(24px, 5vw, 72px); align-items: start; }
+.svc-head p { margin-top: 8px; }
+.svc-list { display: flex; flex-direction: column; }
+.svc-item { padding: 28px 0; border-top: 1px solid var(--border); scroll-margin-top: 72px; }
+.svc-item:first-child { border-top: 0; padding-top: 0; }
+.svc-item h3 { margin-bottom: 8px; }
+.svc-bullets { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; margin-top: 16px; }
+.svc-bullets li { position: relative; padding-left: 18px; color: var(--pier-slate); font-size: 0.9375rem; line-height: 1.55; }
+.svc-bullets li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 8px; height: 2px; background: var(--sky-rule); }
+.svc-close { background: var(--white); border-top: var(--rule); padding: clamp(48px, 7vw, 80px) 0; }
+.svc-close-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px 40px; flex-wrap: wrap; }
+.svc-close p { margin-top: 10px; max-width: 56ch; }
+@media (max-width: 767px) {
+  .svc-grid, .svc-bullets { grid-template-columns: minmax(0, 1fr); }
+  .svc-close .btn { width: 100%; }
+}

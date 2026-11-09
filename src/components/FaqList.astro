@@ -1,0 +1,12 @@
+---
+// A visible FAQ: native <details>, separated by Mist Line rules, + becoming − (DESIGN.md §5).
+// Render it from the same list you pass to faqJsonLd() below, so the FAQPage JSON-LD and the visible
+// text can never drift apart.
+interface Props { items: { question: string; answer: string }[]; openFirst?: boolean }
+const { items, openFirst = false } = Astro.props;
+---
+<div class="qa-list">
+{items.map((i, n) => (
+<details class="qa" open={openFirst && n === 0}><summary class="qa-q">{i.question}</summary><div class="qa-a"><p>{i.answer}</p></div></details>
+))}
+</div>

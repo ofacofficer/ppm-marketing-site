@@ -104,7 +104,7 @@ main[style*="background:var(--navy)"], [style*="background:var(--navy)"] {
 /* Inner-page top sections, option C (Dan, 2026-11-09): light, on a pale sky field with navy type.
    One selector list, so a new page or Phase 3 opts in by using one of these classes. */
 .about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero,
-.city-hero, main > section.on-dark:first-of-type {
+.city-hero, .page-hero, main > section.on-dark:first-of-type {
   --ink:         var(--harbor-navy);
   --ink-muted:   var(--ink-soft-on-sky);
   --accent-text: var(--tideline-teal);

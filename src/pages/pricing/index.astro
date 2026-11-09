@@ -1,89 +1,119 @@
 ---
-// /pricing/: a one-off page. The body is src/bodies/pricing/main.html,
-// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
-import Page from '../../layouts/Page.astro';
+// /pricing/ (Phase 3): a two-column fee ledger, "You pay" and "You don't pay", then the FAQ. The
+// visible FAQ and its FAQPage JSON-LD are rendered from the one list below, so they cannot drift.
+//
+// Copy note: the strings below are live site copy (Blake drafts, Dan approves, the CCO checks claims).
+import Base from '../../layouts/Base.astro';
+import FaqList from '../../components/FaqList.astro';
 import { site } from '../../site.config.mjs';
-import main from '../../bodies/pricing/main.html?raw';
+import { faqJsonLd } from '../../lib/faq.mjs';
 import css from '../../bodies/pricing/page.css?raw';
 
+const included = [
+  'Rent collection and owner disbursements',
+  'Tenant communication and maintenance coordination',
+  'Maintenance requests received 24/7',
+  'Monthly financial statements via owner portal',
+  'Lease enforcement and renewal management',
+  'NJ landlord-tenant law compliance',
+  'Routine property inspections',
+];
+const notCharged = [
+  { name: 'Hidden fees', note: 'None.' },
+  { name: 'Technology fees', note: 'None.' },
+  { name: 'Administrative overhead fees', note: 'None.' },
+  { name: 'Maintenance markups', note: 'None. You see the actual vendor invoice.' },
+];
+const faq = [
+  { question: 'Do you charge based on rent collected or rent due?', answer: "Collected. We only earn our fee when you get paid. If a tenant doesn't pay, we don't collect our management fee for that month." },
+  { question: "What's the leasing fee?", answer: "The one-time leasing fee covers finding and placing a new tenant — listing, marketing, showings, screening, and lease execution. The exact amount depends on your property and location. We'll quote it clearly upfront." },
+  { question: 'Do you mark up maintenance costs?', answer: 'No. You see the actual vendor invoice. PPM does not add a percentage on top of repair costs.' },
+  { question: 'Is there a minimum portfolio size?', answer: 'No minimum. We work with landlords who own one rental unit as well as investors managing larger portfolios.' },
+  { question: 'Can I cancel the management agreement?', answer: 'Month-to-month contracts are available. Ask us for details on our agreement structure.' },
+];
+
 const page = {
-  "title": "Property Management Pricing | Proactive Property Management NJ",
-  "description": "Transparent property management pricing for NJ landlords. One flat fee based on rent collected, no hidden costs. Free rental analysis.",
-  "canonical": "https://www.njpropertymanager.com/pricing/",
-  "og": {
-    "title": "Property Management Pricing NJ | Simple, Transparent | PPM",
-    "description": "8%–12% of monthly collected rent. No hidden fees, no technology fees, no maintenance markups. One flat management fee for Northern & Central NJ landlords."
+  title: 'Property Management Pricing | Proactive Property Management NJ',
+  description: 'Transparent property management pricing for NJ landlords. One management fee based on rent collected, no hidden costs. Free rental analysis.',
+  canonical: 'https://www.njpropertymanager.com/pricing/',
+  og: {
+    title: 'Property Management Pricing NJ | Simple, Transparent | PPM',
+    description: '8%–12% of monthly collected rent. No hidden fees, no technology fees, no maintenance markups. A one-time leasing fee when we place a tenant, quoted up front.',
   },
-  "twitter": {
-    "site": true
-  },
-  "jsonLd": [
+  twitter: { site: true },
+  jsonLd: [
     {
-      "@context": "https://schema.org",
-      "@type": [
-        "LocalBusiness",
-        "ProfessionalService"
-      ],
-      "@id": "https://www.njpropertymanager.com/#business",
-      "name": "Proactive Property Management",
-      "alternateName": "PPM",
-      "url": "https://www.njpropertymanager.com",
-      "telephone": site.phone.e164,
-      "email": site.email,
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Jersey City",
-        "addressRegion": "NJ",
-        "addressCountry": "US"
-      }
+      '@context': 'https://schema.org',
+      '@type': ['LocalBusiness', 'ProfessionalService'],
+      '@id': 'https://www.njpropertymanager.com/#business',
+      name: 'Proactive Property Management',
+      alternateName: 'PPM',
+      url: 'https://www.njpropertymanager.com',
+      telephone: site.phone.e164,
+      email: site.email,
+      address: { '@type': 'PostalAddress', addressLocality: 'Jersey City', addressRegion: 'NJ', addressCountry: 'US' },
     },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Do you charge based on rent collected or rent due?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Collected. We only earn our fee when you get paid. If a tenant doesn't pay, we don't collect our management fee for that month."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "What's the leasing fee?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "The one-time leasing fee covers finding and placing a new tenant — listing, marketing, showings, screening, and lease execution. The exact amount depends on your property and location. We'll quote it clearly upfront."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Do you mark up maintenance costs?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No. You see the actual vendor invoice. PPM does not add a percentage on top of repair costs."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Is there a minimum portfolio size?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "No minimum. We work with landlords who own one rental unit as well as investors managing larger portfolios."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Can I cancel the management agreement?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Month-to-month contracts are available. Ask us for details on our agreement structure."
-          }
-        }
-      ]
-    }
-  ]
+    faqJsonLd(faq),
+  ],
+  css,
 };
 ---
-<Page {...page} main={main} css={css} />
+<Base {...page}>
+<main id="main">
+<section class="page-hero">
+  <div class="wrap">
+    <h1>Property management pricing</h1>
+    <p class="lead">One management fee, based on collected rent. No hidden fees, no technology fees, no maintenance markups.</p>
+  </div>
+</section>
+
+<section class="ledger-block" aria-label="Fees">
+  <div class="wrap ledger">
+    <div class="ledger-col" aria-labelledby="pay-title">
+      <h2 id="pay-title" class="ledger-head">You pay</h2>
+      <dl class="ledger-list">
+        <div class="ledger-row">
+          <dt>Monthly management fee</dt>
+          <dd>
+            <span class="fee-figure">8%–12%</span>
+            <span class="fee-unit">of monthly collected rent</span>
+            <p>The exact rate depends on your property type, location and portfolio. It is charged on rent collected, not rent due, so we only get paid when you do.</p>
+          </dd>
+        </div>
+        <div class="ledger-row">
+          <dt>Leasing fee</dt>
+          <dd><p>One time, when a new tenant is placed. It covers listing, showings, screening and lease execution, and we quote it clearly up front, before you sign.</p></dd>
+        </div>
+      </dl>
+      <h3 class="covers-head">The management fee covers</h3>
+      <ul class="covers">{included.map((i) => <li>{i}</li>)}</ul>
+    </div>
+    <div class="ledger-col" aria-labelledby="nopay-title">
+      <h2 id="nopay-title" class="ledger-head">You don’t pay</h2>
+      <dl class="ledger-list">
+        {notCharged.map((f) => (
+          <div class="ledger-row"><dt>{f.name}</dt><dd><p>{f.note}</p></dd></div>
+        ))}
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-cta" aria-labelledby="pricing-cta-title">
+  <div class="wrap pricing-cta-inner">
+    <div>
+      <h2 id="pricing-cta-title">Get your quote</h2>
+      <p>We’ll tell you what your property should rent for and give you a custom quote based on your specific situation, with no obligation. Or call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a> or email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+    </div>
+    <a href={site.nav.cta.href} class="btn btn-gold">{site.nav.cta.label}</a>
+  </div>
+</section>
+
+<section class="pricing-faq" aria-labelledby="pricing-faq-title">
+  <div class="wrap">
+    <h2 id="pricing-faq-title">Pricing questions</h2>
+    <FaqList items={faq} />
+  </div>
+</section>
+</main>
+</Base>
