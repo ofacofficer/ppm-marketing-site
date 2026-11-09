@@ -1,6 +1,6 @@
 ---
 // The document shell every page shares: <head> (meta, canonical, Open Graph, Twitter, JSON-LD,
-// fonts, styles, analytics, first-touch attribution), the skip link, the header, the page's <main>,
+// fonts, styles (tokens.css, global.css, page CSS, then system.css last), analytics, first-touch attribution), the skip link, the header, the page's <main>,
 // the footer, and the call_click hook. Pages pass data; they never repeat this markup.
 import { site } from '../site.config.mjs';
 import Nav from '../components/Nav.astro';
@@ -47,16 +47,17 @@ const navScriptSrc = navScript === 'home' ? '/_astro/hoisted.home-20261103.js' :
 <meta name="description" content={description}>
 <link rel="canonical" href={canonical}>
 <title>{title}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="preload" href="/fonts/Satoshi-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <meta name="theme-color" content={site.themeColor}>
+<link rel="stylesheet" href="/styles/tokens.css">
 <link rel="stylesheet" href="/styles/global.css">
 {stylesheets.map((href) => <link rel="stylesheet" href={href}>)}
 {jsonLd.map((data) => <JsonLd data={data} />)}
 <style is:inline set:html={`${chromeCss}${css}`}></style>
 {extraStyles.map((s) => <style is:inline set:html={s}></style>)}
+<link rel="stylesheet" href="/styles/system.css">
 {navScriptSrc && <script is:inline type="module" src={navScriptSrc}></script>}
 <meta property="og:type" content={og.type ?? 'website'}>
 <meta property="og:site_name" content={site.name}>

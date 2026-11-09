@@ -1,0 +1,100 @@
+/*
+  PPM design tokens: the one file that sets the brand on the web.
+  Source of truth: docs/marketing/website-redesign/DESIGN.md (§2 colour, §3 type, §5 components) in the
+  OS repo, built on the brand table mirrored in docs/pandadoc-templates/brand.js. A brand change is an
+  edit here, never a find-and-replace across pages.
+
+  Fonts: Satoshi (Indian Type Foundry, ITF Free Font License). The .woff2 files are fetched at build
+  time by scripts/fetch-fonts.mjs and are never committed (the repo is public). See that script.
+*/
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-Medium.woff2') format('woff2'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Satoshi'; src: url('/fonts/Satoshi-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+
+:root {
+  /* ── Palette (DESIGN.md §2) ── */
+  --harbor-navy:   #012E4B; /* ink, dark sections, footer. Darkest value; never pure black */
+  --ice-canvas:    #F1F4FA; /* page background */
+  --paper-white:   #FFFFFF; /* raised surfaces */
+  --pier-slate:    #63717B; /* secondary text (AA-safe derivative of brand slate #717F89) */
+  --mist-line:     #D8E4EA; /* hairlines, input borders, table rules */
+  --sky-rule:      #8DCFDD; /* the 2px structural rule; text accent on navy only */
+  --tideline-teal: #1A6B7A; /* links and focus on light backgrounds */
+  --brass:         #C9A84C; /* THE accent: primary-action fill only, always with navy text */
+  --brass-hover:   #B8973E;
+  --error:         #A12A2A;
+
+  /* ── Role names used by the component CSS ── */
+  --navy:      var(--harbor-navy);
+  --ice:       var(--ice-canvas);
+  --white:     var(--paper-white);
+  --slate:     var(--pier-slate);
+  --border:    var(--mist-line);
+  --sky:       var(--sky-rule);
+  --teal:      var(--sky-rule);      /* historical name for the sky hue */
+  --deep-teal: var(--tideline-teal);
+  --gold:      var(--brass);         /* historical name for brass: primary-action fill only */
+  --silver:    var(--pier-slate);    /* retired grey; resolves to the AA-safe secondary text */
+  --lt-teal:   var(--sky-rule);
+  --navy-mid:   #062D47;             /* navy surfaces inside navy sections */
+  --navy-light: #0A3A5C;
+  --border-mid: rgba(141,207,221,0.18);
+  --line-dark:  rgba(141,207,221,0.15);
+  /* Still referenced by the lead-form scripts, which this design pass does not edit. They resolve to
+     cool system values; the warm tint and dark gold are gone. */
+  --gold-tint: var(--ice-canvas);
+  --gold-dark: var(--tideline-teal);
+
+  /* ── Type (DESIGN.md §3) ── */
+  --font: Satoshi, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-display: var(--font);
+  --font-body: var(--font);
+  --fs-h1:   clamp(2.25rem, 4.6vw, 4rem);
+  --fs-h2:   clamp(1.6rem, 3vw, 2.4rem);
+  --fs-h3:   1.25rem;
+  --fs-body: 1.0625rem;
+  --fs-lead: 1.25rem;
+  --measure: 65ch;
+
+  /* ── Geometry (DESIGN.md §5, §6) ── */
+  --max:       1280px;
+  --gutter:    clamp(20px, 5vw, 48px);
+  --r:         6px;   /* buttons, inputs */
+  --r-lg:      12px;  /* cards */
+  --radius:    6px;
+  --radius-lg: 12px;
+  --shadow-card: 0 12px 32px -12px rgba(1,46,75,0.18);
+  --rule: 2px solid var(--sky-rule);
+
+  /* ── Contextual colours: light defaults, flipped on navy below ── */
+  --ink:         var(--harbor-navy);
+  --ink-muted:   var(--pier-slate);
+  --accent-text: var(--tideline-teal);
+  --link:        var(--tideline-teal);
+  --focus:       var(--tideline-teal);
+  --on-ink:      #FFFFFF;           /* text on an --ink fill (a hovered secondary button) */
+}
+
+/* Navy sections: white headings, 80% white text, Sky Rule accents, links and focus. */
+.nav-bar, .mobile-nav, .site-footer, .on-dark, .hero, .pricing-hero, .about-hero, .contact-hero,
+.blog-hero, .services-hero, .tenant-hero, .pillar-hero, .city-hero, .areas-hero, .cta-band,
+.post-header, .mobile-cta-bar, .sticky-cta-bar,
+main[style*="background:var(--navy)"], [style*="background:var(--navy)"] {
+  --ink:         #FFFFFF;
+  --ink-muted:   rgba(255,255,255,0.8);
+  --accent-text: var(--sky-rule);
+  --link:        var(--sky-rule);
+  --focus:       var(--sky-rule);
+  --silver:      rgba(255,255,255,0.8);
+  --on-ink:      var(--harbor-navy);
+}
+/* Light surfaces (including ones nested inside a navy section) flip back. */
+[style*="background:var(--white)"], [style*="background:var(--ice)"], .hero .hero-card {
+  --silver:      var(--pier-slate);
+  --on-ink:      #FFFFFF;
+  --ink:         var(--harbor-navy);
+  --ink-muted:   var(--pier-slate);
+  --accent-text: var(--tideline-teal);
+  --link:        var(--tideline-teal);
+  --focus:       var(--tideline-teal);
+}

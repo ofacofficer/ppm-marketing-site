@@ -74,7 +74,7 @@ for (const [r, must] of probes) {
   if (!pages.includes(r)) failures.push(`probe /${r ? r + '/' : ''}: page missing`);
   else if (must && !read(r).includes(must)) failures.push(`probe /${r ? r + '/' : ''}: does not contain "${must}"`);
 }
-for (const f of ['sitemap.xml', 'robots.txt', 'llms.txt', 'favicon.svg', 'og-image.jpg', 'js/attribution.js', 'styles/global.css'])
+for (const f of ['sitemap.xml', 'robots.txt', 'llms.txt', 'favicon.svg', 'og-image.jpg', 'js/attribution.js', 'styles/tokens.css', 'styles/global.css', 'styles/system.css', 'fonts/Satoshi-Regular.woff2', 'fonts/Satoshi-Medium.woff2', 'fonts/Satoshi-Bold.woff2'])
   if (!existsSync(join(DIST, f))) failures.push(`dist/${f} missing`);
 
 if (warnings.length) console.warn(`postbuild warnings (copied-through legacy pages):\n  ${warnings.join('\n  ')}`);

@@ -11,7 +11,7 @@ const [services, areas, resources] = site.footer.columns;
 const resourceLinks = [...resources.links, ...footerTails[tail]];
 const socialOver = "this.style.color='var(--teal)'";
 const socialOut = "this.style.color='rgba(255,255,255,0.55)'";
-const legalStyle = 'color:rgba(255,255,255,0.58);';
+const legalStyle = 'color:rgba(255,255,255,0.8);';
 ---
 <footer class="site-footer" role="contentinfo"> <div class="wrap"> <div class="footer-grid"> <div class="footer-brand"> <a href="/" class="footer-logo" aria-label={site.name}> <img src="/images/logo-white-horizontal.png" alt={site.name} height="28" style="height:28px;width:auto;"> </a> <p class="footer-desc">
 {site.footerBlurb}
@@ -19,6 +19,6 @@ const legalStyle = 'color:rgba(255,255,255,0.58);';
 <div style="display:flex;gap:14px;margin-top:16px;align-items:center;">
 {site.social.map((s) => <><a href={s.href} target="_blank" rel="noopener" aria-label={s.label} style="color:rgba(255,255,255,0.55);transition:color .15s;" onmouseover={socialOver} onmouseout={socialOut}>
 <Fragment set:html={socialIcons[s.icon]} /></a>
-</>)}</div> </div> <div class="footer-col"> <div class="footer-col-head">{services.head}</div> {services.links.map((l) => <><a href={l.href}>{l.label}</a> </>)}</div> <div class="footer-col"> <div class="footer-col-head">{areas.head}</div> {areas.links.map((l) => <><a href={l.href}>{l.label}</a> </>)}</div> <div class="footer-col"> <div class="footer-col-head">{resources.head}</div> {resourceLinks.map((l) => <><a href={l.href}>{l.label}</a> </>)}</div> </div> <hr style="border:none;border-top:1px solid rgba(141,207,221,0.12);margin:40px 0 24px;"> <div class="footer-bottom"> <p class="text-xs" style="color:rgba(255,255,255,0.58);">
+</>)}</div> </div> <div class="footer-col"> <div class="footer-col-head">{services.head}</div> {services.links.map((l) => <><a href={l.href}>{l.label}</a> </>)}</div> <div class="footer-col"> <div class="footer-col-head">{areas.head}</div> {areas.links.map((l) => <><a href={l.href}>{l.label}</a> </>)}</div> <div class="footer-col"> <div class="footer-col-head">{resources.head}</div> {resourceLinks.map((l) => <><a href={l.href}>{l.label}</a> </>)}</div> </div> <hr style="border:none;border-top:1px solid rgba(141,207,221,0.12);margin:40px 0 24px;"> <div class="footer-bottom"> <p class="text-xs" style="color:rgba(255,255,255,0.8);">
 {site.copyrightLine}<br><span style="font-size:12px;">{site.brokerLine}</span><br><span style="font-size:12px;">{site.equalHousing}</span>
 </p> <div style="display:flex;gap:20px;"> {site.footer.legal.map((l) => <><a href={l.href} class="text-xs" style={legalStyle}>{l.label}</a> </>)}</div> </div> </div> </footer>
