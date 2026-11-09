@@ -10,16 +10,17 @@ import css from '../../bodies/services/page.css?raw';
 
 const groups = [
   {
-    key: 'fill', title: 'Fill it', sub: 'Finding and placing the right tenant.',
+    key: 'fill', title: 'Fill it', sub: 'Finding and placing a qualified tenant.',
     services: [
       {
         id: 'tenant-placement', title: 'Tenant placement',
-        desc: 'Marketing, showings and thorough screening for income, credit, background and rental history. We fill vacancies with the right tenants.',
+        desc: 'Marketing, showings and screening: income verification on the tenant’s share of the rent, a credit and rental history review, and background screening as New Jersey law allows. We fill vacancies with qualified tenants.',
         bullets: [
           'Listing across Zillow, Realtor.com, Apartments.com, and more',
           'Professional photography and listing copy',
-          'Income verification (3x monthly rent standard)',
-          'Credit check, background check, eviction history',
+          "Income verification, applied to the tenant's share of the rent. Housing vouchers and all lawful sources of income are accepted.",
+          'Credit check and eviction history',
+          'Criminal history reviewed only as the Fair Chance in Housing Act allows, after a conditional offer',
           'Prior landlord reference checks',
           'NJ-compliant lease execution and move-in inspection',
         ],
@@ -34,7 +35,7 @@ const groups = [
         desc: 'Online rent collection, with disbursements straight to you.',
         bullets: [
           'Online tenant payment portal (ACH and card)',
-          'Automated late fee enforcement per NJ law',
+          'Late fees enforced as the lease and NJ law allow',
           'Direct owner disbursements',
           'Transaction history in the owner portal (Buildium)',
           'Monthly reconciliation and statement',
@@ -42,9 +43,9 @@ const groups = [
       },
       {
         id: 'maintenance', title: 'Maintenance coordination',
-        desc: '24/7 tenant maintenance requests, a trusted vendor network, and your approval on significant repairs.',
+        desc: 'Maintenance requests received 24/7, a trusted vendor network, and your approval on significant repairs.',
         bullets: [
-          '24/7 tenant maintenance request handling',
+          'Maintenance requests received 24/7',
           'Vendor network across Northern & Central NJ',
           'Owner approval on repairs above stated threshold',
           'Documented work orders and vendor invoices',
@@ -87,7 +88,7 @@ const groups = [
           'Required landlord disclosures (Truth in Renting, flood zone, lead paint)',
           'Rent control registration and compliance',
           'Habitability standards monitoring',
-          'Eviction coordination when necessary',
+          'Eviction coordination with the owner’s attorney when necessary',
           'Ongoing NJ law monitoring and owner updates',
         ],
       },
@@ -101,7 +102,7 @@ const page = {
   canonical: 'https://www.njpropertymanager.com/services/',
   og: {
     title: 'Property Management Services NJ | Full-Service | PPM',
-    description: 'Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting. One management fee for NJ landlords.',
+    description: 'Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting for NJ landlords. One monthly management fee plus a leasing fee when we place a tenant.',
   },
   twitter: { site: true },
   jsonLd: [
@@ -125,7 +126,7 @@ const page = {
 <section class="page-hero">
   <div class="wrap">
     <h1>Property management services for New Jersey landlords</h1>
-    <p class="lead">Full-service residential property management for NJ landlords and investors. One management fee covers everything below.</p>
+    <p class="lead">Full-service residential property management for NJ landlords and investors. One monthly management fee covers the ongoing work below. Placing a new tenant carries a one-time leasing fee, quoted up front.</p>
     <nav class="svc-jump" aria-label="On this page">
       <ul>{groups.map((g) => <li><a href={`#${g.key}`}>{g.title}</a></li>)}</ul>
     </nav>
@@ -155,8 +156,8 @@ const page = {
 <section class="svc-close" aria-labelledby="svc-close-title">
   <div class="wrap svc-close-inner">
     <div>
-      <h2 id="svc-close-title">One management fee covers all of the above.</h2>
-      <p>No hidden fees, no technology fees, no maintenance markups. Get a free rental analysis and we’ll quote the fee for your property. <a href="/pricing/">See how pricing works</a></p>
+      <h2 id="svc-close-title">One monthly management fee, plus a leasing fee when we place a tenant.</h2>
+      <p>No hidden fees, no technology fees, no maintenance markups. Get a free rental analysis and we’ll quote both fees for your property. <a href="/pricing/">See how pricing works</a></p>
     </div>
     <a href={site.nav.cta.href} class="btn btn-gold">{site.nav.cta.label}</a>
   </div>

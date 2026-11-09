@@ -13,7 +13,7 @@ export const homeFaq = [
   },
   {
     question: 'How much does property management cost in New Jersey?',
-    answer: 'Most NJ property management companies charge between 8% and 12% of monthly collected rent, plus a one-time leasing fee when a new tenant is placed. Watch for setup fees, technology fees, or maintenance markups — those add up fast. PPM charges one management fee, plus a one-time leasing fee quoted up front when we place a new tenant. No technology fees and no maintenance markups.',
+    answer: 'PPM charges a monthly management fee of 8% to 12% of collected rent, plus a one-time leasing fee, quoted up front, when we place a new tenant. We charge no technology fees and no maintenance markups. When you compare managers, watch for setup fees, technology fees or maintenance markups — those add up fast.',
   },
   {
     question: 'What areas of New Jersey does Proactive Property Management serve?',
@@ -29,7 +29,7 @@ export const homeFaq = [
   },
   {
     question: 'Does PPM handle evictions in New Jersey?',
-    answer: 'Yes. When an eviction is necessary, we manage the full process — proper notice, court filing, and coordination through to possession. NJ eviction law is strict and procedural; a misstep resets the clock.',
+    answer: 'Yes. When an eviction is necessary, we handle the proper notices and coordinate with the owner’s attorney through court and on to possession. NJ eviction law is strict and procedural; a misstep resets the clock.',
   },
   {
     question: 'Can you manage my property if I live out of state?',
@@ -42,13 +42,13 @@ export const njRules = [
   {
     rule: 'Ending a tenancy takes good cause',
     detail: 'A court can remove most residential tenants only on one of the grounds the Anti-Eviction Act lists, and a landlord may not refuse to renew a lease without one. Owner-occupied buildings with two or fewer rental units are among the exceptions.',
-    statute: 'N.J.S.A. 2A:18-61.1',
+    statute: 'N.J.S.A. 2A:18-61.1 and 2A:18-61.3',
     source: 'https://www.nj.gov/dca/codes/codreg/pdf_regs/2A_18_61.pdf',
-    weDo: 'We coordinate the eviction process when one is necessary: proper notice, court filing and follow-through to possession.',
+    weDo: 'When an eviction is necessary, we handle the proper notices and coordinate with the owner’s attorney through court and on to possession.',
   },
   {
-    rule: 'Security deposits are capped, earn interest and come back in 30 days',
-    detail: 'A deposit cannot be more than one and one-half months’ rent. It is held in an interest-bearing account, the interest belongs to the tenant, and the deposit comes back with interest, less any itemized deductions, within 30 days after the tenancy ends.',
+    rule: 'Security deposits are capped, earn interest paid yearly, and come back on time',
+    detail: 'A deposit, including any prepaid rent such as last month’s rent, cannot be more than one and one-half months’ rent. It is held in an interest-bearing account. The tenant gets written notice of the bank, account and rate within 30 days, and the interest is paid or credited every year. When the tenancy ends, the deposit and interest, less itemized deductions, come back within 30 days, or within 5 business days if the tenant is displaced by fire, flood, condemnation or evacuation.',
     statute: 'N.J.S.A. 46:8-19, 46:8-21.1 and 46:8-21.2',
     source: 'https://www.nj.gov/dca/codes/publications/pdf_lti/t_i_r.pdf',
     weDo: 'Deposit compliance is part of the service: interest, notices and timely returns.',
@@ -62,22 +62,22 @@ export const njRules = [
   },
   {
     rule: 'Flood risk is disclosed before a lease is signed or renewed',
-    detail: 'Landlords tell tenants, on the state’s model notice, whether the property is in a FEMA flood hazard area and whether they know of past flooding. Every residential lease also tells renters that flood insurance may be available to them.',
+    detail: 'Since March 20, 2024, landlords tell each tenant before a lease is signed or renewed whether the property is in a FEMA flood hazard area and whether they know of past flooding, using the state’s model notice on a separate rider the tenant signs or acknowledges. Every residential lease also tells renters that flood insurance may be available to them. Buildings with two or fewer units, owner-occupied buildings with three or fewer, and seasonal rentals of less than 120 days are exempt.',
     statute: 'N.J.S.A. 46:8-50 (P.L.2023, c.93)',
     source: 'https://pub.njleg.gov/Bills/2022/PL23/93_.HTM',
     weDo: 'It is one of the required landlord disclosures we handle.',
   },
   {
     rule: 'Rentals built before 1978 need lead-paint inspections',
-    detail: 'Most single-family, two-family and multiple rental dwellings built before 1978 must be inspected for lead-based paint hazards every three years or at tenant turnover, unless they hold a valid lead-safe certification.',
+    detail: 'Most single-family, two-family and multiple rental dwellings built before 1978 must be inspected for lead-based paint hazards every three years or at tenant turnover, whichever comes first. A lead-safe certificate, valid for two years, covers turnovers while it is current.',
     statute: 'N.J.S.A. 52:27D-437.16 et seq. (P.L.2021, c.182); N.J.A.C. 5:28A',
     source: 'https://www.nj.gov/dca/codes/resources/leadpaint.shtml',
     weDo: 'Lead paint is part of the disclosure and compliance work we handle.',
   },
   {
     rule: 'Rent control is set town by town',
-    detail: 'New Jersey has no statewide rent control. Municipalities may pass rent control or rent leveling ordinances, and local boards enforce them.',
-    statute: 'Local ordinance; no state statute (DCA Truth in Renting guide)',
+    detail: 'New Jersey has no statewide rent control law. Rent control is set by municipal ordinance and enforced by local boards. State law exempts newly built multiple dwellings from local rent control for 30 years after construction.',
+    statute: 'Municipal ordinance; new-construction exemption, N.J.S.A. 2A:42-84.1 et seq.',
     source: 'https://www.nj.gov/dca/codes/publications/pdf_lti/t_i_r.pdf',
     weDo: 'We handle rent control registration and compliance where it applies.',
   },
