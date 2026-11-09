@@ -38,7 +38,7 @@
 <p aria-hidden="true" style="position:absolute;left:-9999px;opacity:0;height:0;overflow:hidden;margin:0;"><label for="rc-website">Website</label><input type="text" id="rc-website" name="website" tabindex="-1" autocomplete="off"></p>
 <div>
 <label for="rc-lead-name" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Your name</label>
-<input type="text" id="rc-lead-name" name="name" required placeholder="Dan Rivera" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
+<input type="text" id="rc-lead-name" name="name" required placeholder="Your name" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
 </div>
 <div>
 <label for="rc-lead-email" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Email address</label>
@@ -52,8 +52,8 @@
 <label for="rc-lead-address" style="display:block;font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">Property address <span style="font-weight:400;color:var(--slate);">(optional)</span></label>
 <input type="text" id="rc-lead-address" name="address" placeholder="123 Main St, Jersey City NJ" style="width:100%;min-height:48px;padding:0 16px;border:2px solid var(--border);border-radius:var(--r-lg);font-size:15px;font-family:var(--font);background:var(--white);transition:border-color 0.15s;" onfocus="this.style.borderColor='var(--teal)'" onblur="this.style.borderColor='var(--border)'">
 </div>
-<button type="submit" class="btn btn-gold" style="justify-content:center;">Get My Free Assessment</button>
-<p style="font-size:12px;color:var(--slate);text-align:center;margin:0;">We respond within one business day. No spam, ever.</p>
+<button type="submit" class="btn btn-gold" style="justify-content:center;">Get a free compliance assessment</button>
+<p style="font-size:12px;color:var(--slate);text-align:center;margin:0;">We reply within one business day.</p>
 </form>
 </div>
 </div>
@@ -180,9 +180,8 @@ try{var q=new URLSearchParams(location.search).get("town");if(q&&q.trim().length
   function showThankYou(){if(window.va)va('event',{name:'lead_submit'});
     var card = document.getElementById('rc-lead-card');
     if(!card) return;
-    card.innerHTML = '<div class="eyebrow">Free Compliance Assessment</div>' +
-      '<h2 style="margin-top:8px;">Request received</h2>' +
-      '<p style="font-size:14px;margin-top:12px;">Thanks &mdash; we&rsquo;ll review the rent control rules that apply to your property and reply by email, usually the same business day. Need an answer sooner? Call <a href="tel:9733308261" style="color:var(--deep-teal);font-weight:600;">(973) 330-8261</a>.</p>';
+    card.innerHTML = '<h2>Assessment requested</h2>' +
+      '<p style="font-size:14px;margin-top:12px;">We reply by email within one business day. Need an answer sooner? Call <a href="tel:9733308261" style="color:var(--deep-teal);font-weight:600;">(973) 330-8261</a>.</p>';
   }
 
   function showError(){

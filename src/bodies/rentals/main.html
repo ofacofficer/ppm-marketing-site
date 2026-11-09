@@ -53,7 +53,7 @@
         '<div class="rental-body">'+
         '<div class="rental-rent">'+R.money(l.rent)+'<span>/mo</span></div>'+
         '<div class="rental-title">'+R.esc(l.headline||"")+'</div>'+
-        '<div class="rental-meta">'+R.esc(where)+(bb.length?' &middot; '+bb.join(" / "):"")+'</div>'+
+        '<div class="rental-meta">'+R.esc(where)+(bb.length?(where?', ':'')+bb.join(", "):"")+'</div>'+
         '<div class="rental-badges"><span class="rental-badge">Available '+R.esc(l.available_date||"now")+'</span></div>'+
         '</div></a></article>';
     }).join("");
