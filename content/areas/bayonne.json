@@ -1,7 +1,7 @@
 {
   "name": "Bayonne",
   "county": "Hudson County",
-  "rentControl": false,
+  "rentControl": true,
   "seo": {
     "title": "Property Management in Bayonne, NJ | PPM",
     "description": "Property management in Bayonne, NJ, a light-rail commuter market of rowhomes and small multis. PPM handles leasing, rent, maintenance, and compliance. Free analysis."
