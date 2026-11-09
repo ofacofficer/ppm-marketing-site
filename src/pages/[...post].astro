@@ -1,0 +1,16 @@
+---
+// Every blog post, one page per content/blog/*.json. The JSON's `path` is the URL.
+import { getCollection } from 'astro:content';
+import Post from '../layouts/Post.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  const extras = new Map((await getCollection('blogExtras')).map((e) => [e.id, e.data]));
+  return posts.map((p) => ({
+    params: { post: p.data.path.replace(/^\/+|\/+$/g, '') },
+    props: { post: p.data, extras: extras.get(p.id) },
+  }));
+}
+const { post, extras } = Astro.props;
+---
+<Post post={post} extras={extras} />

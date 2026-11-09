@@ -1,0 +1,85 @@
+---
+// The document shell every page shares: <head> (meta, canonical, Open Graph, Twitter, JSON-LD,
+// fonts, styles, analytics, first-touch attribution), the skip link, the header, the page's <main>,
+// the footer, and the call_click hook. Pages pass data; they never repeat this markup.
+import { site } from '../site.config.mjs';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import Analytics from '../components/Analytics.astro';
+import chromeCss from '../styles/chrome.css?raw';
+
+export interface Props {
+  title: string;
+  description: string;
+  /** Absolute canonical URL. */
+  canonical: string;
+  og?: { type?: string; title?: string; description?: string; url?: string; image?: string };
+  twitter?: { site?: boolean; title?: string; description?: string };
+  /** JSON-LD blocks for the head, in order (objects, or JSON strings). */
+  jsonLd?: unknown[];
+  /** Page CSS. Emitted after the shared header/footer CSS, in the same <style> element. */
+  css?: string;
+  /** Further <style> elements after the first. */
+  extraStyles?: string[];
+  /** Extra stylesheet links after /styles/global.css. */
+  stylesheets?: string[];
+  /** The header's burger-menu script: the shared one, the home page's bundle, or none. */
+  navScript?: 'default' | 'home' | false;
+  bodyClass?: string;
+  footerTail?: 'default' | 'home' | 'tenantFacing';
+}
+
+const {
+  title, description, canonical, og = {}, twitter = {}, jsonLd = [], css = '', extraStyles = [],
+  stylesheets = [], navScript = 'default', bodyClass, footerTail = 'default',
+} = Astro.props;
+
+const ogTitle = og.title ?? title;
+const ogDescription = og.description ?? description;
+const navScriptSrc = navScript === 'home' ? '/_astro/hoisted.home-20261103.js' : navScript === 'default' ? '/_astro/hoisted.CqCxuMak.js' : null;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content={description}>
+<link rel="canonical" href={canonical}>
+<title>{title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta name="theme-color" content={site.themeColor}>
+<link rel="stylesheet" href="/styles/global.css">
+{stylesheets.map((href) => <link rel="stylesheet" href={href}>)}
+{jsonLd.map((data) => <JsonLd data={data} />)}
+<style is:inline set:html={`${chromeCss}${css}`}></style>
+{extraStyles.map((s) => <style is:inline set:html={s}></style>)}
+{navScriptSrc && <script is:inline type="module" src={navScriptSrc}></script>}
+<meta property="og:type" content={og.type ?? 'website'}>
+<meta property="og:site_name" content={site.name}>
+<meta property="og:title" content={ogTitle}>
+<meta property="og:description" content={ogDescription}>
+<meta property="og:url" content={og.url ?? canonical}>
+<meta property="og:image" content={og.image ?? site.ogImage}>
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+{twitter.site && <meta name="twitter:site" content={site.twitterHandle}>}
+<meta name="twitter:title" content={twitter.title ?? ogTitle}>
+<meta name="twitter:description" content={twitter.description ?? ogDescription}>
+<meta name="twitter:image" content={og.image ?? site.ogImage}>
+<Analytics part="head" />
+<script is:inline defer src="/js/attribution.js"></script>
+<slot name="head" />
+</head>
+<body class={bodyClass}>
+<a href="#main" class="skip-link">Skip to content</a>
+<Nav />
+<slot />
+<Footer tail={footerTail} />
+<slot name="after-footer" />
+<Analytics part="body" />
+</body>
+</html>

@@ -1,0 +1,92 @@
+---
+// /rentals/listing/: a one-off page. The body is src/bodies/rentals/listing/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../../layouts/Page.astro';
+import { site } from '../../../site.config.mjs';
+import main from '../../../bodies/rentals/listing/main.html?raw';
+import css from '../../../bodies/rentals/listing/page.css?raw';
+import extra1 from '../../../bodies/rentals/listing/extra-1.css?raw';
+
+const page = {
+  "title": "Available Rental | Proactive Property Management",
+  "description": "View details, photos, and availability for this rental home managed by Proactive Property Management, and send an inquiry or request a showing.",
+  "canonical": "https://www.njpropertymanager.com/rentals/listing/",
+  "og": {
+    "title": "Tenant Resources | Proactive Property Management NJ",
+    "description": "Resources for tenants in PPM-managed properties: how to pay rent, submit a maintenance request, and reach us with questions about your lease.",
+    "url": "https://www.njpropertymanager.com/tenants/"
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "LocalBusiness",
+        "ProfessionalService"
+      ],
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "alternateName": "PPM",
+      "url": "https://www.njpropertymanager.com",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How do I pay rent?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Log in to the tenant portal and navigate to Payments. You can pay via ACH bank transfer (no fee) or credit/debit card. Autopay is available."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What counts as an emergency maintenance request?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Emergencies include no heat in winter, active water leaks or flooding, gas smell, fire, total electrical failure, or a lockout. Call ${site.phone.display} immediately and also submit a portal request for documentation.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I give notice to vacate?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Check your lease for the required notice period (typically 60 days before lease end). Submit written notice via email to ${site.email} and through your tenant portal. We'll confirm receipt and schedule a move-out inspection.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When will I get my security deposit back?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Under NJ law, your security deposit must be returned within 30 days of move-out, along with an itemized statement of any deductions. Deductions are limited to unpaid rent and actual damage beyond normal wear and tear."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Who do I contact for a question about my lease?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `Email ${site.email} or call ${site.phone.display} during business hours. Your property manager will respond within one business day.`
+          }
+        }
+      ]
+    }
+  ],
+  "footerTail": "tenantFacing"
+};
+---
+<Page {...page} main={main} css={css} extraStyles={[extra1]} />

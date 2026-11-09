@@ -1,0 +1,140 @@
+<script>(function(){
+  var LEAD_ENDPOINTS = ['/api/lead/', 'https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/lead-intake'];
+
+  function splitName(rawName){
+    var name = (rawName || '').trim();
+    if(!name) return {};
+    var i = name.search(/\s/);
+    if(i === -1) return {first_name: name};
+    var first = name.slice(0, i);
+    var rest = name.slice(i + 1).trim();
+    var out = {first_name: first};
+    if(rest) out.last_name = rest;
+    return out;
+  }
+
+  function buildPayload(fields){
+    fields = fields || {};
+    var payload = {};
+    var nameParts = splitName(fields.name);
+    if(nameParts.first_name) payload.first_name = nameParts.first_name;
+    if(nameParts.last_name) payload.last_name = nameParts.last_name;
+    if(fields.email) payload.email = fields.email;
+    if(fields.phone) payload.phone = fields.phone;
+    if(fields.address) payload.property_address = fields.address;
+
+    var message = (fields.message || '').trim();
+    var type = (fields.type || '').trim();
+    if(type){
+      message = message ? (message + '\n\nProperty type: ' + type) : ('Property type: ' + type);
+    }
+    if(message) payload.message = message;
+
+    payload.source = 'web_form';
+    payload.website = fields.website || '';
+
+    // First-touch attribution (see /js/attribution.js) — best-effort, never blocks a submit.
+    try {
+      var attr = (typeof window !== 'undefined' && window.ppmAttribution) ? window.ppmAttribution() : null;
+      if (attr) payload.attribution = attr;
+    } catch (e) { /* no-op */ }
+
+    return payload;
+  }
+
+  if(typeof module !== 'undefined' && module.exports){
+    module.exports = {splitName: splitName, buildPayload: buildPayload, LEAD_ENDPOINTS: LEAD_ENDPOINTS};
+  }
+
+  function postLead(url, payload){
+    var controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var timeoutId = controller ? setTimeout(function(){ controller.abort(); }, 8000) : null;
+    return fetch(url, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+      signal: controller ? controller.signal : undefined
+    }).then(function(response){
+      if(!response.ok) throw new Error('non-2xx from ' + url);
+      return response.json();
+    }).then(function(data){
+      if(!data || data.ok !== true) throw new Error('not confirmed by ' + url);
+      if(timeoutId) clearTimeout(timeoutId);
+      return data;
+    }, function(err){
+      if(timeoutId) clearTimeout(timeoutId);
+      throw err;
+    });
+  }
+
+  function fieldValue(form, id){
+    var el = form.querySelector('#' + id);
+    return el ? el.value : '';
+  }
+
+  function showThankYou(form){if(window.va)va('event',{name:'lead_submit'});
+    var card = form.closest('.form-card');
+    if(!card) return;
+    card.innerHTML = '<h2 class="form-title">Request received</h2>' +
+      '<p class="text-muted text-sm">Thanks &mdash; we will review your property and reply by email, usually the same business day. Need to talk sooner? Call us at <a href="tel:9733308261" class="text-gold">(973) 330-8261</a>.</p>';
+  }
+
+  function showError(form){
+    var note = document.getElementById('lead-error');
+    if(!note){
+      note = document.createElement('p');
+      note.id = 'lead-error';
+      note.className = 'text-sm';
+      note.setAttribute('role', 'alert');
+      note.style.marginTop = '12px';
+      note.style.textAlign = 'center';
+      form.insertAdjacentElement('afterend', note);
+    }
+    note.innerHTML = 'Something went wrong sending your request — call <a href="tel:9733308261" class="text-gold">(973) 330-8261</a> or email <a href="mailto:contact@njppm.com" class="text-gold">contact@njppm.com</a> and we’ll take care of it.';
+  }
+
+  function initContactForm(){
+    var form = document.querySelector("form[name='rental-analysis'].contact-form");
+    if(!form) return;
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+
+      var submitBtn = form.querySelector('button[type="submit"]');
+      var originalBtnText = submitBtn ? submitBtn.textContent : '';
+
+      var payload = buildPayload({
+        name: fieldValue(form, 'name'),
+        email: fieldValue(form, 'email'),
+        phone: fieldValue(form, 'phone'),
+        address: fieldValue(form, 'address'),
+        type: fieldValue(form, 'type'),
+        message: fieldValue(form, 'message'),
+        website: fieldValue(form, 'website')
+      });
+
+      if(submitBtn){
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+      }
+
+      postLead(LEAD_ENDPOINTS[0], payload).catch(function(){
+        return postLead(LEAD_ENDPOINTS[1], payload);
+      }).then(function(){
+        showThankYou(form);
+      }).catch(function(){
+        if(submitBtn){
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalBtnText;
+        }
+        showError(form);
+      });
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', initContactForm);
+  } else {
+    initContactForm();
+  }
+})();</script>

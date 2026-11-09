@@ -1,0 +1,43 @@
+---
+// /services/: a one-off page. The body is src/bodies/services/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import { site } from '../../site.config.mjs';
+import main from '../../bodies/services/main.html?raw';
+import css from '../../bodies/services/page.css?raw';
+
+const page = {
+  "title": "Property Management Services | Northern & Central NJ | PPM",
+  "description": "Full-service residential property management for NJ landlords — tenant placement, rent collection, maintenance, financial reporting, and compliance.",
+  "canonical": "https://www.njpropertymanager.com/services/",
+  "og": {
+    "title": "Property Management Services NJ | Full-Service | PPM",
+    "description": "Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting. One flat fee covers everything for NJ landlords."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "LocalBusiness",
+        "ProfessionalService"
+      ],
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "alternateName": "PPM",
+      "url": "https://www.njpropertymanager.com",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      }
+    }
+  ]
+};
+---
+<Page {...page} main={main} css={css} />

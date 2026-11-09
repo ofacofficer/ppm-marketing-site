@@ -1,0 +1,44 @@
+---
+// /about/: a one-off page. The body is src/bodies/about/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import main from '../../bodies/about/main.html?raw';
+import css from '../../bodies/about/page.css?raw';
+
+const page = {
+  "title": "About Proactive Property Management | NJ Property Managers Since 2023",
+  "description": "PPM is a Northern & Central NJ property management company founded by a NJ real estate investor and Cornell Finance grad. Here's our story and how we work.",
+  "canonical": "https://www.njpropertymanager.com/about/",
+  "og": {
+    "title": "About Proactive Property Management | NJ Since 2023",
+    "description": "Founded by Dan Rivera (Cornell, 10+ years NJ real estate). Professional, local property management for Northern & Central New Jersey landlords."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "AboutPage",
+      "name": "About Proactive Property Management",
+      "url": "https://www.njpropertymanager.com/about",
+      "mainEntity": {
+        "@type": "ProfessionalService",
+        "name": "Proactive Property Management",
+        "founder": {
+          "@type": "Person",
+          "name": "Dan Rivera",
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "Cornell University"
+          },
+          "jobTitle": "Founder & Principal"
+        },
+        "foundingDate": "2023",
+        "url": "https://www.njpropertymanager.com"
+      }
+    }
+  ]
+};
+---
+<Page {...page} main={main} css={css} />

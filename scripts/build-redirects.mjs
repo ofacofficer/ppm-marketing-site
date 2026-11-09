@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { siteRoutes } from '../src/lib/routes.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = join(ROOT, 'content/redirects');
@@ -23,7 +24,15 @@ const CONFIG = join(ROOT, 'vercel.json');
 
 const hasExt = (p) => /\.[a-z0-9]+$/i.test(p.split('/').pop());
 const isPattern = (p) => /[:*(]/.test(p);
-const pageExists = (p) => (hasExt(p) ? existsSync(join(ROOT, p)) : existsSync(join(ROOT, p, 'index.html')));
+// Pages are worked out from source (src/pages, content/blog, content/areas, legacy root pages), so
+// this runs before a build; files are static assets in public/ or the generated sitemap.
+let routes;
+const GENERATED_FILES = new Set(['sitemap.xml']);
+const pageExists = (p) => {
+  if (hasExt(p)) return GENERATED_FILES.has(p) || existsSync(join(ROOT, 'public', p));
+  routes ??= siteRoutes(ROOT);
+  return routes.has(p.replace(/^\/+|\/+$/g, ''));
+};
 
 export function loadRows() {
   const rows = [];
@@ -89,7 +98,11 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const current = readFileSync(CONFIG, 'utf8');
   const out = render(rows, JSON.parse(current));
   if (process.argv.includes('--check')) {
-    if (out !== current) { console.error('vercel.json is out of date: run node scripts/build-redirects.mjs'); process.exit(1); }
+    // Compare the redirect list, not the file text: the deploy platform may reformat vercel.json in
+    // its build checkout, which must not fail the build when the redirects themselves are current.
+    const want = JSON.stringify(JSON.parse(out).redirects), have = JSON.stringify(JSON.parse(current).redirects);
+    if (want !== have) { console.error('vercel.json redirects are out of date: run node scripts/build-redirects.mjs'); process.exit(1); }
+    if (out !== current) console.log('note: vercel.json formatting differs from the generator output (redirects match)');
     console.log('vercel.json redirects are up to date');
   } else {
     writeFileSync(CONFIG, out);

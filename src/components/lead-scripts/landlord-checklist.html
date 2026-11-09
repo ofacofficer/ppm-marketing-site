@@ -1,0 +1,61 @@
+<script>(function(){
+  var ENDPOINTS = ['/api/lead/', 'https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/lead-intake'];
+  var form = document.getElementById('cl-form');
+  if(!form) return;
+
+  function reveal(){
+    var gate = document.getElementById('cl-gate');
+    var list = document.getElementById('checklist');
+    if(gate){ gate.innerHTML = '<div style="font-family:var(--font-display);font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold-dark);margin-bottom:10px;">You\'re in</div><p class="text-sm text-muted">The checklist is open below. We\'ll reach out once about your rental — nothing more.</p>'; }
+    if(list){ list.style.display = 'block'; list.scrollIntoView({behavior:'smooth'}); }
+    try{ sessionStorage.setItem('ppm-checklist','1'); }catch(e){}
+  }
+
+  try{ if(sessionStorage.getItem('ppm-checklist')==='1'){ var l=document.getElementById('checklist'); if(l) l.style.display='block'; } }catch(e){}
+
+  function post(url, payload){
+    var c = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var t = c ? setTimeout(function(){ c.abort(); }, 8000) : null;
+    return fetch(url, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload), signal: c ? c.signal : undefined})
+      .then(function(r){ if(!r.ok) throw new Error('non-2xx'); return r.json(); })
+      .then(function(d){ if(!d || d.ok !== true) throw new Error('not confirmed'); if(t) clearTimeout(t); return d; },
+            function(e){ if(t) clearTimeout(t); throw e; });
+  }
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var name = (document.getElementById('cl-name')||{}).value || '';
+    var i = name.trim().search(/\s/);
+    var payload = {
+      email: (document.getElementById('cl-email')||{}).value || '',
+      source: 'lead_magnet',
+      message: 'Requested the NJ Landlord Compliance Checklist',
+      website: (document.getElementById('website')||{}).value || ''
+    };
+    if(i === -1){ if(name.trim()) payload.first_name = name.trim(); }
+    else { payload.first_name = name.trim().slice(0,i); payload.last_name = name.trim().slice(i+1).trim(); }
+    var addr = (document.getElementById('cl-address')||{}).value || '';
+    if(addr) payload.property_address = addr;
+
+    // First-touch attribution (see /js/attribution.js) — best-effort, never blocks a submit.
+    try {
+      var attr = (typeof window !== 'undefined' && window.ppmAttribution) ? window.ppmAttribution() : null;
+      if (attr) payload.attribution = attr;
+    } catch (e) { /* no-op */ }
+
+    var btn = form.querySelector('button[type=submit]');
+    if(btn){ btn.disabled = true; btn.textContent = 'Opening\u2026'; }
+    post(ENDPOINTS[0], payload)
+      .catch(function(){ return post(ENDPOINTS[1], payload); })
+      .then(reveal)
+      .catch(function(){
+        reveal();
+        var note = document.createElement('p');
+        note.className = 'text-sm'; note.setAttribute('role','alert');
+        note.style.marginTop = '12px'; note.style.color = 'var(--slate)';
+        note.textContent = 'The checklist is open below, but our follow-up request didn\u2019t go through \u2014 if you\u2019d like a rental analysis, call (973) 330-8261 or email contact@njppm.com.';
+        var gate = document.getElementById('cl-gate');
+        if(gate) gate.appendChild(note);
+      });
+  });
+})();</script>

@@ -1,0 +1,43 @@
+---
+// /blog/: a one-off page. The body is src/bodies/blog/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import { site } from '../../site.config.mjs';
+import main from '../../bodies/blog/main.html?raw';
+import css from '../../bodies/blog/page.css?raw';
+
+const page = {
+  "title": "Property Management Resources for NJ Landlords | PPM Blog",
+  "description": "NJ landlord law, property management costs, rental market guides, tenant screening, and maintenance — practical resources for Northern & Central NJ property owners.",
+  "canonical": "https://www.njpropertymanager.com/blog/",
+  "og": {
+    "title": "NJ Landlord Resources & Guides | Proactive Property Management",
+    "description": "Practical guides on NJ landlord law, property management costs, rental markets, tenant screening, and real estate investing. Written by PPM for NJ landlords."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "LocalBusiness",
+        "ProfessionalService"
+      ],
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "alternateName": "PPM",
+      "url": "https://www.njpropertymanager.com",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      }
+    }
+  ]
+};
+---
+<Page {...page} main={main} css={css} />

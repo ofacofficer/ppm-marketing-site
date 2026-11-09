@@ -1,0 +1,17 @@
+{
+  "faq": [
+    {
+      "question": "Do these disclosures apply to a single-family rental?",
+      "answer": "Several do. The lead paint disclosure (if the home is pre-1978), the flood risk disclosure, the fire safety certificate, the security deposit notice, and municipal registration all typically apply to single-family rentals. The Truth-in-Renting statement and window guard rules generally do not reach one- and two-unit buildings, but verify for your specific property."
+    },
+    {
+      "question": "What happens if I skip a disclosure?",
+      "answer": "It varies by disclosure: fixed penalties for Truth-in-Renting, five-figure federal exposure for lead paint, lease-termination rights for flood risk, loss of deposit rights for the deposit notice, and an unwinnable eviction for missing registration. None of these risks is worth the few minutes each form takes."
+    },
+    {
+      "question": "Do I need to repeat disclosures at renewal?",
+      "answer": "Some repeat on a schedule: the flood risk disclosure applies to renewals, the window guard notice is annual, and the deposit notice recurs with each annual interest payment. For the others, redisclose when the facts or the official forms change — and confirm current requirements before each renewal cycle."
+    }
+  ],
+  "legalDisclaimer": true
+}

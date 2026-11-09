@@ -1,0 +1,54 @@
+---
+// /landlord-checklist/: a one-off page. The body is src/bodies/landlord-checklist/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import main from '../../bodies/landlord-checklist/main.html?raw';
+import css from '../../bodies/landlord-checklist/page.css?raw';
+import extra1 from '../../bodies/landlord-checklist/extra-1.css?raw';
+
+const page = {
+  "title": "The NJ Landlord Compliance Checklist | Proactive Property Management",
+  "description": "Every registration, certificate, disclosure, and deposit rule a New Jersey landlord has to get right — as one printable checklist. Free from PPM.",
+  "canonical": "https://www.njpropertymanager.com/landlord-checklist/",
+  "og": {
+    "description": "Every registration, certificate, disclosure, and deposit rule a NJ landlord has to get right — one printable checklist."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "The NJ Landlord Compliance Checklist",
+      "url": "https://www.njpropertymanager.com/landlord-checklist/",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Proactive Property Management",
+        "url": "https://www.njpropertymanager.com"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.njpropertymanager.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Landlord Checklist",
+          "item": "https://www.njpropertymanager.com/landlord-checklist/"
+        }
+      ]
+    }
+  ],
+  "navScript": false,
+  "leadScript": "landlord-checklist"
+};
+---
+<Page {...page} main={main} css={css} extraStyles={[extra1]} />

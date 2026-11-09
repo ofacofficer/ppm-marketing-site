@@ -1,0 +1,26 @@
+---
+// Site header: logo, primary nav, phone, portal logins, CTA, and the mobile menu.
+// Every value comes from src/site.config.mjs; the markup is the Phase 0 header, unchanged.
+// The burger toggle is /_astro/hoisted.CqCxuMak.js, loaded by Base.
+import { site } from '../site.config.mjs';
+const { phone, portals, nav } = site;
+const portalStyle = 'font-size:11px;font-weight:600;color:rgba(255,255,255,0.58);letter-spacing:.04em;transition:color .15s;white-space:nowrap;';
+const portalOver = "this.style.color='var(--teal)'";
+const portalOut = "this.style.color='rgba(255,255,255,0.58)'";
+---
+<header class="nav-bar" role="banner"> <div class="wrap nav-inner"> <a href="/" class="nav-logo" aria-label={`${site.name} — home`}> <img src="/images/logo-white-horizontal.png" alt={site.name} height="32" style="height:32px;width:auto;"> </a> <nav class="nav-links" aria-label="Primary navigation"> {nav.primary.map((item) => <><a href={item.href}>{item.label}</a> </>)}</nav> <div class="nav-end"> <a href={`tel:${phone.tel}`} class="nav-phone" aria-label={`Call ${phone.display}`}> <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.58a16 16 0 0 0 6.29 6.29l.95-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+{phone.display}
+</a> <div style="display:flex;gap:8px;align-items:center;">
+<a href={portals.owner} class="nav-portal-link" target="_blank" rel="noopener" style={portalStyle} onmouseover={portalOver} onmouseout={portalOut}>Owner Login</a>
+<span style="color:rgba(255,255,255,0.2);font-size:11px;">|</span>
+<a href={portals.tenant} class="nav-portal-link" target="_blank" rel="noopener" style={portalStyle} onmouseover={portalOver} onmouseout={portalOut}>Tenant Login</a>
+</div>
+<a href={nav.cta.href} class="btn btn-gold" style="min-height:40px;padding:9px 20px;font-size:13px;">
+{nav.cta.label}
+</a> </div> <button class="nav-burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"> <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"> <line x1="3" y1="6" x2="19" y2="6"></line> <line x1="3" y1="11" x2="19" y2="11"></line> <line x1="3" y1="16" x2="19" y2="16"></line> </svg> </button> </div> <div class="mobile-nav" id="mobile-nav" hidden> <nav aria-label="Mobile navigation"> {nav.mobile.map((item) => <><a href={item.href}>{item.label}</a> </>)}<hr style="border:none;border-top:1px solid rgba(141,207,221,0.15);margin:8px 0;"> <a href={`tel:${phone.tel}`} style="color:var(--teal);">{phone.display}</a> <a href={nav.cta.href} class="btn btn-gold" style="width:100%;margin-top:12px;justify-content:center;">
+{nav.cta.mobileLabel}
+</a>
+<div style="display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid rgba(141,207,221,0.1);">
+<a href={portals.owner} target="_blank" rel="noopener" style="font-size:12px;font-weight:600;color:var(--teal);padding:6px 0;">Owner Login</a>
+<a href={portals.tenant} target="_blank" rel="noopener" style="font-size:12px;font-weight:600;color:rgba(255,255,255,0.5);padding:6px 0;">Tenant Login</a>
+</div> </nav> </div> </header>

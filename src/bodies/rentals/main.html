@@ -1,0 +1,65 @@
+<main id="main">
+<section class="tenant-hero on-dark">
+<div class="wrap">
+<div class="eyebrow eyebrow-light">Now Leasing</div>
+<h1 style="color:var(--white);max-width:18ch;">Available rentals</h1>
+<p style="color:rgba(255,255,255,0.65);margin-top:16px;max-width:52ch;font-size:16px;">Current availabilities in the homes we manage across Northern &amp; Central New Jersey. Every application is reviewed on the same criteria, and all lawful sources of income are welcome.</p>
+</div>
+</section>
+
+<section class="section" style="background:var(--white);">
+<div class="wrap">
+<div id="rentals-status" class="rentals-empty">Loading available rentals&hellip;</div>
+<div id="rentals-grid" class="rentals-grid" hidden></div>
+<p class="eho-line">Equal Housing Opportunity. We fully support the principles of the Fair Housing Act and the NJ Law Against Discrimination. Don&rsquo;t see what you&rsquo;re looking for? Call <a href="tel:{{phone.tel}}" style="color:var(--deep-teal);font-weight:600;">{{phone.display}}</a> &mdash; new homes come available throughout the year.</p>
+</div>
+</section>
+</main>
+<script>
+(function(){
+  "use strict";
+  var DIRECT = "https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/listing-feed?format=json";
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+  function money(n){return "$"+Number(n||0).toLocaleString("en-US");}
+  function fetchFeed(){
+    return fetch("/api/rentals").then(function(r){if(!r.ok)throw new Error("proxy "+r.status);return r.json();})
+      .catch(function(){return fetch(DIRECT).then(function(r){return r.json();});});
+  }
+  window.PPMRentals = { esc: esc, money: money, fetchFeed: fetchFeed };
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  var R = window.PPMRentals;
+  var grid = document.getElementById("rentals-grid");
+  var status = document.getElementById("rentals-status");
+  R.fetchFeed().then(function(data){
+    var listings = (data && data.listings) || [];
+    if(!listings.length){
+      status.textContent = "Nothing is available right now. New homes come available throughout the year - check back soon, or call (973) 330-8261.";
+      return;
+    }
+    status.hidden = true;
+    grid.hidden = false;
+    grid.innerHTML = listings.map(function(l){
+      var photo = (l.photos && l.photos[0] && l.photos[0].url)
+        ? '<img class="rental-photo" loading="lazy" src="'+R.esc(l.photos[0].url)+'" alt="'+R.esc(l.headline||"Rental listing photo")+'">'
+        : '<div class="rental-photo-empty">Photos coming soon</div>';
+      var where = [l.city, l.state].filter(Boolean).join(", ");
+      var bb = [];
+      if(l.bedrooms!=null) bb.push(l.bedrooms+" bd");
+      if(l.bathrooms!=null) bb.push(l.bathrooms+" ba");
+      return '<article class="rental-card"><a href="/rentals/listing/?id='+encodeURIComponent(l.id)+'">'+photo+
+        '<div class="rental-body">'+
+        '<div class="rental-rent">'+R.money(l.rent)+'<span>/mo</span></div>'+
+        '<div class="rental-title">'+R.esc(l.headline||"")+'</div>'+
+        '<div class="rental-meta">'+R.esc(where)+(bb.length?' &middot; '+bb.join(" / "):"")+'</div>'+
+        '<div class="rental-badges"><span class="rental-badge">Available '+R.esc(l.available_date||"now")+'</span></div>'+
+        '</div></a></article>';
+    }).join("");
+  }).catch(function(){
+    status.textContent = "We couldn't load listings just now. Please try again shortly, or call (973) 330-8261.";
+  });
+})();
+</script>

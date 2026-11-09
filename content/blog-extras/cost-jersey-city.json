@@ -1,0 +1,16 @@
+{
+  "faq": [
+    {
+      "question": "How much do property managers charge in Jersey City?",
+      "answer": "Most quotes follow the statewide pattern of 8% to 12% of monthly collected rent plus a leasing fee, with flat monthly fees as the main alternative. On common Jersey City rents of $1,400 to $3,200, a percentage fee runs roughly $112 to $384 a month."
+    },
+    {
+      "question": "Is my building covered by Jersey City rent control?",
+      "answer": "Many older multifamily buildings are covered, while newer construction and small owner-occupied buildings are commonly exempt. Coverage is building-specific — use the rent control lookup tool above as a starting point and confirm with the Rent Leveling Board."
+    },
+    {
+      "question": "Should I pay a percentage or a flat fee in Jersey City?",
+      "answer": "The higher your rent, the stronger the case for a flat fee, since the management work does not scale with the rent. For a Downtown unit renting near $3,200, a 12% fee costs $384 a month; a flat fee is often lower and is easier to forecast either way."
+    }
+  ]
+}

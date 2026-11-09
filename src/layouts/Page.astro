@@ -1,0 +1,25 @@
+---
+// A one-off page (home, legal pages, tools, hubs): the shared shell from Base around the page's own
+// body markup, which lives in src/bodies/<page>/main.html and is rendered verbatim apart from the
+// site-fact tokens ({{phone.display}}, {{portal.tenant}}, ...; see src/lib/tokens.mjs).
+//
+// Phase 1 is a parity rebuild, so these bodies are the Phase 0 markup exactly; Phases 3 and 4 move
+// them onto components as each template is redesigned.
+import Base, { type Props as BaseProps } from './Base.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { expandTokens } from '../lib/tokens.mjs';
+
+interface Props extends BaseProps {
+  /** The page's <main> element, verbatim HTML. */
+  main: string;
+  /** Markup between the footer and the scripts (the home page's sticky CTA bar). */
+  afterFooter?: string;
+  /** The lead-form script this page loads after the footer, if any. */
+  leadScript?: 'contact' | 'get-started' | 'home' | 'landlord-checklist';
+}
+const { main, afterFooter, leadScript, ...base } = Astro.props;
+---
+<Base {...base}>
+<Fragment set:html={expandTokens(main)} />
+<Fragment slot="after-footer">{afterFooter && <Fragment set:html={expandTokens(afterFooter)} />}{leadScript && <LeadForm script={leadScript} />}</Fragment>
+</Base>

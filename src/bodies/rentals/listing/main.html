@@ -1,0 +1,154 @@
+<main id="main">
+<section class="section" style="background:var(--white);padding-top:36px;">
+<div class="wrap">
+<nav class="breadcrumb" aria-label="Breadcrumb" style="font-size:13px;color:var(--slate);"><a href="/rentals/" style="color:var(--deep-teal);font-weight:600;">&larr; All available rentals</a></nav>
+<div id="listing-status" class="rentals-empty">Loading listing&hellip;</div>
+<div id="listing-detail" class="rental-detail-grid" hidden>
+  <div>
+    <div class="eyebrow">Now Leasing</div>
+    <h1 id="l-headline" style="max-width:24ch;"></h1>
+    <p id="l-address" class="rental-meta" style="font-size:15px;margin-top:8px;"></p>
+    <div class="rental-facts" id="l-facts"></div>
+    <div class="rental-photos" id="l-photos"></div>
+    <div class="rental-desc" id="l-desc"></div>
+    <div id="l-amenities-wrap" hidden>
+      <h2 style="font-size:18px;margin-top:28px;">Amenities</h2>
+      <ul class="rental-amenities" id="l-amenities"></ul>
+    </div>
+    <p class="eho-line">Equal Housing Opportunity. We fully support the principles of the Fair Housing Act and the NJ Law Against Discrimination. All lawful sources of income are welcome. Every application is reviewed on the same criteria.</p>
+  </div>
+  <aside>
+    <div class="inquiry-card">
+      <h2 style="font-size:17px;">Ask about this home</h2>
+      <p style="font-size:13px;color:var(--slate);margin-top:6px;">Send us a note and we&rsquo;ll get back to you with answers and showing times.</p>
+      <form id="inquiry-form" novalidate>
+        <label for="iq-name">Name</label>
+        <input id="iq-name" name="name" autocomplete="name" maxlength="160" required>
+        <label for="iq-email">Email</label>
+        <input id="iq-email" name="email" type="email" autocomplete="email" maxlength="200">
+        <label for="iq-phone">Phone</label>
+        <input id="iq-phone" name="phone" type="tel" autocomplete="tel" maxlength="40">
+        <label for="iq-movein">Desired move-in date</label>
+        <input id="iq-movein" name="move_in_date" type="date">
+        <label for="iq-message">Questions or anything we should know</label>
+        <textarea id="iq-message" name="message" rows="4" maxlength="4000"></textarea>
+        <!-- honeypot: real visitors never see or fill this -->
+        <div style="position:absolute;left:-9999px;" aria-hidden="true"><label for="iq-website">Website</label><input id="iq-website" name="website" tabindex="-1" autocomplete="off"></div>
+        <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;margin-top:16px;">Send inquiry</button>
+      </form>
+      <div id="iq-result" class="inquiry-result" role="status"></div>
+      <p class="inquiry-note">Or call <a href="tel:{{phone.tel}}" style="color:var(--deep-teal);font-weight:600;">{{phone.display}}</a>. We reply during business hours, usually the same day.</p>
+    </div>
+  </aside>
+</div>
+</div>
+</section>
+</main>
+<script>
+(function(){
+  "use strict";
+  var DIRECT = "https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/listing-feed?format=json";
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c];});}
+  function money(n){return "$"+Number(n||0).toLocaleString("en-US");}
+  function fetchFeed(){
+    return fetch("/api/rentals").then(function(r){if(!r.ok)throw new Error("proxy "+r.status);return r.json();})
+      .catch(function(){return fetch(DIRECT).then(function(r){return r.json();});});
+  }
+  window.PPMRentals = { esc: esc, money: money, fetchFeed: fetchFeed };
+})();
+</script>
+<script>
+(function(){
+  "use strict";
+  var R = window.PPMRentals;
+  var params = new URLSearchParams(location.search);
+  var id = params.get("id") || "";
+  var status = document.getElementById("listing-status");
+  var detail = document.getElementById("listing-detail");
+
+  function notFound(){
+    status.innerHTML = 'This listing is no longer available. <a href="/rentals/" style="color:var(--deep-teal);font-weight:600;">See what else is open &rarr;</a>';
+  }
+  if(!id){ notFound(); return; }
+
+  R.fetchFeed().then(function(data){
+    var l = ((data && data.listings) || []).filter(function(x){ return x.id === id; })[0];
+    if(!l){ notFound(); return; }
+    status.hidden = true;
+    detail.hidden = false;
+    document.title = (l.headline || "Available rental") + " | Proactive Property Management";
+    document.getElementById("l-headline").textContent = l.headline || "Available rental";
+    var addr = [l.street, l.unit_number ? ("#"+l.unit_number) : null, l.city, l.state].filter(Boolean).join(", ");
+    document.getElementById("l-address").textContent = addr;
+    var facts = [];
+    facts.push('<span class="rental-fact"><strong>'+R.money(l.rent)+'</strong>/mo</span>');
+    if(l.bedrooms!=null) facts.push('<span class="rental-fact"><strong>'+R.esc(l.bedrooms)+'</strong> bed</span>');
+    if(l.bathrooms!=null) facts.push('<span class="rental-fact"><strong>'+R.esc(l.bathrooms)+'</strong> bath</span>');
+    if(l.available_date) facts.push('<span class="rental-fact">Available <strong>'+R.esc(l.available_date)+'</strong></span>');
+    document.getElementById("l-facts").innerHTML = facts.join("");
+    document.getElementById("l-desc").textContent = l.description || "";
+    var photos = (l.photos || []).filter(function(p){ return p && p.url; });
+    document.getElementById("l-photos").innerHTML = photos.map(function(p){
+      return '<img loading="lazy" src="'+R.esc(p.url)+'" alt="'+R.esc(p.caption || l.headline || "Listing photo")+'">';
+    }).join("");
+    var amen = l.amenities && typeof l.amenities === "object" ? Object.keys(l.amenities).filter(function(k){ return l.amenities[k] !== false && l.amenities[k] != null && l.amenities[k] !== ""; }) : [];
+    if(amen.length){
+      document.getElementById("l-amenities-wrap").hidden = false;
+      document.getElementById("l-amenities").innerHTML = amen.map(function(k){
+        var v = l.amenities[k];
+        var label = k.replace(/_/g, " ");
+        return "<li>"+R.esc(typeof v === "string" ? (label+": "+v) : label)+"</li>";
+      }).join("");
+    }
+  }).catch(function(){
+    status.textContent = "We couldn't load this listing just now. Please try again shortly, or call (973) 330-8261.";
+  });
+
+  // Inquiry form -> same-origin forwarder first (ad-blocker-proof, like /api/lead), direct fallback.
+  var DIRECT_INQ = "https://tpwnpzpuqrgbzislgoif.supabase.co/functions/v1/listing-inquiry-intake";
+  var form = document.getElementById("inquiry-form");
+  var result = document.getElementById("iq-result");
+  function show(ok, msg){
+    result.style.display = "block";
+    result.style.color = ok ? "var(--deep-teal)" : "#8a2f2f";
+    result.textContent = msg;
+  }
+  form.addEventListener("submit", function(e){
+    e.preventDefault();
+    var payload = {
+      listing_id: id,
+      name: document.getElementById("iq-name").value.trim(),
+      email: document.getElementById("iq-email").value.trim(),
+      phone: document.getElementById("iq-phone").value.trim(),
+      move_in_date: document.getElementById("iq-movein").value || undefined,
+      message: document.getElementById("iq-message").value.trim(),
+      website: document.getElementById("iq-website").value,
+      channel: "marketing_site"
+    };
+    if(!payload.name || (!payload.email && !payload.phone)){
+      show(false, "Please include your name and an email or phone number.");
+      return;
+    }
+    var btn = form.querySelector("button[type=submit]");
+    btn.disabled = true;
+    function send(url){
+      return fetch(url, { method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(payload) })
+        .then(function(r){ return r.json().then(function(j){ return { ok: r.ok && j && j.ok !== false, j: j }; }); });
+    }
+    send("/api/rental-inquiry").catch(function(){ return send(DIRECT_INQ); })
+      .then(function(res){
+        if(res.ok){
+          form.hidden = true;
+          show(true, "Thanks - we got your inquiry and will follow up with answers and showing times.");
+        } else {
+          btn.disabled = false;
+          show(false, "That didn't go through. Please try again, or call (973) 330-8261.");
+        }
+      })
+      .catch(function(){
+        btn.disabled = false;
+        show(false, "That didn't go through. Please try again, or call (973) 330-8261.");
+      });
+  });
+})();
+</script>

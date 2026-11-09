@@ -1,0 +1,17 @@
+---
+// The lead-form scripts, wrapped so every page that carries a form loads its script from one place.
+//
+// HARD LINE (WEBSITE_RUNBOOK.md §1, REDESIGN_PLAN.md §6): the files in ./lead-scripts/ are the live
+// lead path, moved byte-for-byte from the Phase 0 pages. They post to /api/lead/ with the honeypot
+// field `website`, the source strings (web_form, rent_control_lookup, lead_magnet), first-touch
+// attribution from /js/attribution.js, and on /get-started/ the ?ref= → proposal_ref token. Never
+// edit them without an orchestrator-supervised change, and end that change with one test lead.
+//
+// The form markup itself stays in each page's body; only the script is shared here.
+interface Props { script: 'contact' | 'get-started' | 'home' | 'landlord-checklist' }
+const { script } = Astro.props;
+const scripts = import.meta.glob('./lead-scripts/*.html', { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+const html = scripts[`./lead-scripts/${script}.html`];
+if (!html) throw new Error(`LeadForm: no lead script named "${script}"`);
+---
+<Fragment set:html={html} />

@@ -1,0 +1,34 @@
+---
+// /accessibility/: a one-off page. The body is src/bodies/accessibility/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import main from '../../bodies/accessibility/main.html?raw';
+import css from '../../bodies/accessibility/page.css?raw';
+
+const page = {
+  "title": "Accessibility Statement | Proactive Property Management",
+  "description": "Proactive Property Management's accessibility statement: our commitment to WCAG 2.1 AA conformance, what we've done, known limitations, and how to reach us about accessibility issues.",
+  "canonical": "https://www.njpropertymanager.com/accessibility/",
+  "og": {
+    "description": "Our commitment to WCAG 2.1 AA conformance, what we've done, known limitations, and how to reach us about accessibility issues."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Accessibility Statement",
+      "url": "https://www.njpropertymanager.com/accessibility",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Proactive Property Management",
+        "url": "https://www.njpropertymanager.com"
+      }
+    }
+  ],
+  "navScript": false
+};
+---
+<Page {...page} main={main} css={css} />

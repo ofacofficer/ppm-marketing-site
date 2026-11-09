@@ -1,0 +1,17 @@
+{
+  "faq": [
+    {
+      "question": "Do I have to register if I own just one rental?",
+      "answer": "Yes, if you do not live in the building. One- and two-unit non-owner-occupied rentals register with the municipal clerk; buildings of three or more units register with the DCA. Without registration you cannot obtain an eviction judgment."
+    },
+    {
+      "question": "Can I decline an applicant who pays with a Section 8 voucher?",
+      "answer": "No. Lawful source of income is a protected category under the NJ Law Against Discrimination. You may apply your normal, uniformly applied screening criteria, but you may not reject an application because it relies on a voucher, or advertise a unit as unavailable to voucher holders."
+    },
+    {
+      "question": "Is the tenant ever responsible for repairs?",
+      "answer": "Tenants are responsible for damage they or their guests cause beyond normal wear and tear. Everything required to keep the unit habitable — heat, water, structure, systems — remains the landlord's duty. If keeping up with these obligations from a distance is the hard part, that is the job a property manager exists to do."
+    }
+  ],
+  "legalDisclaimer": true
+}
