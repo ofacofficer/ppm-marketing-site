@@ -1,0 +1,50 @@
+---
+// /get-started/: a one-off page. The body is src/bodies/get-started/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import { site } from '../../site.config.mjs';
+import main from '../../bodies/get-started/main.html?raw';
+import css from '../../bodies/get-started/page.css?raw';
+
+const page = {
+  "title": "Get Started | Proactive Property Management NJ",
+  "description": `Ready to hand off your NJ rental? Start here. We confirm your rent estimate, send the management agreement to e-sign, and handle onboarding. Call ${site.phone.display}.`,
+  "canonical": "https://www.njpropertymanager.com/get-started/",
+  "og": {
+    "description": `Ready to move forward? Confirm your details, e-sign the management agreement, and we handle onboarding from there. Get started with PPM. Call ${site.phone.display}.`
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "LocalBusiness",
+        "ProfessionalService"
+      ],
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "alternateName": "PPM",
+      "url": "https://www.njpropertymanager.com",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Get Started with Proactive Property Management",
+      "url": "https://www.njpropertymanager.com/get-started/"
+    }
+  ],
+  "bodyClass": "page-contact",
+  "leadScript": "get-started"
+};
+---
+<Page {...page} main={main} css={css} />

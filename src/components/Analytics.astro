@@ -1,0 +1,12 @@
+---
+// Measurement hooks, unchanged from the Phase 0 site: Vercel Web Analytics in the head, and the
+// call_click event on any tel: link at the end of the body. Do not add trackers here without
+// updating /privacy/ first (REDESIGN_PLAN.md §8a, D1).
+import { site } from '../site.config.mjs';
+interface Props { part: 'head' | 'body' }
+const { part } = Astro.props;
+// Byte-for-byte the hook the site has always shipped; the event name is site.analytics.callClickEvent.
+const callClick = `document.addEventListener("click",function(e){var t=e.target.closest&&e.target.closest('a[href^="tel:"]');if(t&&window.va)va("event",{name:"${site.analytics.callClickEvent}"});},{passive:true});`;
+---
+{part === 'head' && <script is:inline defer src={site.analytics.vercelInsightsSrc}></script>}
+{part === 'body' && <script is:inline set:html={callClick} />}

@@ -1,0 +1,17 @@
+{
+  "faq": [
+    {
+      "question": "How do I find out if my town has rent control?",
+      "answer": "Start with the NJ Rent Control Lookup, which covers all 564 municipalities, then confirm the current ordinance text with the municipal clerk or rent leveling board — caps and exemptions change."
+    },
+    {
+      "question": "How much can I raise rent in a town without rent control?",
+      "answer": "There is no fixed cap, but the increase must not be unconscionable and must be delivered with proper notice — at least one full calendar month for month-to-month tenancies. Increases far above local market rates invite a court challenge."
+    },
+    {
+      "question": "Does rent control limit what I can charge a new tenant?",
+      "answer": "It depends on the ordinance. In towns with vacancy decontrol you can generally reset to market between tenants, and the new rent becomes the controlled base going forward. In towns without it, the cap follows the unit, not the tenant. Verify with your municipality before re-listing."
+    }
+  ],
+  "legalDisclaimer": true
+}

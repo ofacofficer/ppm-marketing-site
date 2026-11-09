@@ -1,0 +1,22 @@
+---
+// The full-width call to action that closes posts and area pages: a heading, one line, one button.
+import { scope } from './scope.mjs';
+interface Props {
+  heading: string;
+  text: string;
+  button: { href: string; label: string };
+  cid?: string;
+  /** Posts use an h3 inside .post-cta-band; area pages an h2 in an inline-styled section (as found). */
+  variant?: 'post' | 'area';
+}
+const { heading, text, button, cid, variant = 'post' } = Astro.props;
+const s = scope(cid);
+---
+{variant === 'post' ? (
+<div class="post-cta-band" {...s}> <div class="container" {...s}> <div class="post-cta-inner" {...s}> <div {...s}> <h3 {...s}>{heading}</h3> <p class="text-muted" style="margin-top:8px;" {...s}>{text}</p> </div> <a href={button.href} class="btn btn-primary" {...s}>{button.label}</a> </div> </div> </div>
+) : (
+<section style="background:var(--ice);border-top:1px solid var(--border);padding:56px 0;" {...s}> <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;" {...s}> <div {...s}>
+<h2 {...s}>{heading}</h2>
+<p class="text-muted" style="margin-top:8px;" {...s}>{text}</p>
+</div> <a href={button.href} class="btn btn-primary" {...s}>{button.label}</a> </div> </section>
+)}

@@ -1,0 +1,14 @@
+---
+// FAQPage structured data for a page whose questions and answers appear in its copy. Google only
+// honors FAQPage when the same Q&A is visible on the page, so this emits the JSON-LD only; the
+// visible text lives in the page body.
+import JsonLd from './JsonLd.astro';
+interface Props { items: { question: string; answer: string }[] }
+const { items } = Astro.props;
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({ '@type': 'Question', name: i.question, acceptedAnswer: { '@type': 'Answer', text: i.answer } })),
+};
+---
+{items.length > 0 && <JsonLd data={data} />}

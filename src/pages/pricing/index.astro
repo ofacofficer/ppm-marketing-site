@@ -1,0 +1,89 @@
+---
+// /pricing/: a one-off page. The body is src/bodies/pricing/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import { site } from '../../site.config.mjs';
+import main from '../../bodies/pricing/main.html?raw';
+import css from '../../bodies/pricing/page.css?raw';
+
+const page = {
+  "title": "Property Management Pricing | Proactive Property Management NJ",
+  "description": "Transparent property management pricing for NJ landlords. One flat fee based on rent collected, no hidden costs. Free rental analysis.",
+  "canonical": "https://www.njpropertymanager.com/pricing/",
+  "og": {
+    "title": "Property Management Pricing NJ | Simple, Transparent | PPM",
+    "description": "8%–12% of monthly collected rent. No hidden fees, no technology fees, no maintenance markups. One flat management fee for Northern & Central NJ landlords."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "LocalBusiness",
+        "ProfessionalService"
+      ],
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "alternateName": "PPM",
+      "url": "https://www.njpropertymanager.com",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do you charge based on rent collected or rent due?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Collected. We only earn our fee when you get paid. If a tenant doesn't pay, we don't collect our management fee for that month."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's the leasing fee?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The one-time leasing fee covers finding and placing a new tenant — listing, marketing, showings, screening, and lease execution. The exact amount depends on your property and location. We'll quote it clearly upfront."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you mark up maintenance costs?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. You see the actual vendor invoice. PPM does not add a percentage on top of repair costs."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a minimum portfolio size?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No minimum. We work with landlords who own one rental unit as well as investors managing larger portfolios."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I cancel the management agreement?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Month-to-month contracts are available. Ask us for details on our agreement structure."
+          }
+        }
+      ]
+    }
+  ]
+};
+---
+<Page {...page} main={main} css={css} />

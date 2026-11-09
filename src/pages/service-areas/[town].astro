@@ -1,0 +1,12 @@
+---
+// Every town page, one per content/areas/<town>.json. The file name is the URL slug.
+import { getCollection } from 'astro:content';
+import Area, { type AreaData } from '../../layouts/Area.astro';
+
+export async function getStaticPaths() {
+  const areas = await getCollection('areas');
+  return areas.map((a) => ({ params: { town: a.id }, props: { slug: a.id, area: a.data as AreaData } }));
+}
+const { slug, area } = Astro.props;
+---
+<Area slug={slug} area={area} />

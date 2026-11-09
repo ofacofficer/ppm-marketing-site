@@ -1,0 +1,31 @@
+---
+// /eula/: a one-off page. The body is src/bodies/eula/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import main from '../../bodies/eula/main.html?raw';
+import css from '../../bodies/eula/page.css?raw';
+
+const page = {
+  "title": "End-User License Agreement | Proactive Property Management",
+  "description": "The End-User License Agreement governing use of the Proactive Property Management owner portal, resident portal, and PPM AI Operating System.",
+  "canonical": "https://www.njpropertymanager.com/eula/",
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "End-User License Agreement",
+      "url": "https://www.njpropertymanager.com/eula/",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Proactive Property Management",
+        "url": "https://www.njpropertymanager.com"
+      }
+    }
+  ],
+  "navScript": false
+};
+---
+<Page {...page} main={main} css={css} />

@@ -1,0 +1,18 @@
+{
+  "name": "ppm-marketing-site",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "prebuild": "node scripts/check-content.mjs && node scripts/build-redirects.mjs --check",
+    "build": "astro build && node scripts/postbuild.mjs",
+    "preview": "astro preview",
+    "check:redirects": "node scripts/build-redirects.mjs --check"
+  },
+  "dependencies": {
+    "astro": "7.4.7"
+  }
+}

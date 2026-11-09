@@ -1,0 +1,54 @@
+---
+// /service-areas/: a one-off page. The body is src/bodies/service-areas/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import { site } from '../../site.config.mjs';
+import main from '../../bodies/service-areas/main.html?raw';
+import css from '../../bodies/service-areas/page.css?raw';
+
+const page = {
+  "title": "Property Management Service Areas | Northern & Central NJ | PPM",
+  "description": "Proactive Property Management serves landlords across Northern and Central New Jersey. Find your city to learn about local rental markets and our management services.",
+  "canonical": "https://www.njpropertymanager.com/service-areas/",
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": [
+        "LocalBusiness",
+        "ProfessionalService"
+      ],
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "alternateName": "PPM",
+      "url": "https://www.njpropertymanager.com",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "addressCountry": "US"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.njpropertymanager.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Areas",
+          "item": "https://www.njpropertymanager.com/service-areas/"
+        }
+      ]
+    }
+  ]
+};
+---
+<Page {...page} main={main} css={css} />

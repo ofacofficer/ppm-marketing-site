@@ -1,0 +1,16 @@
+---
+// Visible breadcrumb trail. (The BreadcrumbList JSON-LD is emitted by the layout that knows the
+// page's canonical URLs.)
+import { scope } from './scope.mjs';
+interface Props {
+  items: { href: string; label: string }[];
+  current: string;
+  /** Legacy scoped-CSS id of the template using it. */
+  cid?: string;
+  /** Post pages label the trail and mute the current page; area pages do neither (as found). */
+  variant?: 'post' | 'area';
+}
+const { items, current, cid, variant = 'post' } = Astro.props;
+const s = scope(cid);
+---
+<div class="breadcrumb-bar" {...s}> <div class="container" {...s}> <nav class="breadcrumb" aria-label={variant === 'post' ? 'Breadcrumb' : undefined} {...s}> {items.map((i) => <><a href={i.href} {...s}>{i.label}</a> <span {...s}>›</span> </>)}<span class={variant === 'post' ? 'text-muted' : undefined} {...s}>{current}</span> </nav> </div> </div>

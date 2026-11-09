@@ -1,0 +1,34 @@
+---
+// /privacy/: a one-off page. The body is src/bodies/privacy/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import main from '../../bodies/privacy/main.html?raw';
+import css from '../../bodies/privacy/page.css?raw';
+
+const page = {
+  "title": "Privacy Policy | Proactive Property Management",
+  "description": "How Proactive Property Management collects, uses, shares, and protects personal information across njpropertymanager.com, the owner and resident portals, and the PPM Platform. We do not sell personal information.",
+  "canonical": "https://www.njpropertymanager.com/privacy/",
+  "og": {
+    "description": "How PPM collects, uses, shares, and protects personal information across our site, portals, and platform. We don't sell personal information."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Privacy Policy",
+      "url": "https://www.njpropertymanager.com/privacy/",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Proactive Property Management",
+        "url": "https://www.njpropertymanager.com"
+      }
+    }
+  ],
+  "navScript": false
+};
+---
+<Page {...page} main={main} css={css} />

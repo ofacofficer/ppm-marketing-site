@@ -1,0 +1,34 @@
+---
+// /terms/: a one-off page. The body is src/bodies/terms/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../../layouts/Page.astro';
+import main from '../../bodies/terms/main.html?raw';
+import css from '../../bodies/terms/page.css?raw';
+
+const page = {
+  "title": "Terms of Use | Proactive Property Management",
+  "description": "The terms that apply to using njpropertymanager.com: informational content, acceptable use, intellectual property, disclaimers, and New Jersey governing law.",
+  "canonical": "https://www.njpropertymanager.com/terms/",
+  "og": {
+    "description": "The terms that apply to using njpropertymanager.com: informational content, acceptable use, disclaimers, and NJ governing law."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Terms of Use",
+      "url": "https://www.njpropertymanager.com/terms/",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Proactive Property Management",
+        "url": "https://www.njpropertymanager.com"
+      }
+    }
+  ],
+  "navScript": false
+};
+---
+<Page {...page} main={main} css={css} />

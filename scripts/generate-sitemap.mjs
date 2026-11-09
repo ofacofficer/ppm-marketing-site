@@ -1,14 +1,18 @@
 #!/usr/bin/env node
-// Regenerate sitemap.xml from the pages on disk. Run from the repo root
-// after adding or removing a page:  node scripts/generate-sitemap.mjs
-import { readdirSync, statSync, writeFileSync } from 'node:fs';
+// Write dist/sitemap.xml from the pages the build produced. Runs as part of `npm run build`
+// (scripts/postbuild.mjs), after Astro and after any legacy root pages are copied through, so the
+// sitemap lists exactly the pages that deploy.
+import { readdirSync, statSync, writeFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { site } from '../src/site.config.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const BASE = 'https://www.njpropertymanager.com';
-const SKIP = new Set(['.git', '.netlify', '_astro', 'api', 'images', 'scripts', 'styles']);
+const DIST = join(ROOT, 'dist');
+const BASE = site.baseUrl;
+const SKIP = new Set(['_astro', 'api', 'images', 'scripts', 'styles', 'js']);
 
+if (!existsSync(DIST)) { console.error('dist/ not found: run `npm run build`'); process.exit(1); }
 const urls = [];
 (function walk(dir, rel) {
   for (const name of readdirSync(dir)) {
@@ -17,13 +21,12 @@ const urls = [];
     if (statSync(abs).isDirectory()) {
       walk(abs, rel === '' ? name : `${rel}/${name}`);
     } else if (name === 'index.html') {
-      // No <lastmod>: file mtime is the checkout time, not an edit time, so every clone would
-      // claim every page changed today and teach Google to ignore the field. Matches the OS's
-      // website-publish, which regenerates this file on each publish.
+      // No <lastmod>: the build time is not an edit time, so every deploy would claim every page
+      // changed and teach Google to ignore the field.
       urls.push(rel === '' ? `${BASE}/` : `${BASE}/${rel}/`);
     }
   }
-})(ROOT, '');
+})(DIST, '');
 urls.sort();
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
@@ -31,5 +34,5 @@ const xml = `<?xml version="1.0" encoding="UTF-8"?>
 ${urls.map((u) => `  <url><loc>${u}</loc></url>`).join('\n')}
 </urlset>
 `;
-writeFileSync(join(ROOT, 'sitemap.xml'), xml);
-console.log(`sitemap.xml written with ${urls.length} URLs`);
+writeFileSync(join(DIST, 'sitemap.xml'), xml);
+console.log(`dist/sitemap.xml written with ${urls.length} URLs`);

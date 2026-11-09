@@ -16,6 +16,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { siteRoutes } from '../src/lib/routes.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const DIR = join(ROOT, 'content/redirects');
@@ -23,7 +24,15 @@ const CONFIG = join(ROOT, 'vercel.json');
 
 const hasExt = (p) => /\.[a-z0-9]+$/i.test(p.split('/').pop());
 const isPattern = (p) => /[:*(]/.test(p);
-const pageExists = (p) => (hasExt(p) ? existsSync(join(ROOT, p)) : existsSync(join(ROOT, p, 'index.html')));
+// Pages are worked out from source (src/pages, content/blog, content/areas, legacy root pages), so
+// this runs before a build; files are static assets in public/ or the generated sitemap.
+let routes;
+const GENERATED_FILES = new Set(['sitemap.xml']);
+const pageExists = (p) => {
+  if (hasExt(p)) return GENERATED_FILES.has(p) || existsSync(join(ROOT, 'public', p));
+  routes ??= siteRoutes(ROOT);
+  return routes.has(p.replace(/^\/+|\/+$/g, ''));
+};
 
 export function loadRows() {
   const rows = [];

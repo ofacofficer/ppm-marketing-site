@@ -1,0 +1,126 @@
+---
+// Home page: a one-off page. The body is src/bodies/home/main.html,
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+import Page from '../layouts/Page.astro';
+import { site } from '../site.config.mjs';
+import main from '../bodies/home/main.html?raw';
+import afterFooter from '../bodies/home/after-footer.html?raw';
+
+const page = {
+  "title": "NJ Property Management Company | Proactive Property Management",
+  "description": "NJ landlords: we handle tenants, rent, repairs, and paperwork — so you don't have to. Serving Northern & Central NJ since 2023. Free rental analysis.",
+  "canonical": "https://www.njpropertymanager.com/",
+  "og": {
+    "title": "Property Management That Thinks Ahead | PPM NJ",
+    "description": "NJ landlords: we handle tenants, rent, repairs, and paperwork — so you don't have to. Serving Northern & Central NJ. No hidden fees. No markups. Get a free rental analysis."
+  },
+  "twitter": {
+    "site": true
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What does a property management company do?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A property management company runs your rental on your behalf. That means finding and screening tenants, collecting rent, handling maintenance requests, enforcing the lease, and sending you a financial report every month. You stay the owner. We do the work."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does property management cost in New Jersey?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most NJ property management companies charge between 8% and 12% of monthly collected rent, plus a one-time leasing fee when a new tenant is placed. Watch for setup fees, technology fees, or maintenance markups — those add up fast. PPM charges one management fee, no add-ons."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What areas of New Jersey does Proactive Property Management serve?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": `PPM serves landlords across Northern and Central New Jersey — Jersey City, Hoboken, Newark, Parsippany, Morristown, Edison, Woodbridge, Hackensack, Clifton, and dozens of surrounding towns. Call ${site.phone.display} to confirm coverage for your address.`
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do I get started with a property manager in NJ?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Three steps: (1) We do a free rental analysis — no cost, no commitment. We tell you what your property should rent for and what the current market looks like. (2) You review the management agreement. (3) We take over. Most owners are fully onboarded within one to two weeks."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What makes Proactive Property Management different?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We're not a franchise. You get a direct line to the person managing your property — not a call center. One flat management fee — no markups, no surprises."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does PPM handle evictions in New Jersey?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Our screening process keeps evictions rare, but when they happen, we manage the full process — proper notice, court filing, and coordination through to possession. NJ eviction law is strict and procedural; a misstep resets the clock and costs you months."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can you manage my property if I live out of state?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. A significant portion of our owners don't live in New Jersey. Your owner portal gives you real-time access to financials, maintenance updates, and lease documents from anywhere. We're your eyes and hands on the ground."
+          }
+        }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "RealEstateAgent",
+      "@id": "https://www.njpropertymanager.com/#business",
+      "name": "Proactive Property Management",
+      "url": "https://www.njpropertymanager.com/",
+      "logo": "https://www.njpropertymanager.com/images/logo-mark-teal.png",
+      "image": "https://www.njpropertymanager.com/images/logo-mark-teal.png",
+      "telephone": site.phone.e164,
+      "email": site.email,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "525 Washington Boulevard",
+        "addressLocality": "Jersey City",
+        "addressRegion": "NJ",
+        "postalCode": "07310",
+        "addressCountry": "US"
+      },
+      "areaServed": {
+        "@type": "State",
+        "name": "New Jersey"
+      },
+      "description": "Residential property management for landlords across Northern and Central New Jersey."
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Proactive Property Management",
+      "url": "https://www.njpropertymanager.com/",
+      "publisher": {
+        "@type": "Organization",
+        "name": "Proactive Property Management"
+      }
+    }
+  ],
+  "stylesheets": [
+    "/_astro/index.3OsKsGuA.css"
+  ],
+  "navScript": "home",
+  "footerTail": "home",
+  "leadScript": "home"
+};
+---
+<Page {...page} main={main} afterFooter={afterFooter} />

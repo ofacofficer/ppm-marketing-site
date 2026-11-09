@@ -1,18 +1,22 @@
 #!/usr/bin/env node
-// Render a blog post from a content JSON file into a full static page.
+// Check a blog post's content JSON before it is committed.
 //
 //   node scripts/new-post.mjs content/blog/<slug>.json [more.json ...]
-//   node scripts/new-post.mjs --all          # render every content/blog/*.json
+//   node scripts/new-post.mjs --all
+//   node scripts/new-post.mjs --all --template-out /tmp/posts   # also render via the legacy template
 //
-// The content JSON is the editable source of truth for a post; the page under
-// blog/ is generated output. After rendering, this script regenerates
-// sitemap.xml. Schema of a content file:
+// Since Phase 1 the site is built by Astro: a post is ONE file, content/blog/<slug>.json, and
+// `npm run build` renders it at its `path` (src/pages/[...post].astro, src/layouts/Post.astro).
+// This script no longer writes pages into the repo. A rendered <path>/index.html does not need to be
+// committed, and if one is, the build ignores it in favour of the JSON (scripts/postbuild.mjs).
+//
+// Schema of a content file (unchanged; the OS's website-publish function writes the same shape):
 //
 // {
 //   "path": "blog/nj-landlord-law/eviction-process-nj",  // page dir, no slashes at ends
 //   "title": "How to Evict a Tenant in New Jersey",       // h1 + breadcrumb
 //   "titleTag": "optional <title>; defaults to title",
-//   "description": "meta description, <= 160 chars",
+//   "description": "meta description, <= 165 chars",
 //   "pillar": { "name": "NJ Landlord Law", "path": "blog/nj-landlord-law" },
 //   "author": "Proactive Property Management",            // visible byline
 //   "authorType": "Organization",                          // or "Person"
@@ -20,131 +24,69 @@
 //   "body": "<h2 id=...>...</h2><p>...</p>..."             // article HTML
 // }
 //
-// Site-structure checks (mirrored in the OS's website-publish function, which renders the same
-// JSON): the pillar must be an existing hub page, every internal link in the body must point at
-// a page that exists (with its trailing slash, so no redirect hop), and JSON-LD in the body may
-// only describe this site, and no reviewer note ([Attorney Review Required], [VERIFY]) may be
-// left in the copy. Each of these shipped broken once: posts invented pillar paths whose
-// hubs 404'd, linked to /contact and /blog/evictions, and embedded a LocalBusiness on a domain
-// that isn't ours.
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+// Optional per-post additions (FAQPage JSON-LD, a social title, the legal-disclaimer line) go in
+// content/blog-extras/<slug>.json, never in the post JSON, so an OS republish cannot drop them.
+//
+// Site-structure checks (src/lib/site-guard.mjs; mirrored in the OS's _shared/siteGuard.ts, and run
+// on every post by `npm run build`): the pillar must be an existing hub page, every internal link in
+// the body must point at a page that exists (with its trailing slash), body JSON-LD may only describe
+// this site, and no reviewer note ([Attorney Review Required], [VERIFY]) may be left in the copy.
+//
+// --template-out renders each post through scripts/templates/post.html, the template the OS's
+// website-publish function still fetches during the transition, into the given directory (never
+// into the repo), so the two renderings can be compared.
+import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
+import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { execFileSync } from 'node:child_process';
+import { postProblems } from '../src/lib/site-guard.mjs';
+import { siteRoutes } from '../src/lib/routes.mjs';
+import { postBodyHtml, postDates, postJsonLd, trim } from '../src/lib/post-body.mjs';
+import { site } from '../src/site.config.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const BASE = 'https://www.njpropertymanager.com';
-const TEMPLATE = readFileSync(join(ROOT, 'scripts/templates/post.html'), 'utf8');
 
-// Types the template already emits for every post; a second copy in the body only conflicts.
-const TEMPLATE_LD_TYPES = new Set(['LocalBusiness', 'ProfessionalService', 'LegalService', 'Organization', 'BreadcrumbList', 'WebSite', 'BlogPosting', 'Article']);
-
-function siteProblems(c, pageExists) {
-  const problems = [];
-  const pillar = String(c.pillar.path).replace(/^\/+|\/+$/g, '');
-  if (!pageExists(pillar)) problems.push(`pillar "${pillar}" has no hub page — use an existing pillar or publish its hub first`);
-  const self = String(c.path).replace(/^\/+|\/+$/g, '');
-  for (const [, href] of String(c.body).matchAll(/href="(\/[^"#?]*)/g)) {
-    if (/\.[a-z0-9]+$/i.test(href) || href.startsWith('/api/')) continue;
-    if (!href.endsWith('/')) { problems.push(`link ${href} needs a trailing slash`); continue; }
-    const target = href.replace(/^\/+|\/+$/g, '');
-    if (target !== self && !pageExists(target)) problems.push(`link ${href} points at a page that does not exist`);
-  }
-  for (const [marker] of String(c.body).matchAll(/\[(?:attorney review|verify|todo|insert|tbd|citation needed)[^\]]*\]?/gi))
-    problems.push(`draft marker left in the body: ${marker.slice(0, 60)}`);
-  for (const [, blob] of String(c.body).matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
-    let ld;
-    try { ld = JSON.parse(blob); } catch { problems.push('body JSON-LD is not valid JSON'); continue; }
-    const nodes = Array.isArray(ld['@graph']) ? ld['@graph'] : [ld];
-    for (const n of nodes) {
-      const types = [].concat(n['@type'] || []);
-      if (types.some((t) => TEMPLATE_LD_TYPES.has(t))) problems.push(`body JSON-LD repeats ${types.join('/')}, which the template already emits`);
-    }
-    for (const url of blob.match(/https?:\/\/[^"\s]+/g) || [])
-      if (!url.startsWith(BASE) && !url.startsWith('https://schema.org')) problems.push(`body JSON-LD names a URL off this site: ${url}`);
-  }
-  return problems;
-}
-
-const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
-function render(contentPath) {
-  const c = JSON.parse(readFileSync(contentPath, 'utf8'));
-  for (const k of ['path', 'title', 'description', 'pillar', 'author', 'authorType', 'datePublished', 'body'])
-    if (!c[k]) throw new Error(`${contentPath}: missing "${k}"`);
-  if (c.description.length > 165) throw new Error(`${contentPath}: description too long (${c.description.length})`);
-  const problems = siteProblems(c, (rel) => existsSync(join(ROOT, rel, 'index.html')));
-  if (problems.length) throw new Error(`${contentPath}:\n  ${problems.join('\n  ')}`);
-
-  const url = `${BASE}/${c.path}/`;
-  const pillarPath = `/${c.pillar.path}/`;
-  const [y, m, d] = c.datePublished.split('-').map(Number);
-  const dateHuman = `${MONTHS[m - 1]} ${d}, ${y}`;
-  const titleTag = c.titleTag || c.title;
-
-  const posting = JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'BlogPosting',
-    headline: c.title, description: c.description,
-    mainEntityOfPage: { '@type': 'WebPage', '@id': url },
-    image: `${BASE}/og-image.jpg`,
-    publisher: { '@type': 'Organization', name: 'Proactive Property Management',
-      logo: { '@type': 'ImageObject', url: `${BASE}/images/logo-white-horizontal.png` } },
-    author: { '@type': c.authorType, name: c.author },
-    datePublished: c.datePublished,
-  });
-  const breadcrumb = JSON.stringify({
-    '@context': 'https://schema.org', '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: `${BASE}/` },
-      { '@type': 'ListItem', position: 2, name: 'Resources', item: `${BASE}/blog/` },
-      { '@type': 'ListItem', position: 3, name: c.pillar.name, item: `${BASE}${pillarPath}` },
-      { '@type': 'ListItem', position: 4, name: c.title, item: url },
-    ],
-  });
-
-  // Standard mid-article CTA: honor an explicit <!--MID_CTA--> marker, else
-  // insert before the third h2 when the post is long enough to carry it.
-  const MID_CTA = '<div class="blog-mid-cta">\n<p>Tired of managing this yourself? PPM handles it all — one flat fee, no surprises.</p>\n<a href="/contact/" class="btn btn-gold" style="font-size:13px;">Get a Free Rental Analysis →</a>\n</div>\n';
-  let body = c.body;
-  if (body.includes('<!--MID_CTA-->')) {
-    body = body.replace('<!--MID_CTA-->', MID_CTA);
-  } else {
-    const h2s = [...body.matchAll(/<h2[\s>]/g)];
-    if (h2s.length >= 4) {
-      const at = h2s[2].index;
-      body = body.slice(0, at) + MID_CTA + body.slice(at);
-    }
-  }
-  if (!/Get in touch|<hr>/.test(body.slice(-400))) {
-    body += '\n<hr>\n<p><em>Proactive Property Management handles this for every property under management. Questions about your NJ rental? <a href="/contact/">Get in touch</a>.</em></p>';
-  }
-
+function renderWithTemplate(c) {
+  const template = readFileSync(join(ROOT, 'scripts/templates/post.html'), 'utf8');
+  const { url, pillarPath, posting, breadcrumb } = postJsonLd(c, site.baseUrl);
+  const dates = postDates(c.datePublished);
   const vars = {
-    TITLE: c.title, TITLE_TAG: titleTag, DESCRIPTION: c.description, URL: url,
+    TITLE: c.title, TITLE_TAG: c.titleTag || c.title, DESCRIPTION: c.description, URL: url,
     PILLAR_NAME: c.pillar.name, PILLAR_PATH: pillarPath,
-    AUTHOR: c.author, DATE_LABEL: `Published ${MONTHS[m - 1]} ${y}`,
-    DATE_ISO: c.datePublished, DATE_HUMAN: dateHuman,
-    JSONLD_POSTING: posting, JSONLD_BREADCRUMB: breadcrumb, BODY_HTML: body,
+    AUTHOR: c.author, DATE_LABEL: dates.label, DATE_ISO: c.datePublished, DATE_HUMAN: dates.human,
+    JSONLD_POSTING: JSON.stringify(posting), JSONLD_BREADCRUMB: JSON.stringify(breadcrumb), BODY_HTML: postBodyHtml(c.body),
   };
-  let out = TEMPLATE;
+  let out = template;
   for (const [k, v] of Object.entries(vars)) out = out.split(`{{${k}}}`).join(v);
   const left = out.match(/\{\{[A-Z_]+\}\}/);
-  if (left) throw new Error(`${contentPath}: unreplaced token ${left[0]}`);
-
-  const dir = join(ROOT, c.path);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, 'index.html'), out);
-  console.log(`rendered ${c.path}/index.html (${out.length} bytes)`);
+  if (left) throw new Error(`unreplaced token ${left[0]}`);
+  return out;
 }
 
 const args = process.argv.slice(2);
-const files = args.includes('--all')
-  ? readdirSync(join(ROOT, 'content/blog')).filter((f) => f.endsWith('.json')).map((f) => join(ROOT, 'content/blog', f))
-  : args;
-if (!files.length) { console.error('usage: node scripts/new-post.mjs <content.json ...> | --all'); process.exit(1); }
-// Render what passes, report what doesn't, and fail the run if anything was refused.
-const failed = files.filter((f) => {
-  try { render(f); return false; } catch (e) { console.error(`REFUSED ${e.message}`); return true; }
-});
-execFileSync('node', [join(ROOT, 'scripts/generate-sitemap.mjs')], { stdio: 'inherit' });
-if (failed.length) process.exit(1);
+let templateOut = null;
+const files = [];
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--template-out') templateOut = resolve(args[++i]);
+  else if (args[i] === '--all') files.push(...readdirSync(join(ROOT, 'content/blog')).filter((f) => f.endsWith('.json')).map((f) => join(ROOT, 'content/blog', f)));
+  else files.push(args[i]);
+}
+if (!files.length) { console.error('usage: node scripts/new-post.mjs <content.json ...> | --all [--template-out <dir>]'); process.exit(1); }
+
+const routes = siteRoutes(ROOT);
+let failed = 0;
+for (const f of files) {
+  const c = JSON.parse(readFileSync(f, 'utf8'));
+  const self = trim(c.path || '');
+  // The post's own URL counts as existing, so a new post may link to itself.
+  const problems = postProblems(c, (r) => r === self || routes.has(r));
+  if (problems.length) { failed++; console.error(`REFUSED ${f}:\n  ${problems.join('\n  ')}`); continue; }
+  if (templateOut) {
+    const out = join(templateOut, self, 'index.html');
+    mkdirSync(dirname(out), { recursive: true });
+    writeFileSync(out, renderWithTemplate(c));
+    console.log(`ok /${self}/ (template render: ${out})`);
+  } else {
+    console.log(`ok /${self}/ — \`npm run build\` renders it`);
+  }
+}
+if (failed) process.exit(1);

@@ -1,0 +1,56 @@
+{
+  "name": "Jersey City",
+  "county": "Hudson County",
+  "rentControl": true,
+  "seo": {
+    "title": "Property Management in Jersey City, NJ | PPM",
+    "description": "Trusted property management in Jersey City, NJ. PPM handles tenant screening, rent collection, maintenance & NJ compliance for Jersey City landlords. Free rental analysis."
+  },
+  "h1": "Property Management in Jersey City, NJ",
+  "intro": "PPM manages residential rental properties across Jersey City for individual landlords and portfolio investors. Full-service management, NJ-compliant, one flat fee.",
+  "hero": {
+    "image": "jersey-city",
+    "webpWidth": 1600,
+    "width": 1600,
+    "height": 725,
+    "alt": "Jersey City skyline along the Hudson River waterfront, with the Goldman Sachs Tower and the Exchange Place financial district"
+  },
+  "breadcrumbHubLabel": "Service Areas",
+  "contentHtml": "<h2>The Jersey City rental market</h2> <p>\nJersey City is one of the strongest rental markets in New Jersey, driven by its direct PATH train access to Lower Manhattan and Midtown, its diverse neighborhoods, and a sustained influx of NYC-priced-out renters. The Heights, Journal Square, Downtown/Grove, and Greenville all have distinct sub-markets with meaningfully different renter demographics and price points.\n</p> <p>\nDemand is strong across the board, but vacancy rates and achievable rents vary significantly by neighborhood. A 1BR in Downtown Jersey City can command $2,500–$3,200+; the same unit in Greenville or Bergen-Lafayette might rent for $1,400–$1,800. Knowing the micro-market matters.\n</p> <div class=\"compliance-box\"> <div class=\"compliance-label\" style=\"letter-spacing:.08em\"><span aria-hidden=\"true\">⚠️</span> Rent Control Notice</div> <p>Jersey City has an active rent control ordinance affecting most residential buildings constructed before 1987. Covered properties require registration with the city's Rent Leveling Board, and rent increases are limited to the annual Consumer Price Index (CPI) adjustment. Failure to register or comply can result in fines and the inability to collect increases. PPM handles rent control compliance for all properties we manage.</p> </div> <h3>Jersey City at a glance</h3><div class=\"glance\"><div class=\"glance-item\"><div class=\"glance-num\">2nd-largest</div><div class=\"glance-lbl\">NJ city</div></div><div class=\"glance-item\"><div class=\"glance-num\">PATH · Light Rail</div><div class=\"glance-lbl\">Direct to NYC</div></div><div class=\"glance-item\"><div class=\"glance-num\">Gold Coast</div><div class=\"glance-lbl\">Hudson waterfront</div></div><div class=\"glance-item\"><div class=\"glance-num\">High-rise &amp; brownstone</div><div class=\"glance-lbl\">Mixed stock</div></div></div> <h2>What PPM manages in Jersey City</h2> <ul> <li>Single-family rental homes</li> <li>Multi-family properties — duplexes, triplexes, small apartment buildings</li> <li>Condominiums and individual units</li> <li>Townhomes</li> </ul> <h2>Property management services in Jersey City</h2> <div class=\"svc-grid\"><div class=\"svc-card\"><div class=\"svc-ico\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2\"></path><circle cx=\"9\" cy=\"7\" r=\"4\"></circle><path d=\"M23 21v-2a4 4 0 0 0-3-3.87\"></path><path d=\"M16 3.13a4 4 0 0 1 0 7.75\"></path></svg></div><h3>Tenant placement</h3><p>We market your Jersey City rental across Zillow, Realtor.com, Apartments.com, and local channels. Every applicant goes through income verification, credit check, background screening, and rental history review. Our goal is to minimize vacancy and place tenants who stay.</p></div><div class=\"svc-card\"><div class=\"svc-ico\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"12\" y1=\"1\" x2=\"12\" y2=\"23\"></line><path d=\"M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6\"></path></svg></div><h3>Rent collection</h3><p>Automated online rent collection with direct owner disbursements. Late fees handled per NJ law. You get paid on time, and you can see every transaction in your owner portal.</p></div><div class=\"svc-card\"><div class=\"svc-ico\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z\"></path></svg></div><h3>Maintenance coordination</h3><p>24/7 tenant maintenance requests. We work with a vendor network covering all of Hudson County. Owners approve any repair above their stated threshold — no surprises on your statement.</p></div><div class=\"svc-card\"><div class=\"svc-ico\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><line x1=\"12\" y1=\"20\" x2=\"12\" y2=\"10\"></line><line x1=\"18\" y1=\"20\" x2=\"18\" y2=\"4\"></line><line x1=\"6\" y1=\"20\" x2=\"6\" y2=\"16\"></line></svg></div><h3>Financial reporting</h3><p>Monthly owner statements and 24/7 portal access. Clear, itemized records for every income and expense transaction on your property.</p></div><div class=\"svc-card\"><div class=\"svc-ico\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg></div><h3>NJ compliance</h3><p>Jersey City has some of the most complex rental regulations in New Jersey. PPM stays current on rent control registration requirements, CPI adjustment windows, security deposit rules, habitability standards, and just-cause eviction procedures — so you don't have to.</p></div></div> <div class=\"rc-callout\"><svg class=\"rc-callout-ico\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z\"></path></svg><div class=\"rc-callout-body\"><strong>Jersey City has rent control.</strong><p>Annual rent increases on covered buildings are capped by the city’s rent control ordinance, administered by the Jersey City Rent Leveling Board, and covered units must be registered. We keep every increase, notice, and registration compliant — and track the current cap and exemptions for you.</p><p class=\"rc-callout-links\"><a href=\"/rent-control-lookup/\">Check the current cap →</a><a href=\"/blog/nj-landlord-law/rent-control-nj/\">NJ rent control guide →</a></p></div></div>",
+  "sidebar": {
+    "ctaText": "We'll tell you what your Jersey City property should rent for and give you a custom quote.",
+    "nearbyLabel": "Nearby service areas",
+    "nearby": [
+      {
+        "href": "/service-areas/hoboken/",
+        "label": "Hoboken"
+      },
+      {
+        "href": "/service-areas/bayonne/",
+        "label": "Bayonne"
+      },
+      {
+        "href": "/service-areas/newark/",
+        "label": "Newark"
+      },
+      {
+        "href": "/service-areas/",
+        "label": "All areas →"
+      }
+    ],
+    "guides": [
+      {
+        "href": "/rent-control-lookup/",
+        "label": "NJ rent control lookup"
+      },
+      {
+        "href": "/blog/nj-landlord-law/rent-control-nj/",
+        "label": "Rent control in NJ"
+      }
+    ]
+  },
+  "cta": {
+    "heading": "Managing a Jersey City rental?",
+    "text": "Get a free rental analysis — no cost, no commitment."
+  }
+}
