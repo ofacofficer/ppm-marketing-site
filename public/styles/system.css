@@ -144,3 +144,19 @@ main details > summary:not([class])::-webkit-details-marker { display: none; }
 main details > summary:not([class])::after { content: "+"; color: var(--accent-text); font-weight: 500; flex-shrink: 0; }
 main details[open] > summary:not([class])::after { content: "\2212"; }
 @media (max-width: 360px) { .fee-range { white-space: normal; } }
+
+/* ── Inner-page top sections on the pale sky field (option C; colours flip in tokens.css) ── */
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type) {
+  background: var(--sky-field) !important; border-bottom: var(--rule) !important;
+}
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  :is(h1, h2, h3, h4, strong) { color: var(--ink) !important; }
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  :is(p, .post-meta, .post-meta *, .blog-byline, li) { color: var(--ink-muted) !important; }
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  :is(.badge, .eyebrow, .eyebrow-light, .blog-byline-name, p a:not(.btn)) { color: var(--accent-text) !important; }
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  .badge[style*="border-color:var(--error)"] { color: var(--error) !important; }
+/* Area pages: the photo stays, under a pale-sky veil strong enough for AA on every pixel behind text. */
+.city-hero .hero-scrim { background: rgba(205,233,240,0.94) !important; }
+.city-hero .hero-credit { color: var(--ink-soft-on-sky); text-shadow: none; }

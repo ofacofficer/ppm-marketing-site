@@ -23,6 +23,8 @@
   --brass:         #C9A84C; /* THE accent: primary-action fill only, always with navy text */
   --brass-hover:   #B8973E;
   --error:         #A12A2A;
+  --sky-field:     #CDE9F0; /* pale sky ground of inner-page top sections (option C) */
+  --ink-soft-on-sky: #3C5566; /* body text on --sky-field (6.15:1); Pier Slate fails there */
 
   /* ── Role names used by the component CSS ── */
   --navy:      var(--harbor-navy);
@@ -98,3 +100,19 @@ main[style*="background:var(--navy)"], [style*="background:var(--navy)"] {
   --link:        var(--tideline-teal);
   --focus:       var(--tideline-teal);
 }
+
+/* Inner-page top sections, option C (Dan, 2026-11-09): light, on a pale sky field with navy type.
+   One selector list, so a new page or Phase 3 opts in by using one of these classes. */
+.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero,
+.city-hero, main > section.on-dark:first-of-type {
+  --ink:         var(--harbor-navy);
+  --ink-muted:   var(--ink-soft-on-sky);
+  --accent-text: var(--tideline-teal);
+  --link:        var(--tideline-teal);
+  --focus:       var(--tideline-teal);
+  --silver:      var(--ink-soft-on-sky);
+  --on-ink:      #FFFFFF;
+}
+/* Area-page heroes keep their photo under a pale-sky veil; the photo darkens the ground a little, so
+   labels there use the soft ink (>= 5:1 on every sampled pixel) instead of Tideline Teal. */
+.city-hero { --accent-text: var(--ink-soft-on-sky); --link: var(--ink-soft-on-sky); }
