@@ -7,7 +7,8 @@ free-license source only, verified before commit.
 Every service-area hero is now a **real photograph of the named town** — an actual landmark, civic
 building, or landmark bridge in that municipality. Photos sourced from Wikimedia Commons (public
 domain / CC0 / CC BY-SA) and Pexels. For CC BY-SA images a visible photo credit (author · source ·
-license) appears in the lower corner of the hero, per the license.
+license, with the license name linked to its deed and the note "cropped") appears as a caption under the
+photo on the town page, per the license.
 
 | File | Subject | Type | Source | License |
 |---|---|---|---|---|
