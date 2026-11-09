@@ -6,7 +6,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { postProblems } from '../src/lib/site-guard.mjs';
+import { postProblems, draftNotes } from '../src/lib/site-guard.mjs';
 import { siteRoutes, sourcePageRoutes, postRoutes, areaRoutes, legacyRootRoutes } from '../src/lib/routes.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -23,6 +23,16 @@ for (const f of readdirSync(blogDir).filter((x) => x.endsWith('.json'))) {
 const extrasDir = join(ROOT, 'content/blog-extras');
 const posts = new Set(readdirSync(blogDir));
 for (const f of readdirSync(extrasDir)) if (!posts.has(f)) problems.push(`content/blog-extras/${f}: no post content/blog/${f}`);
+
+// Draft and reviewer notes anywhere else that publishes: post FAQ extras, town pages, one-off page
+// bodies. (Post bodies are covered by postProblems above.)
+const noteSources = [
+  ...readdirSync(extrasDir).filter((x) => x.endsWith('.json')).map((f) => `content/blog-extras/${f}`),
+  ...readdirSync(join(ROOT, 'content/areas')).filter((x) => x.endsWith('.json')).map((f) => `content/areas/${f}`),
+  ...readdirSync(join(ROOT, 'src/bodies'), { recursive: true }).filter((x) => String(x).endsWith('.html')).map((f) => `src/bodies/${f}`),
+];
+for (const f of noteSources)
+  for (const m of draftNotes(readFileSync(join(ROOT, f), 'utf8'))) problems.push(`${f}: draft marker left in the copy: ${m.slice(0, 60)}`);
 
 // One URL, one source. (A pre-rendered page committed at the repo root is the exception: it is
 // copied through only when no source claims its URL, and otherwise ignored; see postbuild.mjs.)

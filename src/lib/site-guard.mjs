@@ -10,6 +10,24 @@ export const BASE = 'https://www.njpropertymanager.com';
 // Types the post layout already emits for every post; a second copy in the body only conflicts.
 const TEMPLATE_LD_TYPES = new Set(['LocalBusiness', 'ProfessionalService', 'LegalService', 'Organization', 'BreadcrumbList', 'WebSite', 'BlogPosting', 'Article']);
 
+// Reviewer and draft notes that must never publish. Bracketed markers ("[verify]", "[TODO: …]"), and
+// the unbracketed review notes that shipped on /blog/rent-control/nj-rent-control-by-town/ until
+// 2026-11-09 ("attorney-review-pending", "Attorney-review note: …"). The plain phrase "attorney review"
+// is not matched on its own: NJ's three-day attorney review period is legitimate copy.
+const DRAFT_NOTE_PATTERNS = [
+  /\[(?:attorney review|verify|todo|insert|tbd|citation needed)[^\]]*\]?/gi,
+  /\battorney-review\b[\w-]*(?: note)?/gi,
+  /\b[\w]+-review-pending\b|\breview[- ]pending\b/gi,
+  /\b(?:reviewer|editor|drafter|internal|draft) note\s*:/gi,
+];
+
+/** Every draft or reviewer note in a piece of copy (HTML or text). */
+export function draftNotes(text) {
+  const found = [];
+  for (const re of DRAFT_NOTE_PATTERNS) for (const [m] of String(text ?? '').matchAll(re)) found.push(m);
+  return [...new Set(found)];
+}
+
 /** @param c the post JSON  @param pageExists (route without slashes) => boolean */
 export function postProblems(c, pageExists) {
   const problems = [];
@@ -25,8 +43,7 @@ export function postProblems(c, pageExists) {
     const target = href.replace(/^\/+|\/+$/g, '');
     if (target !== self && !pageExists(target)) problems.push(`link ${href} points at a page that does not exist`);
   }
-  for (const [marker] of String(c.body).matchAll(/\[(?:attorney review|verify|todo|insert|tbd|citation needed)[^\]]*\]?/gi))
-    problems.push(`draft marker left in the body: ${marker.slice(0, 60)}`);
+  for (const marker of draftNotes(c.body)) problems.push(`draft marker left in the body: ${marker.slice(0, 60)}`);
   for (const [, blob] of String(c.body).matchAll(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/g)) {
     let ld;
     try { ld = JSON.parse(blob); } catch { problems.push('body JSON-LD is not valid JSON'); continue; }
