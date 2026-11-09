@@ -26,8 +26,9 @@ export const site = {
     postalCode: '07310',
     oneLine: '525 Washington Boulevard, Jersey City, NJ 07310',
   },
-  copyrightLine: '© 2026 Proactive Property Management LLC · Jersey City, NJ',
-  brokerLine: 'Supervising Broker: FPG Realty NJ LLC · License #2298176',
+  copyrightLine: '© 2026 Proactive Property Management LLC, Jersey City, NJ.',
+  // Keeps the literal "License #": scripts/postbuild.mjs checks every page for it.
+  brokerLine: 'Supervising broker: FPG Realty NJ LLC. License #2298176.',
   equalHousing:
     'Equal Housing Opportunity. We fully support the principles of the Fair Housing Act and NJ Law Against Discrimination.',
   footerBlurb:

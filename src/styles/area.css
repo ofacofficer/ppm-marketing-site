@@ -1,3 +1,69 @@
+/* Town pages (src/layouts/Area.astro), Phase 4. DESIGN.md §5–§6: option C top section, photo in its
+   own column (no text over images), one primary action, no cards and no stat tiles. The classes in the
+   lower half style the town JSON's contentHtml, which keeps its markup. */
+.breadcrumb-bar[data-astro-cid-area]{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}
+.breadcrumb[data-astro-cid-area]{display:flex;align-items:center;gap:8px;font-size:.875rem;color:var(--slate);flex-wrap:wrap}
+.breadcrumb[data-astro-cid-area] a[data-astro-cid-area]{color:var(--slate);display:inline-flex;align-items:center;min-height:44px}
+.breadcrumb[data-astro-cid-area] a[data-astro-cid-area]:hover{color:var(--accent-text)}
 
-.breadcrumb-bar[data-astro-cid-area]{background:var(--white);border-bottom:1px solid var(--border);padding:12px 0}.breadcrumb[data-astro-cid-area]{display:flex;align-items:center;gap:8px;font-size:.8rem;color:var(--slate);flex-wrap:wrap}.breadcrumb[data-astro-cid-area] a[data-astro-cid-area]{color:var(--slate)}.breadcrumb[data-astro-cid-area] a[data-astro-cid-area]:hover{color:var(--accent-text)}.city-hero[data-astro-cid-area]{background:var(--navy);padding:64px 0;border-bottom:1px solid var(--border)}.city-grid[data-astro-cid-area]{display:grid;grid-template-columns:1fr 300px;gap:60px;align-items:start}@media (max-width:960px){.city-grid[data-astro-cid-area]{grid-template-columns:1fr}.city-sidebar[data-astro-cid-area]{order:-1}}.compliance-box{background:#c45c5c14;border:1px solid rgba(196,92,92,.25);border-radius:var(--radius);padding:16px 20px;margin:20px 0}.compliance-label{font-family:var(--font);font-size:.75rem;font-weight:700;color:var(--error);margin-bottom:8px}.compliance-box p{font-size:.875rem;color:var(--navy);max-width:none}.city-sidebar[data-astro-cid-area]{position:sticky;top:88px;display:flex;flex-direction:column;gap:16px}.sidebar-cta[data-astro-cid-area]{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px}.sidebar-cta-label[data-astro-cid-area]{font-family:var(--font);font-size:.7rem;font-weight:700;letter-spacing:0;color:var(--accent-text);margin-bottom:10px}.sidebar-contact[data-astro-cid-area]{display:flex;flex-direction:column;gap:4px;margin-top:12px}.sidebar-contact[data-astro-cid-area] a[data-astro-cid-area]{font-size:.8rem;color:var(--slate)}.sidebar-contact[data-astro-cid-area] a[data-astro-cid-area]:hover{color:var(--navy)}.nearby-areas[data-astro-cid-area]{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:8px}.nearby-label[data-astro-cid-area]{font-family:var(--font);font-size:.7rem;font-weight:700;letter-spacing:0;color:var(--accent-text);margin-bottom:4px}.nearby-areas[data-astro-cid-area] a[data-astro-cid-area]{font-size:.875rem;color:var(--slate);border-bottom:1px solid var(--border);padding:4px 0;transition:color .15s}.nearby-areas[data-astro-cid-area] a[data-astro-cid-area]:last-child{border-bottom:none}.nearby-areas[data-astro-cid-area] a[data-astro-cid-area]:hover{color:var(--accent-text)}
-.svc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:22px 0 10px}@media (max-width:560px){.svc-grid{grid-template-columns:1fr}}.svc-card{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px}.svc-ico{width:40px;height:40px;border-radius:10px;background:rgba(141,207,221,.16);color:var(--deep-teal);display:flex;align-items:center;justify-content:center;margin-bottom:12px}.svc-card h3{margin:0 0 6px;font-size:1rem}.svc-card p{margin:0;font-size:.85rem;color:var(--slate);max-width:none}.glance{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:22px 0 6px}@media (max-width:560px){.glance{grid-template-columns:repeat(2,1fr)}}.glance-item{background:var(--ice);border:1px solid var(--border);border-radius:var(--radius);padding:14px 12px;text-align:center}.glance-num{font-family:var(--font);font-weight:700;color:var(--navy);font-size:1rem;line-height:1.15}.glance-lbl{font-size:.7rem;color:var(--slate);margin-top:5px;letter-spacing:0}.city-hero.has-photo{position:relative;overflow:hidden;isolation:isolate}.city-hero .hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0}.city-hero .hero-scrim{position:absolute;inset:0;z-index:1;background:rgba(1,46,75,.86)}.rc-callout{display:flex;gap:14px;align-items:flex-start;background:var(--white);border:1px solid var(--border);border-left:2px solid var(--sky);border-radius:var(--radius);padding:18px 20px;margin:24px 0}.rc-callout-ico{flex:0 0 auto;color:var(--accent-text);margin-top:1px}.rc-callout-body strong{display:block;color:var(--navy);font-family:var(--font);margin-bottom:5px}.rc-callout-body p{margin:0;font-size:.9rem;color:var(--slate);max-width:none;line-height:1.6}.rc-callout-links{margin-top:10px!important;display:flex;flex-wrap:wrap;gap:6px 18px}.rc-callout-links a{font-size:.85rem;font-weight:500;color:var(--deep-teal);text-decoration:none;border-bottom:1px solid transparent}.rc-callout-links a:hover{border-bottom-color:currentColor}
+/* Top section: text 7 columns, photo 5, on the pale sky field. */
+.area-hero { padding: clamp(40px, 6vw, 80px) 0 clamp(40px, 5vw, 64px); }
+.area-hero-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.area-hero.no-photo .area-hero-grid { grid-template-columns: minmax(0, 1fr); }
+.area-county { font-weight: 500; font-size: 0.9375rem; margin-bottom: 12px; }
+.area-hero h1 { max-width: 18ch; }
+.area-hero .lead { margin-top: 16px; max-width: 52ch; font-size: var(--fs-lead); font-weight: 500; line-height: 1.5; }
+.area-rc { margin-top: 16px; max-width: 56ch; }
+.city-hero.area-hero { --accent-text: var(--tideline-teal); --link: var(--tideline-teal); }
+.area-rc a { text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+.area-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+.area-photo { margin: 0; }
+.area-photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--r-lg); }
+.area-credit { margin-top: 10px; font-size: 0.875rem; line-height: 1.5; color: var(--ink-soft-on-sky); }
+.area-credit a { color: var(--ink-soft-on-sky) !important; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Body: prose at the 65ch measure, a quiet aside of links. */
+.area-body { padding: clamp(48px, 7vw, 88px) 0; }
+.area-grid { display: grid; grid-template-columns: minmax(0, 8fr) minmax(0, 3fr); gap: clamp(32px, 6vw, 80px); align-items: start; }
+.area-prose { max-width: var(--measure); }
+.area-aside { display: flex; flex-direction: column; gap: 32px; padding-top: 6px; }
+.area-aside nav { border-top: var(--rule); padding-top: 14px; }
+.area-aside-head { font-size: 1rem !important; line-height: 1.4; margin: 0 0 6px !important; color: var(--navy); }
+.area-aside ul { list-style: none; margin: 0; padding: 0; }
+.area-aside li { border-bottom: 1px solid var(--border); }
+.area-aside li:last-child { border-bottom: 0; }
+.area-aside a { display: flex; align-items: center; min-height: 44px; color: var(--tideline-teal); font-weight: 500; text-decoration: underline; text-underline-offset: 3px; }
+
+/* contentHtml: services as a plain list under hairlines (the old 5-card grid). */
+.area-prose .svc-grid { display: block; margin: 16px 0 8px; }
+.area-prose .svc-card { padding: 18px 0; border-top: 1px solid var(--border); }
+.area-prose .svc-card:last-child { border-bottom: 1px solid var(--border); }
+.area-prose .svc-ico { display: none; }
+.area-prose .svc-card h3 { margin: 0 0 4px; font-size: 1.0625rem; }
+.area-prose .svc-card p { margin: 0; }
+
+/* "At a glance": label / value rows, not stat tiles. */
+.area-prose .glance { display: grid; grid-template-columns: minmax(0, 1fr); margin: 12px 0 8px; border-top: 1px solid var(--border); }
+.area-prose .glance-item { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.area-prose .glance-num { font-weight: 700; color: var(--navy); font-size: 1rem; }
+.area-prose .glance-lbl { color: var(--pier-slate); font-size: 1rem; }
+
+/* Rent control notes: the statute-callout style (sky rule on the left, no alarm colours). */
+.compliance-box, .rc-callout { margin: 24px 0; padding: 4px 0 4px 20px; border-left: var(--rule); background: none; border-radius: 0; }
+.compliance-label { font-weight: 700; color: var(--navy); font-size: 1rem; margin-bottom: 6px; }
+.compliance-box p { max-width: none; }
+.rc-callout { display: block; border-top: 0; border-right: 0; border-bottom: 0; }
+.rc-callout > svg { display: none; }
+.rc-callout-body strong { display: block; color: var(--navy); margin-bottom: 6px; }
+.rc-callout-body p { margin: 0; max-width: none; }
+.rc-callout-links { margin-top: 10px !important; display: flex; flex-wrap: wrap; gap: 4px 24px; }
+.rc-callout-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 500; }
+
+@media (max-width: 1023px) {
+  .area-hero-grid, .area-grid { grid-template-columns: minmax(0, 1fr); }
+  .area-photo { max-width: 640px; }
+}
+@media (max-width: 767px) {
+  .area-prose .glance-item { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .area-actions .btn { flex: 1 1 100%; justify-content: center; }
+}

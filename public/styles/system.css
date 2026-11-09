@@ -195,3 +195,33 @@ p.blog-byline { display: block; margin: 16px 0 0; max-width: none; font-size: 0.
 @media (min-width: 769px) and (max-width: 1140px) { .nav-phone { display: none; } }
 /* 769–1000px: the section links move into the menu (burger) so the logins and the CTA keep their place. */
 @media (min-width: 769px) and (max-width: 1000px) { .nav-links { display: none; } .nav-burger { display: flex; margin-left: 0; } .nav-end { margin-left: auto; } }
+
+/* ── Phase 4 shared pieces ─────────────────────────────────────────── */
+/* Statute callout: a cited rule set off by the sky rule, for post and guide bodies.
+   Markup: <blockquote> or <aside class="statute"><p class="statute-cite">N.J.S.A. …</p><p>…</p></aside> */
+.prose-content blockquote, .prose-content .statute {
+  margin: 1.5em 0; padding: 4px 0 4px 20px; border-left: var(--rule); background: none; color: var(--navy);
+}
+.prose-content blockquote p, .prose-content .statute p { color: var(--navy); max-width: none; }
+.prose-content .statute-cite { font-weight: 700; font-size: 0.9375rem; font-variant-numeric: tabular-nums; margin-bottom: 4px; }
+/* The standard mid-article prompt: a plain sky-ruled line and one button, not a box. */
+.blog-mid-cta { margin: 2em 0; padding: 16px 0; border-top: var(--rule); border-bottom: 1px solid var(--border); background: none !important; border-radius: 0 !important; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; }
+.blog-mid-cta p { margin: 0 !important; color: var(--navy) !important; font-weight: 500; max-width: 46ch; }
+.blog-mid-cta .btn { font-size: 0.9375rem !important; }
+/* Guide (pillar) pages and the older one-off bodies: sidebars are plain, sky-ruled link lists, not cards. */
+.sidebar-cta.sidebar-cta, .sidebar-posts.sidebar-posts, .sidebar-cluster.sidebar-cluster {
+  background: none; border: 0; border-top: var(--rule); border-radius: 0; box-shadow: none; padding: 14px 0 0;
+}
+.sidebar-cta-label.sidebar-cta-label, .sidebar-posts-label.sidebar-posts-label, .sidebar-cluster-label.sidebar-cluster-label {
+  font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px;
+}
+.sidebar-post-link.sidebar-post-link { font-size: 0.9375rem; min-height: 44px; color: var(--tideline-teal); text-decoration: underline; text-underline-offset: 3px; }
+.sidebar-post-link.coming-soon { color: var(--pier-slate); text-decoration: none; }
+.soon-badge.soon-badge { border: 0; padding: 0; font-size: 0.875rem; font-weight: 500; color: var(--pier-slate); }
+.sidebar-contact.sidebar-contact a { font-size: 0.9375rem; min-height: 32px; display: inline-flex; align-items: center; }
+.pillar-grid.pillar-grid { grid-template-columns: minmax(0, var(--measure)) minmax(0, 280px); justify-content: space-between; }
+@media (max-width: 960px) {
+  .pillar-grid.pillar-grid { grid-template-columns: minmax(0, 1fr); }
+  .pillar-sidebar.pillar-sidebar { order: 2; position: static; }
+}
+.post-cta-band.post-cta-band { border-top: var(--rule); }
