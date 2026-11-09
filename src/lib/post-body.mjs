@@ -3,7 +3,7 @@
 // scripts/new-post.mjs, and mirrored by the OS's website-publish function, so all three produce the
 // same article. Change it here, not in a copy.
 
-export const MID_CTA = '<div class="blog-mid-cta">\n<p>Tired of managing this yourself? PPM handles it all — one flat fee, no surprises.</p>\n<a href="/contact/" class="btn btn-gold" style="font-size:13px;">Get a free rental analysis</a>\n</div>\n';
+export const MID_CTA = '<div class="blog-mid-cta">\n<p>Tired of managing this yourself? PPM handles it all — one management fee, no hidden fees.</p>\n<a href="/contact/" class="btn btn-gold" style="font-size:13px;">Get a free rental analysis</a>\n</div>\n';
 
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
