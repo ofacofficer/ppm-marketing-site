@@ -1,0 +1,162 @@
+/*
+  PPM design system: the shared component layer (DESIGN.md §3, §5, §7).
+  Loads LAST on every page, after tokens.css, global.css and the page's own CSS, so one rule here
+  styles a component everywhere it appears. Colours come from tokens.css only.
+  !important is used only where a page body carries an inline style="" that this phase must not
+  rewrite (form markup is held byte-identical), or a legacy !important rule in global.css.
+*/
+
+/* ── Type ─────────────────────────────────────────────────────────── */
+body { font-family: var(--font); }
+h1 { line-height: 1.05; letter-spacing: -0.02em; }
+h2 { letter-spacing: -0.015em; }
+/* Headline accents retired: an emphasised phrase keeps the headline's colour, weight and style. */
+:is(h1, h2, h3) :is(em, i, .serif, .text-gold, .text-teal) {
+  color: inherit !important; font-style: normal; font-weight: inherit;
+}
+/* Small labels that used to be all-caps tracked: sentence case, readable size. */
+.badge {
+  display: inline-block; font-size: 0.9375rem; font-weight: 500; letter-spacing: 0;
+  color: var(--accent-text);
+}
+.eyebrow, .badge, .hero-tag, .hc-tag, .hs-l, .fee-label, .fee-sub, .fee-detail-label, .no-fees-label,
+.cta-card-label, .method-label, .card-count, .footer-col-head, .nav-wordmark-tag, .footer-logo-tag {
+  text-transform: none; letter-spacing: 0;
+}
+
+/* ── Links in running text: Tideline Teal, underlined (Sky Rule on navy) ── */
+main :is(p, li, td, dd, blockquote) a:not(.btn) {
+  color: var(--link); text-decoration: underline;
+  text-decoration-thickness: 1px; text-underline-offset: 3px;
+}
+main :is(p, li, td, dd, blockquote) a:not(.btn):hover { text-decoration-thickness: 2px; }
+
+/* ── Primary button: Brass fill, Harbor Navy text 700, 48px, 6px radius ── */
+.btn-gold, .btn-primary, a.btn-primary, [class*="btn-primary"] {
+  background: var(--brass) !important; color: var(--navy) !important;
+  border: 1.5px solid var(--brass) !important; border-radius: var(--r) !important;
+  min-height: 48px !important; font-weight: 700; letter-spacing: 0;
+  box-shadow: none !important; text-transform: none;
+}
+.btn-gold:hover, .btn-primary:hover, a.btn-primary:hover, [class*="btn-primary"]:hover {
+  background: var(--brass-hover) !important; border-color: var(--brass-hover) !important;
+  transform: none; box-shadow: none !important;
+}
+.btn:active, .btn-gold:active, .btn-primary:active { transform: translateY(1px); }
+
+/* ── Secondary button: 1.5px outline, navy on light, white on navy ── */
+.btn-navy { border: 1.5px solid var(--navy); color: var(--navy); border-radius: var(--r); min-height: 48px; }
+.btn-ghost, .btn-teal { border: 1.5px solid var(--ink); color: var(--ink); background: transparent; border-radius: var(--r); min-height: 48px; }
+.btn-ghost:hover, .btn-teal:hover { background: var(--ink); color: var(--on-ink); }
+
+/* ── Focus: always visible, 2px, offset 3px (Tideline Teal on light, Sky Rule on navy) ── */
+:focus-visible, a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--focus) !important; outline-offset: 3px !important;
+}
+.btn-gold:focus-visible, .btn-primary:focus-visible { outline-color: var(--focus) !important; }
+
+/* ── Inputs: label above, 48px, Paper White, 1px Mist Line, 6px radius ── */
+main form input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([tabindex="-1"]),
+main form select, main form textarea, .hero-input, #rc-search {
+  min-height: 48px; background-color: var(--white) !important; color: var(--navy) !important;
+  border: 1px solid var(--border) !important; border-radius: var(--r) !important;
+  font-family: var(--font) !important; font-size: 1rem !important; box-shadow: none !important;
+}
+main form textarea { min-height: 112px; }
+main form input:focus, main form select:focus, main form textarea:focus, .hero-input:focus, #rc-search:focus {
+  border-color: var(--deep-teal) !important;
+}
+main form ::placeholder, main form input::placeholder, main form textarea::placeholder, .hero-input::placeholder { color: var(--slate) !important; opacity: 1; }
+main form label, .field-group label, .form-card label {
+  color: var(--navy) !important; font-weight: 500 !important; font-size: 0.9375rem !important;
+  letter-spacing: 0 !important; text-transform: none !important;
+}
+
+/* ── Cards (where they exist today): 12px, 1px Mist Line, navy-tinted shadow ── */
+.hero-card, .fee-card, .no-fees-card, .included-card, .tenant-card, .blog-card, .blog-cat-card,
+.about-section, .founder-card, .work-pillar, .form-card, .svc-detail, .city-stat, .exit-popup,
+.cl-form-card, .rental-card {
+  border-radius: var(--r-lg); border: 1px solid var(--border); box-shadow: var(--shadow-card);
+}
+.blog-card:hover, .blog-cat-card:hover { box-shadow: var(--shadow-card); transform: none; }
+.cta-card { background: var(--white); border: 1px solid var(--border); border-top: var(--rule); border-radius: var(--r-lg); }
+
+/* ── FAQ accordion: Mist Line rules, not boxes; + becomes − ── */
+[class*="pricing-faqs"] { border: 0 !important; border-top: 1px solid var(--border) !important; border-radius: 0 !important; overflow: visible; }
+[class*="faq-item"] { background: transparent !important; }
+[class*="faq-question"]::after { color: var(--accent-text) !important; transition: transform 160ms ease; }
+details[open] [class*="faq-question"]::after { content: "\2212"; transform: none; }
+.faq-question, [class*="faq-question"] { padding-left: 0 !important; padding-right: 0 !important; }
+.faq-answer, [class*="faq-answer"] { padding-left: 0 !important; padding-right: 0 !important; }
+.faq-icon { transition: transform 160ms ease !important; }
+
+/* ── Sky Rule: the section-top divider device ── */
+.teal-rule, .gold-rule { display: block; width: 100%; height: 0; border-top: var(--rule); background: none; margin-bottom: 20px; }
+.site-footer { border-top: var(--rule); }
+.mobile-cta-bar { border-top: var(--rule); }
+
+/* ── Nav ── */
+.nav-links a { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.8); letter-spacing: 0; }
+.nav-links a:hover, .nav-links a.active { color: var(--white); }
+.nav-links a::after { transition: none; height: 2px; background: var(--sky); }
+.nav-phone { font-weight: 500; color: var(--sky); }
+.mobile-nav a { font-weight: 500; color: rgba(255,255,255,0.8); }
+.mobile-nav a:hover { color: var(--white); }
+
+/* ── Footer ── */
+.footer-col-head { font-size: 0.9375rem; font-weight: 700; color: var(--white); }
+.footer-desc, .footer-contact a, .footer-contact span, .footer-col a { color: rgba(255,255,255,0.8); font-size: 14px; }
+.footer-contact a:first-child { color: var(--sky); }
+.footer-col a:hover, .footer-contact a:hover { color: var(--white); }
+
+/* ── Motion (DESIGN.md §7): state feedback only; nothing moves for reduced-motion users ── */
+.svc-arrow { opacity: 1 !important; transform: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important; animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important; scroll-behavior: auto !important;
+  }
+}
+
+/* Former all-caps micro-labels: sentence case reads at 13px minimum. */
+.hc-tag, .hs-l, .fee-label, .fee-sub, .fee-detail-label, .no-fees-label, .cta-card-label,
+.method-label, .card-count, .ticker-city { font-size: 0.8125rem; }
+
+/* ── Long-form body copy (posts, area pages): type rhythm per DESIGN.md §3 ── */
+.prose-content h2 { margin: 1.6em 0 0.45em; }
+.prose-content h3 { margin: 1.4em 0 0.4em; }
+.prose-content > :first-child { margin-top: 0; }
+.prose-content :is(ul, ol) { margin: 0.6em 0 1em; padding-left: 1.25em; }
+.prose-content li { margin-bottom: 0.35em; }
+.prose-content li::marker { color: var(--accent-text); }
+.prose-content :is(ul, ol, table) + p { margin-top: 1em; }
+.prose-content table { border-collapse: collapse; margin: 1.25em 0; font-variant-numeric: tabular-nums; }
+.prose-content :is(th, td) { text-align: left; padding: 10px 16px 10px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.prose-content th { color: var(--navy); font-weight: 700; border-bottom-width: 2px; }
+
+/* Fee figures stay on one line on a phone. */
+.fee-range { font-size: clamp(2rem, 9vw, 3.5rem); white-space: nowrap; }
+
+/* Plain FAQ summaries (tenants): the same + / − marker as the other accordions. */
+main details > summary:not([class]) { list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+main details > summary:not([class])::-webkit-details-marker { display: none; }
+main details > summary:not([class])::after { content: "+"; color: var(--accent-text); font-weight: 500; flex-shrink: 0; }
+main details[open] > summary:not([class])::after { content: "\2212"; }
+@media (max-width: 360px) { .fee-range { white-space: normal; } }
+
+/* ── Inner-page top sections on the pale sky field (option C; colours flip in tokens.css) ── */
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type) {
+  background: var(--sky-field) !important; border-bottom: var(--rule) !important;
+}
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  :is(h1, h2, h3, h4, strong) { color: var(--ink) !important; }
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  :is(p, .post-meta, .post-meta *, .blog-byline, li) { color: var(--ink-muted) !important; }
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  :is(.badge, .eyebrow, .eyebrow-light, .blog-byline-name, p a:not(.btn)) { color: var(--accent-text) !important; }
+:is(.about-hero, .pillar-hero, .blog-hero, .post-header, .contact-hero, .pricing-hero, .tenant-hero, .city-hero, main > section.on-dark:first-of-type)
+  .badge[style*="border-color:var(--error)"] { color: var(--error) !important; }
+/* Area pages: the photo stays, under a pale-sky veil strong enough for AA on every pixel behind text. */
+.city-hero .hero-scrim { background: rgba(205,233,240,0.94) !important; }
+.city-hero .hero-credit { color: var(--ink-soft-on-sky); text-shadow: none; }

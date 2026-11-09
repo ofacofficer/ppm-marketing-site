@@ -7,9 +7,10 @@
   "scripts": {
     "dev": "astro dev",
     "prebuild": "node scripts/check-content.mjs && node scripts/build-redirects.mjs --check",
-    "build": "astro build && node scripts/postbuild.mjs",
+    "build": "node scripts/fetch-fonts.mjs && astro build && node scripts/postbuild.mjs",
     "preview": "astro preview",
-    "check:redirects": "node scripts/build-redirects.mjs --check"
+    "check:redirects": "node scripts/build-redirects.mjs --check",
+    "predev": "node scripts/fetch-fonts.mjs"
   },
   "dependencies": {
     "astro": "7.4.7"
