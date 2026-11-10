@@ -13,7 +13,7 @@ export const homeFaq = [
   },
   {
     question: 'How much does property management cost in New Jersey?',
-    answer: 'PPM charges 10% of monthly rent collected, never more than $275 per unit and at least $150. Onboarding is $195 for up to 4 units (plus $50 per unit beyond), deducted from your first payout; a new lease is $395 and a renewal $250. We charge no technology fees and no maintenance markups. In New Jersey commissions are negotiable. When you compare managers, watch for setup fees, technology fees or maintenance markups — those add up fast.',
+    answer: 'PPM charges 10% of monthly rent collected, never more than $275 per unit, and at least $150 in any month the rent is collected in full. Onboarding is $195 for up to 4 units (plus $50 per unit beyond), deducted from your first payout; a new lease is $395 and a renewal $250. We charge no technology fees and no maintenance markups. In New Jersey commissions are negotiable. When you compare managers, watch for setup fees, technology fees or maintenance markups — those add up fast.',
   },
   {
     question: 'What areas of New Jersey does Proactive Property Management serve?',

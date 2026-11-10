@@ -4,10 +4,11 @@
 //
 // Fee schedule v3 (held until Dan signs it in the OS). Every figure here is the v3 schedule's:
 // 10% of rent collected, never more than $275 or less than $150 per unit per month; $195 onboarding
-// up to 4 units plus $50 per unit beyond, deducted from the first payout; a $395 new-lease fee, with
-// the partner brokerage's fee disclosed separately and paid by the owner where local law bars
-// tenant-paid broker fees (Newark); $250 per renewal. "In New Jersey commissions are negotiable"
-// sits directly under the fees.
+// up to 4 units plus $50 per unit beyond, deducted from the first payout; a $395 new-lease fee, and
+// where local law bars tenant-paid leasing commissions (Newark) a leasing commission quoted before we
+// list; $250 per renewal. The $150 minimum applies only in a month the rent is collected in full (Dan,
+// 2026-11-10). Who earns the leasing commission is not stated on the site (Dan, 2026-11-10: "No need to
+// reveal that on our website"). "In New Jersey commissions are negotiable" sits directly under the fees.
 //
 // Copy note: the strings below are live site copy (Blake drafts, Dan approves, the CCO checks claims).
 import Base from '../../layouts/Base.astro';
@@ -39,10 +40,10 @@ const notCharged = [
   { name: 'A share of late fees', note: 'None. Late fees belong to you.' },
 ];
 const faq = [
-  { question: 'Do you charge based on rent collected or rent due?', answer: 'Collected. The management fee is 10% of the rent we collect for you, never more than $275 per unit per month and at least $150.' },
+  { question: 'Do you charge based on rent collected or rent due?', answer: 'Collected. The management fee is 10% of the rent we collect for you, never more than $275 per unit per month. The $150 per-unit minimum applies only in a month the rent is collected in full, so if the tenant doesn’t pay, we don’t get paid that month.' },
   { question: 'What does onboarding cost?', answer: 'Onboarding is $195 for up to 4 units, plus $50 for each unit beyond 4. A 5-unit property is $245. We deduct it from your first payout rather than billing you upfront.' },
-  { question: 'What does the $395 new-lease fee cover?', answer: 'Our own lease-up work for each new lease: screening against our written criteria, the lease and signing, the move-in inspection, security-deposit setup and tenant portal setup. Marketing and showings are handled by our partner brokerage.' },
-  { question: 'Who pays the partner brokerage’s fee?', answer: 'The partner brokerage’s fee is disclosed separately, before you sign. Where the law allows, the tenant pays it. Where local law bars tenant-paid broker fees, as Newark does, the owner pays it.' },
+  { question: 'What does the $395 new-lease fee cover?', answer: 'Our own lease-up work for each new lease: screening against our written criteria, the lease and signing, the move-in inspection, security-deposit setup and tenant portal setup.' },
+  { question: 'Is there a leasing commission on top of the new-lease fee?', answer: 'Where local law bars tenant-paid leasing commissions (for example, Newark), a leasing commission applies and is quoted to you before we list.' },
   { question: 'Is there a renewal fee?', answer: 'Yes, $250 per lease renewal. It covers the market rent review, the NJ-compliant notices and the renewal lease.' },
   { question: 'Do you mark up maintenance costs?', answer: 'No. You see the actual vendor invoice. PPM does not add a percentage on top of repair costs.' },
   { question: 'Is there a minimum portfolio size?', answer: 'No minimum. We work with landlords who own one rental unit as well as investors with larger portfolios. Properties with more than 10 units are quoted individually.' },
@@ -52,11 +53,11 @@ const faq = [
 
 const page = {
   title: 'Property Management Pricing | Proactive Property Management NJ',
-  description: 'PPM charges 10% of monthly rent collected, never more than $275 per unit and at least $150. $195 onboarding, $395 per new lease, $250 per renewal. No markups.',
+  description: 'PPM charges 10% of monthly rent collected, never more than $275 per unit ($150 minimum in full-collection months). $195 onboarding, $395 per new lease, $250 renewal.',
   canonical: 'https://www.njpropertymanager.com/pricing/',
   og: {
     title: 'Property Management Pricing NJ | Simple, Transparent | PPM',
-    description: '10% of monthly rent collected, never more than $275 per unit and at least $150. $195 onboarding, a $395 new-lease fee and $250 per renewal. No maintenance markups, technology fees or vacancy fees.',
+    description: '10% of monthly rent collected, never more than $275 per unit, and at least $150 in a month the rent is collected in full. $195 onboarding, a $395 new-lease fee and $250 per renewal. No maintenance markups, technology fees or vacancy fees.',
   },
   twitter: { site: true },
   jsonLd: [
@@ -81,7 +82,7 @@ const page = {
 <section class="page-hero">
   <div class="wrap">
     <h1>Property management pricing</h1>
-    <p class="lead">10% of monthly rent collected — never more than $275 per unit, at least $150. No maintenance markups, no technology fees, no vacancy fees.</p>
+    <p class="lead">10% of monthly rent collected — never more than $275 per unit, and at least $150 in any month the rent is collected in full. No maintenance markups, no technology fees, no vacancy fees.</p>
   </div>
 </section>
 
@@ -95,7 +96,7 @@ const page = {
           <dd>
             <span class="fee-figure">10%</span>
             <span class="fee-unit">of monthly rent collected</span>
-            <p>Never more than $275 per unit per month, and at least $150. It is charged on rent collected, not rent due. Properties with more than 10 units are quoted individually.</p>
+            <p>Never more than $275 per unit per month. In any month the rent is collected in full, at least $150 per unit. It is charged on rent collected, not rent due: if the tenant doesn’t pay, we don’t get paid that month. Properties with more than 10 units are quoted individually.</p>
           </dd>
         </div>
         <div class="ledger-row">
@@ -111,7 +112,7 @@ const page = {
           <dd>
             <span class="fee-figure">$395</span>
             <span class="fee-unit">per new lease</span>
-            <p>Our lease-up work: screening against our written criteria, the lease and signing, the move-in inspection, security-deposit setup and tenant portal setup. Marketing and showings are by our partner brokerage. Its fee is disclosed separately; the owner pays it only where local law bars tenant-paid broker fees, such as in Newark.</p>
+            <p>Our lease-up work: screening against our written criteria, the lease and signing, the move-in inspection, security-deposit setup and tenant portal setup. Where local law bars tenant-paid leasing commissions (for example, Newark), a leasing commission applies and is quoted to you before we list.</p>
           </dd>
         </div>
         <div class="ledger-row">
