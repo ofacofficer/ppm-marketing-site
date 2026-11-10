@@ -2,6 +2,13 @@
 // /pricing/ (Phase 3): a two-column fee ledger, "You pay" and "You don't pay", then the FAQ. The
 // visible FAQ and its FAQPage JSON-LD are rendered from the one list below, so they cannot drift.
 //
+// Fee schedule v3 (held until Dan signs it in the OS). Every figure here is the v3 schedule's:
+// 10% of rent collected, never more than $275 or less than $150 per unit per month; $195 onboarding
+// up to 4 units plus $50 per unit beyond, deducted from the first payout; a $395 new-lease fee, with
+// the partner brokerage's fee disclosed separately and paid by the owner where local law bars
+// tenant-paid broker fees (Newark); $250 per renewal. "In New Jersey commissions are negotiable"
+// sits directly under the fees.
+//
 // Copy note: the strings below are live site copy (Blake drafts, Dan approves, the CCO checks claims).
 import Base from '../../layouts/Base.astro';
 import FaqList from '../../components/FaqList.astro';
@@ -14,31 +21,42 @@ const included = [
   'Tenant communication and maintenance coordination',
   'Maintenance requests received 24/7',
   'Monthly financial statements via owner portal',
-  'Lease enforcement and renewal management',
+  'Lease enforcement',
   'NJ landlord-tenant law compliance',
   'Routine property inspections',
 ];
+const asNeeded = [
+  { name: 'Eviction coordination', fee: '$250', note: 'Attorney and court costs are passed through at cost.' },
+  { name: 'Project supervision', fee: '8%', note: 'Of a project over $5,000, and only if you opt in for that project.' },
+  { name: 'Additional inspection', fee: '$100', note: 'Each, beyond the routine inspections.' },
+];
 const notCharged = [
-  { name: 'Hidden fees', note: 'None.' },
-  { name: 'Technology fees', note: 'None.' },
-  { name: 'Administrative overhead fees', note: 'None.' },
   { name: 'Maintenance markups', note: 'None. You see the actual vendor invoice.' },
+  { name: 'Technology fees', note: 'None.' },
+  { name: 'Vacancy fees', note: 'None.' },
+  { name: 'Hidden fees', note: 'None.' },
+  { name: 'Cancellation fees', note: 'None. Cancel with 30 days written notice.' },
+  { name: 'A share of late fees', note: 'None. Late fees belong to you.' },
 ];
 const faq = [
-  { question: 'Do you charge based on rent collected or rent due?', answer: "Collected. We only earn our fee when you get paid. If a tenant doesn't pay, we don't collect our management fee for that month." },
-  { question: "What's the leasing fee?", answer: "The one-time leasing fee covers finding and placing a new tenant — listing, marketing, showings, screening, and lease execution. The exact amount depends on your property and location. We'll quote it clearly upfront." },
+  { question: 'Do you charge based on rent collected or rent due?', answer: 'Collected. The management fee is 10% of the rent we collect for you, never more than $275 per unit per month and at least $150.' },
+  { question: 'What does onboarding cost?', answer: 'Onboarding is $195 for up to 4 units, plus $50 for each unit beyond 4. A 5-unit property is $245. We deduct it from your first payout rather than billing you upfront.' },
+  { question: 'What does the $395 new-lease fee cover?', answer: 'Our own lease-up work for each new lease: screening against our written criteria, the lease and signing, the move-in inspection, security-deposit setup and tenant portal setup. Marketing and showings are handled by our partner brokerage.' },
+  { question: 'Who pays the partner brokerage’s fee?', answer: 'The partner brokerage’s fee is disclosed separately, before you sign. Where the law allows, the tenant pays it. Where local law bars tenant-paid broker fees, as Newark does, the owner pays it.' },
+  { question: 'Is there a renewal fee?', answer: 'Yes, $250 per lease renewal. It covers the market rent review, the NJ-compliant notices and the renewal lease.' },
   { question: 'Do you mark up maintenance costs?', answer: 'No. You see the actual vendor invoice. PPM does not add a percentage on top of repair costs.' },
-  { question: 'Is there a minimum portfolio size?', answer: 'No minimum. We work with landlords who own one rental unit as well as investors managing larger portfolios.' },
-  { question: 'Can I cancel the management agreement?', answer: 'Month-to-month contracts are available. Ask us for details on our agreement structure.' },
+  { question: 'Is there a minimum portfolio size?', answer: 'No minimum. We work with landlords who own one rental unit as well as investors with larger portfolios. Properties with more than 10 units are quoted individually.' },
+  { question: 'Can I cancel the management agreement?', answer: 'Yes. Give us 30 days written notice. There is no cancellation fee.' },
+  { question: 'Are these fees negotiable?', answer: 'In New Jersey commissions are negotiable. These are our standard fees, and we confirm the fees for your property in writing before you sign.' },
 ];
 
 const page = {
   title: 'Property Management Pricing | Proactive Property Management NJ',
-  description: 'Transparent property management pricing for NJ landlords. One management fee based on rent collected, no hidden costs. Free rental analysis.',
+  description: 'PPM charges 10% of monthly rent collected, never more than $275 per unit and at least $150. $195 onboarding, $395 per new lease, $250 per renewal. No markups.',
   canonical: 'https://www.njpropertymanager.com/pricing/',
   og: {
     title: 'Property Management Pricing NJ | Simple, Transparent | PPM',
-    description: '8%–12% of monthly collected rent. No hidden fees, no technology fees, no maintenance markups. A one-time leasing fee when we place a tenant, quoted up front.',
+    description: '10% of monthly rent collected, never more than $275 per unit and at least $150. $195 onboarding, a $395 new-lease fee and $250 per renewal. No maintenance markups, technology fees or vacancy fees.',
   },
   twitter: { site: true },
   jsonLd: [
@@ -63,7 +81,7 @@ const page = {
 <section class="page-hero">
   <div class="wrap">
     <h1>Property management pricing</h1>
-    <p class="lead">One management fee, based on collected rent. No hidden fees, no technology fees, no maintenance markups.</p>
+    <p class="lead">10% of monthly rent collected — never more than $275 per unit, at least $150. No maintenance markups, no technology fees, no vacancy fees.</p>
   </div>
 </section>
 
@@ -75,15 +93,43 @@ const page = {
         <div class="ledger-row">
           <dt>Monthly management fee</dt>
           <dd>
-            <span class="fee-figure">8%–12%</span>
-            <span class="fee-unit">of monthly collected rent</span>
-            <p>The exact rate depends on your property type, location and portfolio. It is charged on rent collected, not rent due, so we only get paid when you do.</p>
+            <span class="fee-figure">10%</span>
+            <span class="fee-unit">of monthly rent collected</span>
+            <p>Never more than $275 per unit per month, and at least $150. It is charged on rent collected, not rent due. Properties with more than 10 units are quoted individually.</p>
           </dd>
         </div>
         <div class="ledger-row">
-          <dt>Leasing fee</dt>
-          <dd><p>One time, when a new tenant is placed. It covers listing, showings, screening and lease execution, and we quote it clearly up front, before you sign.</p></dd>
+          <dt>Onboarding</dt>
+          <dd>
+            <span class="fee-figure">$195</span>
+            <span class="fee-unit">one time, up to 4 units</span>
+            <p>Plus $50 for each unit beyond 4. Deducted from your first payout, not billed upfront.</p>
+          </dd>
         </div>
+        <div class="ledger-row">
+          <dt>New-lease fee</dt>
+          <dd>
+            <span class="fee-figure">$395</span>
+            <span class="fee-unit">per new lease</span>
+            <p>Our lease-up work: screening against our written criteria, the lease and signing, the move-in inspection, security-deposit setup and tenant portal setup. Marketing and showings are by our partner brokerage. Its fee is disclosed separately; the owner pays it only where local law bars tenant-paid broker fees, such as in Newark.</p>
+          </dd>
+        </div>
+        <div class="ledger-row">
+          <dt>Lease renewal</dt>
+          <dd>
+            <span class="fee-figure">$250</span>
+            <span class="fee-unit">per renewal</span>
+            <p>Market rent review, NJ-compliant notices and the renewal lease.</p>
+          </dd>
+        </div>
+      </dl>
+      <p class="negotiable">In New Jersey commissions are negotiable.</p>
+      <p class="broker-line">{site.brokerLine}</p>
+      <h3 class="covers-head">Only when needed</h3>
+      <dl class="ledger-list as-needed">
+        {asNeeded.map((f) => (
+          <div class="ledger-row"><dt>{f.name}</dt><dd><span class="fee-small">{f.fee}</span><p>{f.note}</p></dd></div>
+        ))}
       </dl>
       <h3 class="covers-head">The management fee covers</h3>
       <ul class="covers">{included.map((i) => <li>{i}</li>)}</ul>
@@ -103,7 +149,7 @@ const page = {
   <div class="wrap pricing-cta-inner">
     <div>
       <h2 id="pricing-cta-title">Get your quote</h2>
-      <p>We’ll tell you what your property should rent for and give you a custom quote based on your specific situation, with no obligation. Or call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a> or email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+      <p>We’ll tell you what your property should rent for and confirm the fees for your property in writing, with no obligation. Or call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a> or email <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
     </div>
     <a href={site.nav.cta.href} class="btn btn-gold">{site.nav.cta.label}</a>
   </div>
