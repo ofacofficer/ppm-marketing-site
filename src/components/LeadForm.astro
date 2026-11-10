@@ -3,8 +3,10 @@
 //
 // HARD LINE (WEBSITE_RUNBOOK.md §1, REDESIGN_PLAN.md §6): the files in ./lead-scripts/ are the live
 // lead path, moved byte-for-byte from the Phase 0 pages. They post to /api/lead/ with the honeypot
-// field `website`, the source strings (web_form, rent_control_lookup, lead_magnet), first-touch
-// attribution from /js/attribution.js, and on /get-started/ the ?ref= → proposal_ref token. Never
+// field `website`, the source strings (home_hero on /, contact on /contact/, get_started on /get-started/,
+// lead_magnet on /landlord-checklist/, rent_control_lookup on /rent-control-lookup/), the `page` and
+// `elapsed_ms` context keys, first-touch attribution from /js/attribution.js, and on /get-started/ the
+// ?ref= → proposal_ref token. Never
 // edit them without an orchestrator-supervised change, and end that change with one test lead.
 //
 // The form markup itself stays in each page's body; only the script is shared here.

@@ -3,6 +3,10 @@
   var form = document.getElementById('cl-form');
   if(!form) return;
 
+  // Time-to-submit baseline for the back office (bot signal); best-effort.
+  var pageLoadedAt = null;
+  try { pageLoadedAt = Date.now(); } catch (e) { /* no-op */ }
+
   function reveal(){
     var gate = document.getElementById('cl-gate');
     var list = document.getElementById('checklist');
@@ -41,6 +45,17 @@
     try {
       var attr = (typeof window !== 'undefined' && window.ppmAttribution) ? window.ppmAttribution() : null;
       if (attr) payload.attribution = attr;
+    } catch (e) { /* no-op */ }
+
+    // Page + time-to-submit context for the back office — best-effort, never blocks a submit.
+    try {
+      if (typeof location !== 'undefined' && location && typeof location.pathname === 'string') payload.page = location.pathname.slice(0, 200);
+    } catch (e) { /* no-op */ }
+    try {
+      if (pageLoadedAt !== null) {
+        var elapsed = Math.floor(Date.now() - pageLoadedAt);
+        if (isFinite(elapsed) && elapsed >= 0) payload.elapsed_ms = elapsed;
+      }
     } catch (e) { /* no-op */ }
 
     var btn = form.querySelector('button[type=submit]');
