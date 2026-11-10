@@ -19,3 +19,8 @@
   .ledger, .ledger-row { grid-template-columns: minmax(0, 1fr); }
   .pricing-cta .btn { width: 100%; }
 }
+/* Fee schedule v3: the NJ negotiable statement sits directly under the fees, clearly and conspicuously. */
+.negotiable { margin-top: 20px; padding: 14px 18px; border-left: 3px solid var(--sky-rule); background: var(--white); font-weight: 700; color: var(--navy); font-size: 1.0625rem; }
+.broker-line { margin-top: 10px; font-size: 0.875rem; color: var(--pier-slate); }
+.fee-small { display: block; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+.as-needed .ledger-row { padding: 14px 0; }

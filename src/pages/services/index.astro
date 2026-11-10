@@ -102,7 +102,7 @@ const page = {
   canonical: 'https://www.njpropertymanager.com/services/',
   og: {
     title: 'Property Management Services NJ | Full-Service | PPM',
-    description: 'Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting for NJ landlords. One monthly management fee plus a leasing fee when we place a tenant.',
+    description: 'Tenant placement, rent collection, maintenance, lease management, legal compliance, and financial reporting for NJ landlords. 10% of rent collected, never more than $275 per unit, plus a $395 fee per new lease.',
   },
   twitter: { site: true },
   jsonLd: [
@@ -126,7 +126,7 @@ const page = {
 <section class="page-hero">
   <div class="wrap">
     <h1>Property management services for New Jersey landlords</h1>
-    <p class="lead">Full-service residential property management for NJ landlords and investors. One monthly management fee covers the ongoing work below. Placing a new tenant carries a one-time leasing fee, quoted up front.</p>
+    <p class="lead">Full-service residential property management for NJ landlords and investors. One monthly management fee, 10% of rent collected and never more than $275 per unit, covers the ongoing work below. Each new lease carries a $395 new-lease fee.</p>
     <nav class="svc-jump" aria-label="On this page">
       <ul>{groups.map((g) => <li><a href={`#${g.key}`}>{g.title}</a></li>)}</ul>
     </nav>
@@ -156,8 +156,8 @@ const page = {
 <section class="svc-close" aria-labelledby="svc-close-title">
   <div class="wrap svc-close-inner">
     <div>
-      <h2 id="svc-close-title">One monthly management fee, plus a leasing fee when we place a tenant.</h2>
-      <p>No hidden fees, no technology fees, no maintenance markups. Get a free rental analysis and we’ll quote both fees for your property. <a href="/pricing/">See how pricing works</a></p>
+      <h2 id="svc-close-title">One monthly management fee, plus a fee for each new lease.</h2>
+      <p>No hidden fees, no technology fees, no maintenance markups. In New Jersey commissions are negotiable. Get a free rental analysis and we’ll confirm the fees for your property. <a href="/pricing/">See every fee</a></p>
     </div>
     <a href={site.nav.cta.href} class="btn btn-gold">{site.nav.cta.label}</a>
   </div>
