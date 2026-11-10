@@ -8,7 +8,9 @@
 // where local law bars tenant-paid leasing commissions (Newark) a leasing commission quoted before we
 // list; $250 per renewal. The $150 minimum applies only in a month the rent is collected in full (Dan,
 // 2026-11-10). Who earns the leasing commission is not stated on the site (Dan, 2026-11-10: "No need to
-// reveal that on our website"). "In New Jersey commissions are negotiable" sits directly under the fees.
+// reveal that on our website"). The callout under the fees ("In New Jersey commissions are negotiable" and
+// the supervising-broker line) was removed at Dan's request (2026-11-10); the statement stays in the FAQ
+// below and the broker line in the site footer.
 //
 // Copy note: the strings below are live site copy (Blake drafts, Dan approves, the CCO checks claims).
 import Base from '../../layouts/Base.astro';
@@ -124,8 +126,6 @@ const page = {
           </dd>
         </div>
       </dl>
-      <p class="negotiable">In New Jersey commissions are negotiable.</p>
-      <p class="broker-line">{site.brokerLine}</p>
       <h3 class="covers-head">Only when needed</h3>
       <dl class="ledger-list as-needed">
         {asNeeded.map((f) => (
