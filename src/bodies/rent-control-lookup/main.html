@@ -117,6 +117,25 @@ try{var q=new URLSearchParams(location.search).get("town");if(q&&q.trim().length
     return out;
   }
 
+
+  // Page + time-to-submit context for the back office (bot signal). Best-effort, never blocks a submit.
+  var PAGE_LOADED_AT = null;
+  try { PAGE_LOADED_AT = Date.now(); } catch (e) { /* no-op */ }
+
+  function addLeadContext(payload){
+    try {
+      if (typeof location !== 'undefined' && location && typeof location.pathname === 'string') {
+        payload.page = location.pathname.slice(0, 200);
+      }
+    } catch (e) { /* no-op */ }
+    try {
+      if (PAGE_LOADED_AT !== null) {
+        var elapsed = Math.floor(Date.now() - PAGE_LOADED_AT);
+        if (isFinite(elapsed) && elapsed >= 0) payload.elapsed_ms = elapsed;
+      }
+    } catch (e) { /* no-op */ }
+  }
+
   function buildPayload(fields){
     fields = fields || {};
     var payload = {};
@@ -140,6 +159,8 @@ try{var q=new URLSearchParams(location.search).get("town");if(q&&q.trim().length
       var attr = (typeof window !== 'undefined' && window.ppmAttribution) ? window.ppmAttribution() : null;
       if (attr) payload.attribution = attr;
     } catch (e) { /* no-op */ }
+
+    addLeadContext(payload);
 
     return payload;
   }
