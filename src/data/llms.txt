@@ -12,15 +12,17 @@
 
 ## Service areas (city pages)
 - [All service areas](https://www.njpropertymanager.com/service-areas/)
-- Jersey City, Hoboken, Newark, Bayonne (Hudson/Essex) · Hackensack (Bergen) · Morristown, Parsippany (Morris) · Edison, Woodbridge (Middlesex).
+{{AREAS}}
 
 ## NJ landlord guides
+- [All resources](https://www.njpropertymanager.com/blog/)
 - [New Jersey Landlord-Tenant Law (complete guide)](https://www.njpropertymanager.com/blog/nj-landlord-law/)
-- [Rent Control in New Jersey](https://www.njpropertymanager.com/blog/nj-landlord-law/rent-control-nj/) · [NJ rent control lookup by municipality](https://www.njpropertymanager.com/rent-control-lookup/)
-- [NJ Security Deposit Rules](https://www.njpropertymanager.com/blog/nj-landlord-law/security-deposit-rules/) · [Eviction Process in NJ](https://www.njpropertymanager.com/blog/nj-landlord-law/eviction-process-nj/)
-- [NJ Landlord Obligations](https://www.njpropertymanager.com/blog/nj-landlord-law/landlord-obligations/) · [NJ Landlord Disclosures](https://www.njpropertymanager.com/blog/nj-landlord-law/nj-landlord-disclosures/)
-- [Property Management Costs & Fees in NJ](https://www.njpropertymanager.com/blog/property-management-costs/) · [Is hiring a property manager worth it?](https://www.njpropertymanager.com/blog/property-management-costs/is-it-worth-it/)
+- [Property Management Costs & Fees in NJ](https://www.njpropertymanager.com/blog/property-management-costs/)
+- [NJ rent control lookup by municipality](https://www.njpropertymanager.com/rent-control-lookup/)
 - [NJ Landlord Compliance Checklist](https://www.njpropertymanager.com/landlord-checklist/)
+
+## Articles
+{{POSTS}}
 
 ## Legal
 - [Privacy Policy](https://www.njpropertymanager.com/privacy/): what we collect across the site, owner/resident portals, and PPM Platform; how AI is used; retention schedule; NJ Data Privacy Act rights. We do not sell personal information.
