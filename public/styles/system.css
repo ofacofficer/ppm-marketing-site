@@ -225,3 +225,46 @@ p.blog-byline { display: block; margin: 16px 0 0; max-width: none; font-size: 0.
   .pillar-sidebar.pillar-sidebar { order: 2; position: static; }
 }
 .post-cta-band.post-cta-band { border-top: var(--rule); }
+
+/* ── Generated lists (src/lib/content-index.mjs): posts on /blog/ and the guide pages, areas on
+   /service-areas/. Plain rows under Mist Line rules, no cards. ── */
+.post-index-section { padding: clamp(40px, 6vw, 64px) 0; border-top: var(--rule); }
+.post-index { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 6vw, 80px); }
+.post-index-item { border-top: 1px solid var(--border); padding: 18px 0 20px; }
+.post-index-title { font-size: 1.0625rem; line-height: 1.35; margin: 0 0 6px; }
+.post-index-title a { color: var(--navy); text-decoration: underline; text-decoration-color: var(--sky-rule); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.post-index-title a:hover { text-decoration-color: var(--navy); }
+main p.post-index-desc { margin: 0; max-width: 60ch; }
+main p.post-index-date { margin: 6px 0 0; font-size: 0.875rem; color: var(--ink-muted); }
+.topic-posts { list-style: none; margin: 12px 0 0; padding: 0; }
+.topic-posts li { padding: 6px 0; font-size: 0.9375rem; }
+.topic-posts a { color: var(--link); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.topic-posts-more a { font-weight: 700; }
+.area-index { display: flex; flex-direction: column; gap: 32px; margin-bottom: 40px; }
+.area-county-head { font-size: 1.25rem; margin: 0 0 12px; }
+@media (max-width: 767px) { .post-index { grid-template-columns: minmax(0, 1fr); } }
+
+/* ── Post pages: table of contents, sources, next step, related posts, visible FAQ ── */
+.post-toc { margin: 0 0 2em; padding: 14px 0 4px; border-top: var(--rule); border-bottom: 1px solid var(--border); }
+.post-toc-label { font-weight: 700; color: var(--navy); margin: 0 0 4px; }
+.prose-content .post-toc ol { margin: 0.4em 0 0.8em; }
+.post-extra { margin-top: 2.5em; padding-top: 14px; border-top: var(--rule); }
+.post-extra h2 { font-size: 1.25rem; margin: 0 0 0.5em; }
+.prose-content .post-sources li { font-size: 0.9375rem; overflow-wrap: anywhere; }
+.sidebar-related { list-style: none; margin: 0 0 8px; padding: 0; }
+.sidebar-related li { margin: 0; }
+
+/* ── Area pages: local rules at a glance, county town lists ── */
+.local-facts { margin: 0.6em 0 1em; }
+.local-facts dt { font-weight: 700; color: var(--navy); margin-top: 1em; }
+.local-facts dd { margin: 0.2em 0 0; }
+.local-facts .fact-source { font-size: 0.875rem; color: var(--ink-muted); }
+.area-updated { margin-top: 2em; font-size: 0.875rem; color: var(--ink-muted); }
+
+/* ── 404 page ── */
+.not-found { padding: clamp(40px, 6vw, 64px) 0 clamp(56px, 8vw, 96px); }
+.not-found-links { list-style: none; margin: 0; padding: 0; max-width: 640px; }
+.not-found-links li { border-top: 1px solid var(--border); padding: 16px 0; display: flex; flex-direction: column; gap: 2px; }
+.not-found-links li:last-child { border-bottom: 1px solid var(--border); }
+.not-found-links a { font-weight: 700; font-size: 1.0625rem; color: var(--navy); text-decoration: underline; text-decoration-color: var(--sky-rule); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.not-found-links span { color: var(--ink-muted); }

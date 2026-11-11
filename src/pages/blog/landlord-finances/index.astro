@@ -1,8 +1,11 @@
 ---
 // /blog/landlord-finances/: a one-off page. The body is src/bodies/blog/landlord-finances/main.html,
-// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout. The list of
+// every post in this pillar is generated from content/blog (src/lib/content-index.mjs).
 import Page from '../../../layouts/Page.astro';
 import { site } from '../../../site.config.mjs';
+import { getCollection } from 'astro:content';
+import { postEntries, pillarPostsHtml, fillMarker } from '../../../lib/content-index.mjs';
 import main from '../../../bodies/blog/landlord-finances/main.html?raw';
 import css from '../../../bodies/blog/landlord-finances/page.css?raw';
 
@@ -80,5 +83,7 @@ const page = {
     }
   ]
 };
+const entries = postEntries((await getCollection('blog')).map((p) => p.data));
+const body = fillMarker(main, 'pillar-posts', pillarPostsHtml(entries, 'blog/landlord-finances', 'Landlord Financial Management'));
 ---
-<Page {...page} main={main} css={css} />
+<Page {...page} main={body} css={css} />

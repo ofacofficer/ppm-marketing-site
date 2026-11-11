@@ -4,6 +4,9 @@
  * forms attach that record to their /api/lead/ submission as `attribution`, so the
  * CRM can see which channel actually produced each lead. First touch is immutable:
  * once stored, later visits (even with new utm params) never overwrite it.
+ * One field is the exception, and it is not first touch: `assist_path` is the most recent /blog/
+ * or /service-areas/ page the visitor viewed (pathname only), rewritten on every such view, so a
+ * lead records which guide or area page it read last. No other field is ever updated.
  * Everything is best-effort — storage being unavailable must never break a page. */
 (function () {
   var KEY = 'ppm_first_touch';
@@ -41,10 +44,25 @@
     }
   }
 
+  /* Most recent content page viewed: updates assist_path only, on the stored first-touch record. */
+  function recordAssist() {
+    try {
+      var path = window.location.pathname;
+      if (!/^\/(blog|service-areas)\//.test(path)) return;
+      var rec = readStored();
+      if (!rec) return; /* capture() could not store a record — nothing to add to */
+      rec.assist_path = path.slice(0, 300);
+      localStorage.setItem(KEY, JSON.stringify(rec));
+    } catch (e) {
+      /* storage blocked — best-effort only */
+    }
+  }
+
   /* Lead forms call this at submit time; returns the stored record or null. */
   window.ppmAttribution = function () {
     return readStored();
   };
 
   capture();
+  recordAssist();
 })();
