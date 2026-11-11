@@ -259,3 +259,4 @@ main p.post-index-date { margin: 6px 0 0; font-size: 0.875rem; color: var(--ink-
 .local-facts dt { font-weight: 700; color: var(--navy); margin-top: 1em; }
 .local-facts dd { margin: 0.2em 0 0; }
 .local-facts .fact-source { font-size: 0.875rem; color: var(--ink-muted); }
+.area-updated { margin-top: 2em; font-size: 0.875rem; color: var(--ink-muted); }

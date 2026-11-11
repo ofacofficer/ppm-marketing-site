@@ -129,7 +129,7 @@ export function areaIndexHtml(areas, attr = '') {
       const note = x.kind === 'county' ? 'County overview' : `${x.county}${x.rentControl ? ', rent control' : ''}`;
       return `<a href="${x.url}" class="area-row"${a}> <div${a}> <div class="area-name"${a}>${escapeHtml(x.name)}</div> <div class="area-note"${a}>${escapeHtml(note)}</div> </div> </a>`;
     }).join('');
-    return `<section class="area-county" aria-labelledby="${id}"><h2 id="${id}" class="area-county-head">${escapeHtml(g.county)}</h2><div class="areas-list"${a}>${rows}</div></section>`;
+    return `<section class="area-county-group" aria-labelledby="${id}"><h2 id="${id}" class="area-county-head">${escapeHtml(g.county)}</h2><div class="areas-list"${a}>${rows}</div></section>`;
   }).join('')}</div>`;
 }
 

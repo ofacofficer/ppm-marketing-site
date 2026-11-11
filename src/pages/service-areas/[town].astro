@@ -1,12 +1,25 @@
 ---
-// Every town page, one per content/areas/<town>.json. The file name is the URL slug.
+// Every area page, one per content/areas/<slug>.json: a town, or a county (kind "county"). The file
+// name is the URL slug. A county page links its towns; a town in a county that has a page gets the
+// county in its breadcrumb.
 import { getCollection } from 'astro:content';
 import Area, { type AreaData } from '../../layouts/Area.astro';
 
 export async function getStaticPaths() {
   const areas = await getCollection('areas');
-  return areas.map((a) => ({ params: { town: a.id }, props: { slug: a.id, area: a.data as AreaData } }));
+  const bySlug = new Map(areas.map((a) => [a.id, a.data]));
+  const counties = areas.filter((a) => a.data.kind === 'county');
+  return areas.map((a) => {
+    const towns = (a.data.towns ?? []).filter((t) => bySlug.has(t)).map((t) => ({ href: `/service-areas/${t}/`, label: bySlug.get(t)!.name }));
+    const county = a.data.kind === 'town'
+      ? counties.find((c) => (c.data.towns ?? []).includes(a.id)) ?? counties.find((c) => c.data.name === a.data.county)
+      : undefined;
+    return {
+      params: { town: a.id },
+      props: { slug: a.id, area: a.data as AreaData, towns, countyPage: county && { href: `/service-areas/${county.id}/`, label: county.data.name } },
+    };
+  });
 }
-const { slug, area } = Astro.props;
+const { slug, area, towns, countyPage } = Astro.props;
 ---
-<Area slug={slug} area={area} />
+<Area slug={slug} area={area} towns={towns} countyPage={countyPage} />
