@@ -10,7 +10,8 @@
 // This script no longer writes pages into the repo. A rendered <path>/index.html does not need to be
 // committed, and if one is, the build ignores it in favour of the JSON (scripts/postbuild.mjs).
 //
-// Schema of a content file (unchanged; the OS's website-publish function writes the same shape):
+// Schema of a content file (docs/CONTENT_SCHEMA.md is the full contract; the OS's website-publish
+// function writes the same shape). Required:
 //
 // {
 //   "path": "blog/nj-landlord-law/eviction-process-nj",  // page dir, no slashes at ends
@@ -24,8 +25,10 @@
 //   "body": "<h2 id=...>...</h2><p>...</p>..."             // article HTML
 // }
 //
-// Optional per-post additions (FAQPage JSON-LD, a social title, the legal-disclaimer line) go in
-// content/blog-extras/<slug>.json, never in the post JSON, so an OS republish cannot drop them.
+// Optional in the post JSON: dateModified, primaryKeyword, audience ("owner" | "tenant"), faq,
+// sources, legalDisclaimer (docs/CONTENT_SCHEMA.md). content/blog-extras/<slug>.json still carries a
+// social title, a FAQ or the legal-disclaimer line for a post whose JSON does not; a FAQ may be in
+// one place or the other, not both.
 //
 // Site-structure checks (src/lib/site-guard.mjs; mirrored in the OS's _shared/siteGuard.ts, and run
 // on every post by `npm run build`): the pillar must be an existing hub page, every internal link in
@@ -35,8 +38,8 @@
 // --template-out renders each post through scripts/templates/post.html, the template the OS's
 // website-publish function still fetches during the transition, into the given directory (never
 // into the repo), so the two renderings can be compared.
-import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
-import { join, dirname, resolve } from 'node:path';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'node:fs';
+import { join, dirname, resolve, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { postProblems } from '../src/lib/site-guard.mjs';
 import { siteRoutes } from '../src/lib/routes.mjs';
@@ -78,7 +81,9 @@ for (const f of files) {
   const c = JSON.parse(readFileSync(f, 'utf8'));
   const self = trim(c.path || '');
   // The post's own URL counts as existing, so a new post may link to itself.
-  const problems = postProblems(c, (r) => r === self || routes.has(r));
+  const extrasFile = join(ROOT, 'content/blog-extras', basename(f));
+  const extras = existsSync(extrasFile) ? JSON.parse(readFileSync(extrasFile, 'utf8')) : undefined;
+  const problems = postProblems(c, (r) => r === self || routes.has(r), { extras });
   if (problems.length) { failed++; console.error(`REFUSED ${f}:\n  ${problems.join('\n  ')}`); continue; }
   if (templateOut) {
     const out = join(templateOut, self, 'index.html');
