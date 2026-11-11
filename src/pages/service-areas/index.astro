@@ -1,8 +1,12 @@
 ---
 // /service-areas/: a one-off page. The body is src/bodies/service-areas/main.html,
-// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout. The list of
+// area pages, grouped by county, is generated from content/areas (src/lib/content-index.mjs); the
+// hand-written "other towns we serve" rows drop a town as soon as it has its own page.
 import Page from '../../layouts/Page.astro';
 import { site } from '../../site.config.mjs';
+import { getCollection } from 'astro:content';
+import { areaIndexHtml, withoutPublishedTowns, fillMarker } from '../../lib/content-index.mjs';
 import main from '../../bodies/service-areas/main.html?raw';
 import css from '../../bodies/service-areas/page.css?raw';
 
@@ -50,5 +54,9 @@ const page = {
     }
   ]
 };
+const areas = (await getCollection('areas')).map((a) => ({ slug: a.id, data: a.data }));
+let body = fillMarker(withoutPublishedTowns(main, areas), 'area-index', areaIndexHtml(areas, 'data-astro-cid-75uxgust'));
+// Once every hand-written town has its own page, drop the empty "other towns" heading and list.
+body = body.replace(/<h2 class="area-county-head"[^>]*>Other towns we serve<\/h2> <div class="areas-list"[^>]*>\s*<\/div>/, '');
 ---
-<Page {...page} main={main} css={css} />
+<Page {...page} main={body} css={css} />

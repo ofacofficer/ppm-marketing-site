@@ -1,8 +1,11 @@
 ---
 // /blog/nj-landlord-law/: a one-off page. The body is src/bodies/blog/nj-landlord-law/main.html,
-// verbatim from the Phase 0 site; the head, header and footer come from the shared layout.
+// verbatim from the Phase 0 site; the head, header and footer come from the shared layout. The list of
+// every post in this pillar is generated from content/blog (src/lib/content-index.mjs).
 import Page from '../../../layouts/Page.astro';
 import { site } from '../../../site.config.mjs';
+import { getCollection } from 'astro:content';
+import { postEntries, pillarPostsHtml, fillMarker } from '../../../lib/content-index.mjs';
 import main from '../../../bodies/blog/nj-landlord-law/main.html?raw';
 import css from '../../../bodies/blog/nj-landlord-law/page.css?raw';
 
@@ -81,5 +84,7 @@ const page = {
     }
   ]
 };
+const entries = postEntries((await getCollection('blog')).map((p) => p.data));
+const body = fillMarker(main, 'pillar-posts', pillarPostsHtml(entries, 'blog/nj-landlord-law', 'NJ Landlord Law'));
 ---
-<Page {...page} main={main} css={css} />
+<Page {...page} main={body} css={css} />
