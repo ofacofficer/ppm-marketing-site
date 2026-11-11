@@ -5,24 +5,66 @@
 //
 // Phase 4: one column at the 65ch measure with a quiet aside (no cards), a statute-callout style for
 // bodies that use <blockquote> or <aside class="statute"> (src/styles/post.css), and the published
-// date stated as published: the post JSON has no review date, so the page claims none.
+// date stated as published; a post with a dateModified also says when it was updated.
+//
+// Everything a new post needs comes from its one JSON file (docs/CONTENT_SCHEMA.md): a table of
+// contents once it has four or more h2s, the related posts in the aside (same pillar, newest), the
+// FAQ (JSON-LD, plus a visible list of any question the body does not already show), the Sources
+// list, the "Next step" links for its audience, and the legal-disclaimer line (on by default for
+// NJ Landlord Law posts). A tenant post carries no owner pitch: no mid-article CTA, no CTA band.
 import Base from './Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import CtaBand from '../components/CtaBand.astro';
 import FAQ from '../components/FAQ.astro';
+import FaqList from '../components/FaqList.astro';
 import { site, businessJsonLd } from '../site.config.mjs';
-import { postBodyHtml, postDates, postJsonLd } from '../lib/post-body.mjs';
+import { postBodyHtml, postDates, postJsonLd, withHeadingIds, headings, plainText, trim } from '../lib/post-body.mjs';
+import { escapeHtml } from '../lib/content-index.mjs';
 import postCss from '../styles/post.css?raw';
 
+type Faq = { question: string; answer: string }[];
 interface Props {
-  post: { path: string; title: string; titleTag?: string; description: string; pillar: { name: string; path: string }; author: string; authorType: string; datePublished: string; body: string };
-  extras?: { socialTitle?: string; faq?: { question: string; answer: string }[]; legalDisclaimer?: boolean };
+  post: {
+    path: string; title: string; titleTag?: string; description: string; pillar: { name: string; path: string };
+    author: string; authorType: string; datePublished: string; body: string;
+    dateModified?: string; primaryKeyword?: string; audience?: 'owner' | 'tenant'; faq?: Faq;
+    sources?: { title: string; url: string }[]; legalDisclaimer?: boolean;
+  };
+  extras?: { socialTitle?: string; faq?: Faq; legalDisclaimer?: boolean };
+  /** Up to three posts from the same pillar (src/lib/content-index.mjs relatedPosts). */
+  related?: { url: string; title: string }[];
 }
-const { post, extras = {} } = Astro.props;
+const { post, extras = {}, related = [] } = Astro.props;
+const audience = post.audience ?? 'owner';
 const { url, pillarPath, posting, breadcrumb } = postJsonLd(post, site.baseUrl);
 const dates = postDates(post.datePublished);
+const updated = post.dateModified && post.dateModified !== post.datePublished ? postDates(post.dateModified) : null;
 const titleTag = post.titleTag || post.title;
 const socialTitle = extras.socialTitle ?? titleTag;
+const bodyText = plainText(post.body);
+// Explicit (post JSON, then blog-extras) wins. The default, on for NJ Landlord Law, stays off when
+// the body already carries its own "not legal advice" line, so no page says it twice.
+const legalDisclaimer = post.legalDisclaimer ?? extras.legalDisclaimer
+  ?? (trim(post.pillar.path) === 'blog/nj-landlord-law' && !bodyText.includes('not legal advice'));
+const faqItems: Faq = post.faq ?? extras.faq ?? [];
+// A blog-extras FAQ is already in the body copy (its contract); a post's own FAQ is shown for any
+// question the body does not already ask.
+const visibleFaq = post.faq ? post.faq.filter((q) => !bodyText.includes(plainText(q.question))) : [];
+const bodyHtml = withHeadingIds(postBodyHtml(post.body, { audience }));
+const toc = headings(bodyHtml);
+const tocHtml = toc.length >= 4
+  ? `<nav class="post-toc" aria-labelledby="post-toc-title"><p class="post-toc-label" id="post-toc-title">On this page</p><ol>${toc.map((h) => `<li><a href="#${escapeHtml(h.id)}">${h.html}</a></li>`).join('')}</ol></nav>`
+  : '';
+const nextSteps = audience === 'tenant'
+  ? [
+      { href: '/rentals/', label: 'Browse available rentals', text: 'homes we are leasing now.' },
+      { href: '/tenants/', label: 'Tenant resources', text: 'pay rent, request maintenance, and reach us about your lease.' },
+    ]
+  : [
+      { href: '/get-started/', label: 'Get a free rental analysis', text: 'what your NJ rental should rent for, with no obligation.' },
+      { href: '/landlord-checklist/', label: 'Get the NJ landlord compliance checklist', text: 'every registration, certificate and disclosure in one list.' },
+      { href: '/pricing/', label: 'See our pricing', text: 'what PPM charges, in full.' },
+    ];
 const cid = 'bvzihdzo';
 const s = { [`data-astro-cid-${cid}`]: '' };
 ---
@@ -30,11 +72,15 @@ const s = { [`data-astro-cid-${cid}`]: '' };
   title={titleTag}
   description={post.description}
   canonical={url}
-  og={{ title: socialTitle }}
+  og={{ title: socialTitle, type: 'article', article: { publishedTime: post.datePublished, modifiedTime: post.dateModified || post.datePublished, section: post.pillar.name } }}
   jsonLd={[businessJsonLd, posting, breadcrumb]}
   css={postCss}
 >
-<FAQ slot="head" items={extras.faq ?? []} />
+<FAQ slot="head" items={faqItems} />
 <main id="main">  <article class="blog-layout" {...s}> <Breadcrumbs cid={cid} items={[{ href: '/', label: 'Home' }, { href: '/blog/', label: 'Resources' }, { href: pillarPath, label: post.pillar.name }]} current={post.title} /> <header class="post-header" {...s}> <div class="container" {...s}> <a href={pillarPath} class="badge" style="margin-bottom:20px;display:inline-block;" {...s}> {post.pillar.name} </a> <h1 class="post-title" {...s}>{post.title}</h1>
-<p class="blog-byline">By <span class="blog-byline-name">{post.author}</span>, published <time datetime={post.datePublished}>{dates.human}</time></p> </div> </header> <div class="post-body" {...s}> <div class="container post-grid" {...s}> <div class="prose-content" {...s}>  <Fragment set:html={postBodyHtml(post.body)} />  </div> <aside class="post-sidebar" aria-label={`More in ${post.pillar.name}`} {...s}> <div class="sidebar-cluster" {...s}> <div class="sidebar-cluster-label" {...s}>More in {post.pillar.name}</div> <a href={pillarPath} {...s}>Back to the {post.pillar.name} guide</a> </div> </aside> </div> </div> <CtaBand cid={cid} heading="Ready to stop managing and start owning?" text="Get a free rental analysis for your NJ property — no pitch, no pressure." button={{ href: '/contact/', label: site.nav.cta.label }} /> </article>  {extras.legalDisclaimer && <div class="wrap" style="padding:0 var(--gutter) 24px;"><p style="font-size:.8rem;color:var(--slate);max-width:none;"><em>This guide is general information for New Jersey landlords, not legal advice. Rules change and vary by municipality — verify current requirements with your municipality or a qualified New Jersey attorney before acting.</em></p></div>}</main>
+<p class="blog-byline">By <span class="blog-byline-name">{post.author}</span>, published <time datetime={post.datePublished}>{dates.human}</time>{updated && <>, updated <time datetime={post.dateModified}>{updated.human}</time></>}</p> </div> </header> <div class="post-body" {...s}> <div class="container post-grid" {...s}> <div class="prose-content" {...s}> {tocHtml && <Fragment set:html={tocHtml} />} <Fragment set:html={bodyHtml} />
+{visibleFaq.length > 0 && <section class="post-extra post-faq" aria-labelledby="post-faq-title"><h2 id="post-faq-title">Frequently asked questions</h2><FaqList items={visibleFaq} /></section>}
+{post.sources && <section class="post-extra post-sources" aria-labelledby="post-sources-title"><h2 id="post-sources-title">Sources</h2><ol>{post.sources.map((src) => <li><a href={src.url} rel="noopener" target="_blank">{src.title}</a></li>)}</ol></section>}
+<section class="post-extra post-next" aria-labelledby="post-next-title"><h2 id="post-next-title">Next step</h2><ul>{nextSteps.map((n) => <li><a href={n.href}>{n.label}</a>: {n.text}</li>)}</ul></section>
+</div> <aside class="post-sidebar" aria-label={`More in ${post.pillar.name}`} {...s}> <div class="sidebar-cluster" {...s}> <div class="sidebar-cluster-label" {...s}>More in {post.pillar.name}</div> {related.length > 0 && <ul class="sidebar-related">{related.map((r) => <li><a href={r.url} {...s}>{r.title}</a></li>)}</ul>} <a href={pillarPath} {...s}>Back to the {post.pillar.name} guide</a> </div> </aside> </div> </div> {audience === 'owner' && <CtaBand cid={cid} heading="Ready to stop managing and start owning?" text="Get a free rental analysis for your NJ property — no pitch, no pressure." button={{ href: '/contact/', label: site.nav.cta.label }} />} </article>  {legalDisclaimer && <div class="wrap" style="padding:0 var(--gutter) 24px;"><p style="font-size:.8rem;color:var(--slate);max-width:none;"><em>This guide is general information for New Jersey landlords, not legal advice. Rules change and vary by municipality — verify current requirements with your municipality or a qualified New Jersey attorney before acting.</em></p></div>}</main>
 </Base>
