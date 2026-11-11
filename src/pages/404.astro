@@ -1,0 +1,30 @@
+---
+// The not-found page. Vercel serves dist/404.html for any URL nothing else answers. It is never
+// indexed and has no canonical URL; it points the visitor at the main sections instead.
+import Base from '../layouts/Base.astro';
+
+const links = [
+  { href: '/', label: 'Home', text: 'Start from the home page.' },
+  { href: '/services/', label: 'Services', text: 'What we do for NJ landlords and investors.' },
+  { href: '/blog/', label: 'Resources', text: 'Guides on NJ landlord law, costs and the rental market.' },
+  { href: '/service-areas/', label: 'Service areas', text: 'The towns and counties we serve.' },
+  { href: '/get-started/', label: 'Get a free rental analysis', text: 'What your NJ rental should rent for, with no obligation.' },
+];
+---
+<Base title="Page not found | Proactive Property Management" description="The page you were looking for is not here. Find your way from our services, resources, service areas or a free rental analysis." robots="noindex">
+<main id="main">
+<section class="page-hero">
+<div class="wrap">
+<h1>We could not find that page</h1>
+<p class="lead">The link may be old or mistyped. These will get you where you were going.</p>
+</div>
+</section>
+<section class="not-found">
+<div class="wrap">
+<ul class="not-found-links">
+{links.map((l) => <li><a href={l.href}>{l.label}</a> <span>{l.text}</span></li>)}
+</ul>
+</div>
+</section>
+</main>
+</Base>

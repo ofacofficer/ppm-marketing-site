@@ -12,8 +12,10 @@ import chromeCss from '../styles/chrome.css?raw';
 export interface Props {
   title: string;
   description: string;
-  /** Absolute canonical URL. */
-  canonical: string;
+  /** Absolute canonical URL. Omitted only by a page that has no URL of its own (the 404 page). */
+  canonical?: string;
+  /** A robots meta value, e.g. "noindex" (the 404 page). Pages are indexable by default. */
+  robots?: string;
   og?: {
     type?: string; title?: string; description?: string; url?: string; image?: string;
     /** og:type "article" pages (posts): article:published_time / modified_time / section. */
@@ -35,7 +37,7 @@ export interface Props {
 }
 
 const {
-  title, description, canonical, og = {}, twitter = {}, jsonLd = [], css = '', extraStyles = [],
+  title, description, canonical, robots, og = {}, twitter = {}, jsonLd = [], css = '', extraStyles = [],
   stylesheets = [], navScript = 'default', bodyClass, footerTail = 'default',
 } = Astro.props;
 
@@ -49,7 +51,8 @@ const navScriptSrc = navScript === 'home' ? '/_astro/hoisted.home-20261103.js' :
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content={description}>
-<link rel="canonical" href={canonical}>
+{canonical && <link rel="canonical" href={canonical}>}
+{robots && <meta name="robots" content={robots}>}
 <title>{title}</title>
 <link rel="preload" href="/fonts/Satoshi-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Satoshi-Bold.woff2" as="font" type="font/woff2" crossorigin>
@@ -67,7 +70,7 @@ const navScriptSrc = navScript === 'home' ? '/_astro/hoisted.home-20261103.js' :
 <meta property="og:site_name" content={site.name}>
 <meta property="og:title" content={ogTitle}>
 <meta property="og:description" content={ogDescription}>
-<meta property="og:url" content={og.url ?? canonical}>
+{(og.url ?? canonical) && <meta property="og:url" content={og.url ?? canonical}>}
 <meta property="og:image" content={og.image ?? site.ogImage}>
 <meta property="og:locale" content="en_US">
 {og.article && <meta property="article:published_time" content={og.article.publishedTime}>}

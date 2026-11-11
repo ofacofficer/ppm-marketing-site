@@ -260,3 +260,11 @@ main p.post-index-date { margin: 6px 0 0; font-size: 0.875rem; color: var(--ink-
 .local-facts dd { margin: 0.2em 0 0; }
 .local-facts .fact-source { font-size: 0.875rem; color: var(--ink-muted); }
 .area-updated { margin-top: 2em; font-size: 0.875rem; color: var(--ink-muted); }
+
+/* ── 404 page ── */
+.not-found { padding: clamp(40px, 6vw, 64px) 0 clamp(56px, 8vw, 96px); }
+.not-found-links { list-style: none; margin: 0; padding: 0; max-width: 640px; }
+.not-found-links li { border-top: 1px solid var(--border); padding: 16px 0; display: flex; flex-direction: column; gap: 2px; }
+.not-found-links li:last-child { border-bottom: 1px solid var(--border); }
+.not-found-links a { font-weight: 700; font-size: 1.0625rem; color: var(--navy); text-decoration: underline; text-decoration-color: var(--sky-rule); text-decoration-thickness: 2px; text-underline-offset: 4px; }
+.not-found-links span { color: var(--ink-muted); }

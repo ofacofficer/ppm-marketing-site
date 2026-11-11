@@ -74,6 +74,15 @@ for (const [r, must] of probes) {
   if (!pages.includes(r)) failures.push(`probe /${r ? r + '/' : ''}: page missing`);
   else if (must && !read(r).includes(must)) failures.push(`probe /${r ? r + '/' : ''}: does not contain "${must}"`);
 }
+// The not-found page is a page too (dist/404.html, not an index.html): same footer obligations, and
+// it must never be indexed.
+const notFound = existsSync(join(DIST, '404.html')) ? readFileSync(join(DIST, '404.html'), 'utf8') : null;
+if (!notFound) failures.push('dist/404.html missing');
+else {
+  if (!notFound.includes('Equal Housing Opportunity')) failures.push('/404.html: no Equal Housing Opportunity statement');
+  if (!notFound.includes('License #')) failures.push('/404.html: no supervising-broker license line');
+  if (!/<meta name="robots" content="noindex/.test(notFound)) failures.push('/404.html: not marked noindex');
+}
 for (const f of ['sitemap.xml', 'robots.txt', 'llms.txt', 'favicon.svg', 'og-image.jpg', 'js/attribution.js', 'styles/tokens.css', 'styles/global.css', 'styles/system.css', 'fonts/Satoshi-Regular.woff2', 'fonts/Satoshi-Medium.woff2', 'fonts/Satoshi-Bold.woff2'])
   if (!existsSync(join(DIST, f))) failures.push(`dist/${f} missing`);
 
