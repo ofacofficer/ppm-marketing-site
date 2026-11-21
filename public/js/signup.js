@@ -103,9 +103,51 @@
   /* Which panel a journey should open on when a visitor comes back to it. */
   function panelFor(j) {
     if (!j) return 'check';
-    if (j.has_contact) return 'done';
+    if (j.submitted) return 'status';
+    if (j.has_contact) return (j.path === 'standard' && j.application_open) ? 'apply' : 'done';
     if (j.path !== 'standard') return 'contact';
     return j.quote ? 'quote' : 'price';
+  }
+
+  /* The application as the service takes it, from the form's answers. `ownership` is the one
+     question an owner is asked; it decides the owner kind and the applicant's role. */
+  function buildApplication(v) {
+    var own = v.ownership, people = v.people || [];
+    var app = {
+      owner_kind: own === 'joint' ? 'joint' : own === 'entity' ? 'entity' : (own === 'me' || own === 'rep') ? 'individual' : '',
+      applicant_role: (own === 'me' || own === 'joint') ? 'owner' : (own === 'entity' || own === 'rep') ? (v.applicant_role || '') : '',
+      owners: own === 'entity' ? [] : people.slice(0, own === 'joint' ? 4 : 1),
+      entity_name: own === 'entity' ? (v.entity_name || '') : '',
+      entity_type: own === 'entity' ? (v.entity_type || '') : '',
+      authority: (own === 'entity' || own === 'rep') ? (v.authority || '') : '',
+      start_date: v.start_date || '', leases_count: v.leases_count || '', deposits_held_by: v.deposits_held_by || '', payout_name: v.payout_name || ''
+    };
+    return app;
+  }
+
+  /* The form's `ownership` answer, back from a saved application. */
+  function ownershipOf(app) {
+    if (!app || !app.owner_kind) return '';
+    if (app.owner_kind === 'entity') return 'entity';
+    if (app.owner_kind === 'joint') return 'joint';
+    return app.applicant_role && app.applicant_role !== 'owner' ? 'rep' : 'me';
+  }
+
+  var MISSING_TEXT = {
+    owner_kind: ['ownership', 'Tell us who owns the property.'],
+    owners: ['owners', 'Enter the first and last name of each owner, as on the deed.'],
+    entity_name: ['entity_name', 'Enter the name of the company, trust or estate.'],
+    entity_type: ['entity_name', 'Choose what kind of owner it is.'],
+    applicant_role: ['ownership', 'Tell us your role.'],
+    authority: ['authority', 'Tell us what lets you sign for the owner.'],
+    start_date: ['start_date', 'Choose the date you want us to start.'],
+    deposits_held_by: ['deposits_held_by', 'Tell us who holds the security deposits.']
+  };
+
+  var STATE_TEXT = { done: 'Done', current: 'In progress', not_started: 'Not started' };
+  function stateText(step, s) {
+    if (step.state !== 'current') return STATE_TEXT[step.state] || '';
+    return s && s.waiting_on === 'ppm' ? 'With us' : 'Waiting on you';
   }
 
   var ERROR_TEXT = {
@@ -116,13 +158,20 @@
     rate_limited: 'That is a lot of tries in a short time. Please call us, or try again in an hour.',
     busy: 'We cannot take this online right now. Please call us or use the contact form.',
     not_found: 'This saved page has expired. Start again below.',
-    quote_required: 'Add the rent first, so we can show the price.'
+    quote_required: 'Add the rent first, so we can show the price.',
+    closed: 'This step is not open online yet. We have your details and reply within one business day.',
+    consent_required: 'Please read and tick each statement before you submit.',
+    start_date_invalid: 'Choose a start date from today up to a year from now.',
+    incomplete: 'A few answers are still missing. They are marked above.',
+    not_open: 'This application has already been sent to us.',
+    lead_closed: 'We could not take this online. Please call us.'
   };
   function errorText(code) { return ERROR_TEXT[code] || 'Something went wrong on our side. Please call us or use the contact form.'; }
 
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { usd: usd, esc: esc, townFromAddress: townFromAddress, checkErrors: checkErrors, firstBadRent: firstBadRent,
-                       cleanRent: cleanRent, answerFor: answerFor, panelFor: panelFor, errorText: errorText };
+                       cleanRent: cleanRent, answerFor: answerFor, panelFor: panelFor, errorText: errorText,
+                       buildApplication: buildApplication, ownershipOf: ownershipOf, stateText: stateText, MISSING_TEXT: MISSING_TEXT };
     return;
   }
 
@@ -167,12 +216,12 @@
   function track(name) { try { if (window.va) window.va('event', { name: name }); } catch (e) { /* no-op */ } }
 
   var $ = function (id) { return document.getElementById(id); };
-  var panels = ['check', 'price', 'quote', 'contact', 'done'];
+  var panels = ['check', 'price', 'quote', 'contact', 'apply', 'status', 'done'];
   var quiet = true; // nothing takes focus while the page is still loading
   function show(name) {
     panels.forEach(function (p) { var el = $('su-' + p); if (el) el.hidden = (p !== name); });
-    // the answer to step 1 stays in view from the price step until the end
-    $('su-answer').hidden = (name === 'check' || name === 'done');
+    // the answer to step 1 stays in view while it is what the owner is acting on
+    $('su-answer').hidden = !(name === 'price' || name === 'quote' || (name === 'contact' && journey && journey.path !== 'standard'));
     if (quiet) return;
     var head = $('su-' + name) && $('su-' + name).querySelector('h2');
     if (head) { head.setAttribute('tabindex', '-1'); head.focus(); }
@@ -258,9 +307,102 @@
       : 'Thanks. We have your details and reply within one business day.';
   }
 
+  // ── the application ─────────────────────────────────────────────────────────────────────────
+
+  var applicant = { first_name: '', last_name: '' }; // typed on the contact step, this visit only
+
+  function ownerRow(i, o, label) {
+    return '<fieldset class="su-owner"><legend>' + esc(label) + '</legend><div class="su-row">' +
+      '<div class="su-field"><label for="su-of-' + i + '">First name</label><input id="su-of-' + i + '" data-owner="first_name" autocomplete="off" value="' + esc(o.first_name || '') + '"></div>' +
+      '<div class="su-field"><label for="su-ol-' + i + '">Last name</label><input id="su-ol-' + i + '" data-owner="last_name" autocomplete="off" value="' + esc(o.last_name || '') + '"></div></div>' +
+      (i > 0 ? '<div class="su-field"><label for="su-oe-' + i + '">Email (optional)</label><input id="su-oe-' + i + '" data-owner="email" type="email" autocomplete="off" value="' + esc(o.email || '') + '"></div>' : '') +
+      '</fieldset>';
+  }
+  function readOwners() {
+    return Array.prototype.map.call($('su-owners').querySelectorAll('.su-owner'), function (fs) {
+      var o = {};
+      Array.prototype.forEach.call(fs.querySelectorAll('[data-owner]'), function (inp) { o[inp.getAttribute('data-owner')] = inp.value.trim(); });
+      return o;
+    });
+  }
+  function drawOwners(saved) {
+    var own = $('su-ownership').value, box = $('su-owners'), rows = saved || readOwners(), html = '';
+    if (own === 'me' || own === 'rep') {
+      html = ownerRow(0, rows[0] || (own === 'me' ? applicant : {}), own === 'me' ? 'Your legal name, as on the deed' : 'The owner\u2019s legal name, as on the deed');
+    } else if (own === 'joint') {
+      var n = Math.max(2, Math.min(4, rows.length));
+      for (var i = 0; i < n; i++) html += ownerRow(i, rows[i] || (i === 0 ? applicant : {}), i === 0 ? 'Your legal name, as on the deed' : 'Co-owner ' + i);
+      if (n < 4) html += '<button type="button" class="su-link" id="su-add-owner">Add another owner</button>';
+    }
+    box.innerHTML = html;
+    $('su-owners-err-slot') && $('su-owners-err-slot').remove();
+    box.insertAdjacentHTML('beforeend', '<p id="su-owners-err-slot" class="su-err" role="alert" hidden></p>');
+    var add = $('su-add-owner');
+    if (add) add.addEventListener('click', function () { var r = readOwners(); r.push({}); drawOwners(r); });
+    $('su-entity').hidden = own !== 'entity';
+    $('su-signer').hidden = !(own === 'entity' || own === 'rep');
+  }
+  function drawDisclosures() {
+    var list = (cfg && cfg.disclosures) || [];
+    $('su-disclosures').innerHTML = list.map(function (d, i) {
+      var missing = !d.body;
+      return '<section class="su-disclosure" aria-labelledby="su-d-title-' + i + '"><h3 id="su-d-title-' + i + '">' + esc(d.title) + '</h3>' +
+        (d.draft ? '<p class="su-draft">Draft. Not approved. Shown in preview only.</p>' : '') +
+        '<div class="su-disclosure-body" tabindex="0" role="region" aria-labelledby="su-d-title-' + i + '">' + (missing ? 'The text of this statement has not been supplied yet.' : esc(d.body)) + '</div>' +
+        '<label class="su-check"><input type="checkbox" data-key="' + esc(d.key) + '" data-version="' + esc(d.version) + '"><span>I have read this and agree.</span></label></section>';
+    }).join('');
+  }
+  function fillApply(app) {
+    var f = $('su-apply');
+    app = app || {};
+    f.ownership.value = ownershipOf(app);
+    f.entity_name.value = app.entity_name || '';
+    if (app.entity_type) f.entity_type.value = app.entity_type;
+    if (app.applicant_role && app.applicant_role !== 'owner') f.applicant_role.value = app.applicant_role;
+    f.authority.value = app.authority || '';
+    f.start_date.value = app.start_date || '';
+    try { f.start_date.min = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 10); } catch (e) { /* no-op */ }
+    f.leases_count.value = app.leases_count == null ? '' : app.leases_count;
+    f.deposits_held_by.value = app.deposits_held_by || '';
+    f.payout_name.value = app.payout_name || '';
+    $('su-leases').hidden = !(journey.occupancy === 'tenanted' || journey.occupancy === 'mixed');
+    drawOwners(app.owners && app.owners.length ? app.owners : null);
+    drawDisclosures();
+  }
+  function readApply() {
+    var f = $('su-apply');
+    return buildApplication({
+      ownership: f.ownership.value, people: readOwners(), entity_name: f.entity_name.value.trim(), entity_type: f.entity_type.value,
+      applicant_role: f.applicant_role.value, authority: f.authority.value.trim(), start_date: f.start_date.value,
+      leases_count: f.leases_count.value.trim(), deposits_held_by: f.deposits_held_by.value, payout_name: f.payout_name.value.trim()
+    });
+  }
+  function showMissing(missing) {
+    var f = $('su-apply'), first = null;
+    ['ownership', 'entity_name', 'authority', 'start_date', 'deposits_held_by'].forEach(function (n) { fieldError(f, n, ''); });
+    var oslot = $('su-owners-err-slot'); if (oslot) { oslot.textContent = ''; oslot.hidden = true; }
+    (missing || []).forEach(function (code) {
+      var m = MISSING_TEXT[code]; if (!m) return;
+      if (m[0] === 'owners') { if (oslot) { oslot.textContent = m[1]; oslot.hidden = false; } first = first || $('su-owners').querySelector('input'); }
+      else { fieldError(f, m[0], m[1]); first = first || f[m[0]]; }
+    });
+    return first;
+  }
+  function renderStatus(s) {
+    $('su-status-note').textContent = s.note || '';
+    $('su-status-steps').innerHTML = (s.steps || []).map(function (st) {
+      return '<li data-state="' + esc(st.state) + '"><span>' + esc(st.name) + '</span><span class="su-track-state">' + esc(stateText(st, s)) + '</span></li>';
+    }).join('');
+  }
+  function loadStatus() {
+    return call({ action: 'status', token: token }).then(function (s) { if (s && s.ok) renderStatus(s); });
+  }
+
   function open(j) {
     journey = j;
     var p = panelFor(j);
+    if (p === 'apply') fillApply(j.application);
+    if (p === 'status') loadStatus();
     if (p !== 'check') renderAnswer();
     if (p === 'price' || p === 'quote') renderUnits();
     if (p === 'quote') renderQuote();
@@ -339,6 +481,38 @@
     });
   });
 
+  $('su-ownership').addEventListener('change', function () { drawOwners(null); });
+  // Saved as the owner goes: on leaving any field, quietly. A save that fails is tried again on submit.
+  $('su-apply').addEventListener('change', function () {
+    if (token && journey && !journey.submitted) call({ action: 'application_save', token: token, application: readApply() });
+  });
+  $('su-apply').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var f = e.target, boxes = f.querySelectorAll('.su-check input'), consents = [], unticked = null;
+    Array.prototype.forEach.call(boxes, function (b) {
+      if (b.checked) consents.push({ key: b.getAttribute('data-key'), version: Number(b.getAttribute('data-version')) });
+      else if (!unticked) unticked = b;
+    });
+    formError('apply', '');
+    busy(f, true);
+    call({ action: 'application_save', token: token, application: readApply() }).then(function (saved) {
+      if (!saved.ok) { busy(f, false); formError('apply', errorText(saved.error)); return; }
+      var first = showMissing(saved.missing);
+      if (first) { busy(f, false); formError('apply', errorText('incomplete')); first.focus(); return; }
+      if (unticked) { busy(f, false); formError('apply', errorText('consent_required')); unticked.focus(); return; }
+      return call({ action: 'application_submit', token: token, consents: consents }).then(function (res) {
+        busy(f, false);
+        if (!res.ok) {
+          if (res.error === 'incomplete') { var x = showMissing(res.missing); if (x) x.focus(); }
+          formError('apply', errorText(res.error));
+          return;
+        }
+        track('signup_submit');
+        open(res.journey);
+      });
+    });
+  });
+
   $('su-continue').addEventListener('click', function () { show('contact'); });
   $('su-edit-rent').addEventListener('click', function () { renderUnits(); show('price'); });
 
@@ -352,6 +526,7 @@
     if (!okName) { f.name.focus(); return; }
     if (!okEmail) { f.email.focus(); return; }
     var i = name.search(/\s/);
+    applicant = { first_name: i === -1 ? name : name.slice(0, i), last_name: i === -1 ? '' : name.slice(i + 1).trim() };
     var payload = {
       action: 'contact', token: token, first_name: i === -1 ? name : name.slice(0, i), last_name: i === -1 ? '' : name.slice(i + 1).trim(),
       email: email, phone: f.phone.value.trim(), website: f.website.value, page: location.pathname.slice(0, 200), elapsed_ms: Math.max(0, Math.floor(Date.now() - loadedAt))
@@ -376,7 +551,8 @@
     if (!activate()) return;
     if (!token) { show('check'); return; }
     return call({ action: 'get', token: token }).then(function (res) {
-      if (res.ok && res.journey && res.journey.status === 'open') { open(res.journey); return; }
+      // the service answers not_found for a journey that is closed or whose link has expired
+      if (res.ok && res.journey) { open(res.journey); return; }
       store.del(localStorage, TOKEN_KEY); token = null;
       show('check');
     });
