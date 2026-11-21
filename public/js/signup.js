@@ -168,9 +168,22 @@
   };
   function errorText(code) { return ERROR_TEXT[code] || 'Something went wrong on our side. Please call us or use the contact form.'; }
 
+  /* The fee in one plain line, from the signed fee schedule's figures (the config's fees):
+     "10% of the rent collected, with a $150 minimum and a $275 maximum per unit."
+     Empty when the schedule gives no rate, so nothing is shown rather than a guess. */
+  function feeLine(f) {
+    var pct = f && Number(f.mgmt_pct);
+    if (!pct || !isFinite(pct)) return '';
+    var lo = f.minimum_monthly_per_unit != null ? usd(f.minimum_monthly_per_unit) : '';
+    var hi = f.maximum_monthly_per_unit != null ? usd(f.maximum_monthly_per_unit) : '';
+    var limits = lo && hi ? ', with a ' + lo + ' minimum and a ' + hi + ' maximum per unit'
+      : lo ? ', with a ' + lo + ' minimum per unit' : hi ? ', with a ' + hi + ' maximum per unit' : '';
+    return pct + '% of the rent collected' + limits + '.';
+  }
+
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = { usd: usd, esc: esc, townFromAddress: townFromAddress, checkErrors: checkErrors, firstBadRent: firstBadRent,
-                       cleanRent: cleanRent, answerFor: answerFor, panelFor: panelFor, errorText: errorText,
+                       cleanRent: cleanRent, answerFor: answerFor, panelFor: panelFor, errorText: errorText, feeLine: feeLine,
                        buildApplication: buildApplication, ownershipOf: ownershipOf, stateText: stateText, MISSING_TEXT: MISSING_TEXT };
     return;
   }
@@ -288,6 +301,7 @@
       rows = '<table class="su-lines"><caption class="sr-only">Management fee by unit</caption><thead><tr><th scope="col">Unit</th><th scope="col">Monthly rent</th><th scope="col">Our fee</th></tr></thead><tbody>' +
         q.units.map(function (u, i) { return '<tr><th scope="row">Unit ' + (i + 1) + '</th><td>' + usd(u.rent) + '</td><td>' + usd(u.monthly_fee) + '</td></tr>'; }).join('') + '</tbody></table>';
     }
+    var line = feeLine(cfg && cfg.fees);
     var also = [];
     if (q.onboarding_fee != null) also.push('<div><dt>Onboarding</dt><dd>' + usd(q.onboarding_fee) + ' one time, deducted from your first payout</dd></div>');
     if (q.new_lease_fee != null) also.push('<div><dt>New-lease fee</dt><dd>' + usd(q.new_lease_fee) + ' per new lease</dd></div>');
@@ -295,9 +309,8 @@
     $('su-quote-body').innerHTML =
       '<p class="su-figure"><span class="su-figure-n">' + usd(q.monthly_fee_total) + '</span> <span class="su-figure-u">a month</span></p>' +
       '<p class="su-figure-on">on ' + usd(q.monthly_rent_total) + ' of monthly rent, in a month the rent is collected in full</p>' + rows +
-      '<p class="su-terms">' + esc(q.management_fee_text) + '.</p>' +
+      (line ? '<p class="su-terms">' + esc(line) + '</p>' : '') +
       '<dl class="su-also">' + also.join('') + '</dl>' +
-      (q.negotiable_statement ? '<p class="su-legal">' + esc(q.negotiable_statement) + ' ' + esc(root.getAttribute('data-broker') || '') + '</p>' : '') +
       '<p class="su-note"><a href="/pricing/">Everything we charge, and what we do not</a></p>';
   }
 

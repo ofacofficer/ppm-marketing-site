@@ -59,7 +59,6 @@ html.signup-pending .form-card > * { visibility: hidden; }
 .su-also > div { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--mist-line); }
 .su-also dt { font-weight: 700; }
 .su-also dd { margin: 0; color: var(--pier-slate); }
-.su-legal { margin: 14px 0 0; font-size: .9375rem; color: var(--pier-slate); line-height: 1.5; }
 #su-quote-body .su-note { margin-top: 10px; }
 
 .su-owner { border: 0; border-top: 1px solid var(--mist-line); margin: 0; padding: 14px 0 0; min-width: 0; display: flex; flex-direction: column; gap: 12px; }

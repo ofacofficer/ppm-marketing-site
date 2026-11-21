@@ -103,3 +103,13 @@ test('panelFor: after the name, the application if it is open for this journey; 
   assert.equal(s.panelFor({ path: 'exception', has_contact: true, application_open: true }), 'done');
   assert.equal(s.panelFor({ path: 'standard', quote: {}, has_contact: true, application_open: true, submitted: true }), 'status');
 });
+
+test('feeLine: the fee in one line, from the schedule figures, with no commissions or broker text', () => {
+  const f = { mgmt_pct: 10, minimum_monthly_per_unit: 150, maximum_monthly_per_unit: 275, negotiable_statement: 'In New Jersey commissions are negotiable.' };
+  assert.equal(s.feeLine(f), '10% of the rent collected, with a $150 minimum and a $275 maximum per unit.');
+  assert.equal(s.feeLine({ mgmt_pct: 8 }), '8% of the rent collected.');
+  assert.equal(s.feeLine({ mgmt_pct: 10, maximum_monthly_per_unit: 275 }), '10% of the rent collected, with a $275 maximum per unit.');
+  assert.equal(s.feeLine({}), '');
+  assert.equal(s.feeLine(null), '');
+  assert.ok(!/negotiable|broker/i.test(s.feeLine(f)));
+});
