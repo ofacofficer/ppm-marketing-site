@@ -1,0 +1,87 @@
+/* Self-serve sign-up on /get-started/ (src/components/SignupFlow.astro, /js/signup.js).
+   Built on the design tokens (tokens.css): navy ink on white inside the page's one card, the sky
+   rule as the divider, brass only on the next action. Labels sit above inputs, errors below them. */
+
+/* While the page asks whether the flow is open, the card's content is not painted, so a visitor
+   never sees the contact form swap for the flow. The class is added by an inline head script and
+   always removed: by /js/signup.js when it has its answer, or by the head script's own timer. */
+html.signup-pending .form-card > * { visibility: hidden; }
+
+.su { color: var(--harbor-navy); }
+.su[hidden], .su [hidden], .su-map-wrap[hidden] { display: none !important; }
+.su-panel { display: flex; flex-direction: column; gap: 16px; }
+.su-title { font-size: 1.3rem; line-height: 1.25; margin: 0; color: var(--harbor-navy); }
+.su-title:focus { outline: none; }
+.su-intro { margin: 0; color: var(--pier-slate); font-size: 1rem; line-height: 1.5; }
+.su-note, .su-fallback { margin: 0; color: var(--pier-slate); font-size: .9375rem; line-height: 1.5; }
+.su-fallback { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--mist-line); }
+.su a, .su-link { color: var(--tideline-teal); text-decoration: underline; text-underline-offset: 3px; }
+.su-link { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; min-height: 0; }
+.su-link:focus-visible, .su a:focus-visible { outline: 2px solid var(--tideline-teal); outline-offset: 2px; border-radius: 2px; }
+
+.su-test { margin: 0 0 16px; padding: 10px 14px; border: 1px dashed var(--tideline-teal); border-radius: var(--r); font-size: .9375rem; color: var(--harbor-navy); background: var(--ice-canvas); }
+.su-hp { position: absolute; left: -9999px; opacity: 0; height: 0; overflow: hidden; margin: 0; }
+
+.su-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.su-field label, .su-unit legend { font-size: 1rem; font-weight: 700; color: var(--harbor-navy); }
+.su-field input, .su-field select {
+  width: 100%; min-height: 48px; padding: 10px 14px; font: inherit; font-size: 1rem;
+  color: var(--harbor-navy); background: var(--paper-white);
+  border: 1px solid var(--pier-slate); border-radius: var(--r);
+}
+.su-field input::placeholder { color: var(--pier-slate); opacity: .8; }
+.su-field input:focus-visible, .su-field select:focus-visible { outline: 2px solid var(--tideline-teal); outline-offset: 1px; border-color: var(--tideline-teal); }
+.su-field [aria-invalid="true"] { border-color: var(--error); }
+.su-err { margin: 0; color: var(--error); font-size: .9375rem; line-height: 1.4; }
+.su-row { display: grid; grid-template-columns: minmax(0, 7rem) minmax(0, 1fr); gap: 12px; align-items: start; }
+.su-unit { border: 0; border-top: 1px solid var(--mist-line); margin: 0; padding: 14px 0 0; min-width: 0; }
+.su-unit legend { padding: 0 8px 0 0; }
+.su-unit .su-row { grid-template-columns: minmax(0, 1fr) minmax(0, 6rem) minmax(0, 6rem); }
+.su-submit { width: 100%; justify-content: center; min-height: 48px; }
+.su-actions { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+
+.su-answer { margin-bottom: 20px; }
+.su-answer-card { border-top: var(--rule); padding: 14px 0 0; }
+.su-answer-card p { margin: 0 0 6px; line-height: 1.5; }
+.su-answer-addr { color: var(--pier-slate); font-size: .9375rem; }
+.su-answer-card p.su-answer-head { font-weight: 700; font-size: 1.125rem; color: var(--harbor-navy); }
+
+.su p.su-figure { margin: 0; line-height: 1.1; color: var(--harbor-navy); }
+.su-figure-n { font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 700; letter-spacing: -0.01em; }
+.su-figure-u { font-size: 1.125rem; font-weight: 700; }
+.su p.su-figure-on { margin: 6px 0 0; color: var(--pier-slate); }
+.su p.su-terms { margin: 14px 0 0; line-height: 1.5; color: var(--harbor-navy); }
+.su-lines { width: 100%; border-collapse: collapse; margin: 14px 0 0; font-size: 1rem; }
+.su-lines th, .su-lines td { text-align: left; padding: 8px 0; border-bottom: 1px solid var(--mist-line); font-weight: 400; }
+.su-lines thead th { font-weight: 700; border-bottom: var(--rule); }
+.su-lines td:last-child, .su-lines th:last-child { text-align: right; }
+.su-also { margin: 14px 0 0; border-top: 1px solid var(--mist-line); }
+.su-also > div { display: grid; grid-template-columns: minmax(0, 9rem) minmax(0, 1fr); gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--mist-line); }
+.su-also dt { font-weight: 700; }
+.su-also dd { margin: 0; color: var(--pier-slate); }
+.su-legal { margin: 14px 0 0; font-size: .9375rem; color: var(--pier-slate); line-height: 1.5; }
+#su-quote-body .su-note { margin-top: 10px; }
+
+/* The process map, in the page's left column, on the sky rule. A true sequence, so it is numbered. */
+.su-map-wrap { border-top: var(--rule); padding: 18px 0 0; }
+.su-map-title { font-size: 1rem; margin: 0 0 20px; color: var(--harbor-navy); }
+.su-map { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 20px; }
+.su-map-step { display: flex; gap: 16px; align-items: flex-start; }
+.su-map-n { width: 28px; height: 28px; border-radius: 50%; background: var(--ice-canvas); border: 1px solid var(--mist-line); display: flex; align-items: center; justify-content: center; font-size: .8125rem; font-weight: 700; color: var(--tideline-teal); flex-shrink: 0; }
+.su-map-step p { margin: 0; line-height: 1.5; }
+.su-map-name { font-weight: 700; color: var(--harbor-navy); }
+.su-map-what { color: var(--pier-slate); font-size: .9375rem; }
+.su-map-meta { color: var(--harbor-navy); font-size: .875rem; margin-top: 2px !important; }
+
+/* On a phone the flow comes first: the page's contact details and the map follow it. Only while the
+   flow is showing (the class is set by /js/signup.js), so the contact-form page keeps its order. */
+@media (max-width: 900px) {
+  html.signup-on .contact-form-area { order: -1; }
+}
+
+@media (max-width: 480px) {
+  .su-row { grid-template-columns: minmax(0, 1fr); }
+  .su-unit .su-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .su-unit .su-row .su-grow { grid-column: 1 / -1; }
+  .su-also > div { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}
