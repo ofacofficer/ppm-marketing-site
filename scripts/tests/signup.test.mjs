@@ -69,3 +69,37 @@ test('errorText: a known code has its own sentence; anything else points to the 
   assert.match(s.errorText('rate_limited'), /try again in an hour/);
   assert.match(s.errorText('whatever'), /call us or use the contact form/);
 });
+
+test('buildApplication: one question decides the owner kind and the applicant role', () => {
+  const people = [{ first_name: 'Ada', last_name: 'Lovelace' }, { first_name: 'George', last_name: 'Byron' }];
+  const me = s.buildApplication({ ownership: 'me', people, applicant_role: 'attorney', authority: 'x', entity_name: 'Acme' });
+  assert.deepEqual([me.owner_kind, me.applicant_role, me.owners.length, me.authority, me.entity_name], ['individual', 'owner', 1, '', '']);
+  const joint = s.buildApplication({ ownership: 'joint', people });
+  assert.deepEqual([joint.owner_kind, joint.applicant_role, joint.owners.length], ['joint', 'owner', 2]);
+  const ent = s.buildApplication({ ownership: 'entity', people, entity_name: 'Acme LLC', entity_type: 'llc', applicant_role: 'llc_manager', authority: 'Managing member' });
+  assert.deepEqual([ent.owner_kind, ent.applicant_role, ent.owners.length, ent.entity_name, ent.authority], ['entity', 'llc_manager', 0, 'Acme LLC', 'Managing member']);
+  const rep = s.buildApplication({ ownership: 'rep', people, applicant_role: 'family_poa', authority: 'Power of attorney' });
+  assert.deepEqual([rep.owner_kind, rep.applicant_role, rep.owners.length], ['individual', 'family_poa', 1]);
+  assert.equal(s.buildApplication({}).owner_kind, '');
+});
+
+test('ownershipOf: a saved application reads back as the answer that made it', () => {
+  for (const own of ['me', 'joint', 'entity', 'rep']) {
+    const app = s.buildApplication({ ownership: own, people: [{}, {}], applicant_role: 'authorized_rep' });
+    assert.equal(s.ownershipOf(app), own);
+  }
+  assert.equal(s.ownershipOf(null), '');
+});
+
+test('stateText: the current step says who it is waiting on, in plain words', () => {
+  assert.equal(s.stateText({ state: 'current' }, { waiting_on: 'ppm' }), 'With us');
+  assert.equal(s.stateText({ state: 'current' }, { waiting_on: 'you' }), 'Waiting on you');
+  assert.equal(s.stateText({ state: 'done' }, {}), 'Done');
+  assert.equal(s.stateText({ state: 'not_started' }, {}), 'Not started');
+});
+
+test('panelFor: after the name, the application if it is open for this journey; once sent, the tracker', () => {
+  assert.equal(s.panelFor({ path: 'standard', quote: {}, has_contact: true, application_open: true }), 'apply');
+  assert.equal(s.panelFor({ path: 'exception', has_contact: true, application_open: true }), 'done');
+  assert.equal(s.panelFor({ path: 'standard', quote: {}, has_contact: true, application_open: true, submitted: true }), 'status');
+});

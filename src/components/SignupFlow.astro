@@ -125,6 +125,94 @@ import { site } from '../site.config.mjs';
     <p class="su-note">We reply within one business day.</p>
   </form>
 
+  <form id="su-apply" class="su-panel" novalidate hidden>
+    <h2 class="su-title">Tell us who owns it</h2>
+    <p class="su-intro">This is what the management agreement is written from. Your answers are saved as you go.</p>
+    <div class="su-field">
+      <label for="su-ownership">Who owns the property?</label>
+      <select id="su-ownership" name="ownership" aria-describedby="su-ownership-err">
+        <option value="">Select one</option>
+        <option value="me">I own it myself</option>
+        <option value="joint">I own it with someone else</option>
+        <option value="entity">A company, trust or estate owns it</option>
+        <option value="rep">I am acting for the owner</option>
+      </select>
+      <p id="su-ownership-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div id="su-owners" class="su-owners"></div>
+    <div id="su-entity" hidden>
+      <div class="su-field">
+        <label for="su-entity-name">Name of the company, trust or estate</label>
+        <input id="su-entity-name" name="entity_name" type="text" autocomplete="organization" aria-describedby="su-entity-name-err">
+        <p id="su-entity-name-err" class="su-err" role="alert" hidden></p>
+      </div>
+      <div class="su-field">
+        <label for="su-entity-type">What kind is it?</label>
+        <select id="su-entity-type" name="entity_type">
+          <option value="llc">LLC</option>
+          <option value="corporation">Corporation</option>
+          <option value="partnership">Partnership</option>
+          <option value="trust">Trust</option>
+          <option value="estate">Estate</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+    </div>
+    <div id="su-signer" hidden>
+      <div class="su-field">
+        <label for="su-role">Your role</label>
+        <select id="su-role" name="applicant_role">
+          <option value="llc_manager">Member or manager of the company</option>
+          <option value="authorized_rep">Authorized representative (trustee, executor, officer)</option>
+          <option value="family_poa">Family member with power of attorney</option>
+          <option value="attorney">Attorney for the owner</option>
+          <option value="property_manager">Current property manager</option>
+          <option value="other">Something else</option>
+        </select>
+      </div>
+      <div class="su-field">
+        <label for="su-authority">What lets you sign for the owner?</label>
+        <input id="su-authority" name="authority" type="text" autocomplete="off" placeholder="For example: managing member under the operating agreement" aria-describedby="su-authority-err">
+        <p id="su-authority-err" class="su-err" role="alert" hidden></p>
+      </div>
+    </div>
+    <div class="su-field">
+      <label for="su-startdate">When should we start?</label>
+      <input id="su-startdate" name="start_date" type="date" aria-describedby="su-startdate-err">
+      <p id="su-startdate-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div id="su-leases" class="su-field" hidden>
+      <label for="su-leases-n">How many leases are in place?</label>
+      <input id="su-leases-n" name="leases_count" type="text" inputmode="numeric" autocomplete="off">
+    </div>
+    <div class="su-field">
+      <label for="su-deposits">Who holds the security deposits?</label>
+      <select id="su-deposits" name="deposits_held_by" aria-describedby="su-deposits-err">
+        <option value="">Select one</option>
+        <option value="owner">I do</option>
+        <option value="prior_manager">My current manager does</option>
+        <option value="none">There are none</option>
+        <option value="not_sure">I am not sure</option>
+      </select>
+      <p id="su-deposits-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div class="su-field">
+      <label for="su-payout">Name payouts should be made to (optional)</label>
+      <input id="su-payout" name="payout_name" type="text" autocomplete="off">
+    </div>
+    <div id="su-disclosures" class="su-disclosures"></div>
+    <p id="su-apply-err" class="su-err" role="alert" hidden></p>
+    <button type="submit" class="btn btn-primary su-submit">Submit my application</button>
+    <p class="su-note">Nothing is signed here. We review what you sent, then email the agreement to sign.</p>
+  </form>
+
+  <div id="su-status" class="su-panel" hidden>
+    <h2 class="su-title">Where your sign-up stands</h2>
+    <p id="su-status-note" class="su-status-note" aria-live="polite"></p>
+    <ol id="su-status-steps" class="su-track"></ol>
+    <p class="su-note">Questions? Call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a>.</p>
+  </div>
+
   <div id="su-done" class="su-panel" hidden>
     <h2 class="su-title">Thank you</h2>
     <p id="su-done-text" aria-live="polite"></p>
