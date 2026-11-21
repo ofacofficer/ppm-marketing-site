@@ -19,7 +19,7 @@ interface Props extends BaseProps {
 }
 const { main, afterFooter, leadScript, ...base } = Astro.props;
 ---
-<Base {...base}>
+<Base {...base}><slot name="head" slot="head" />
 <Fragment set:html={expandTokens(main)} />
-<Fragment slot="after-footer">{afterFooter && <Fragment set:html={expandTokens(afterFooter)} />}{leadScript && <LeadForm script={leadScript} />}</Fragment>
+<Fragment slot="after-footer">{afterFooter && <Fragment set:html={expandTokens(afterFooter)} />}{leadScript && <LeadForm script={leadScript} />}<slot name="after-main" /></Fragment>
 </Base>

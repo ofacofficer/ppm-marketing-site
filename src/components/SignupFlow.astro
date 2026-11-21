@@ -1,0 +1,136 @@
+---
+// Self-serve sign-up on /get-started/: check a property, see the fee on your rent, leave your name.
+//
+// HIDDEN UNTIL THE SERVICE SAYS IT IS OPEN. This markup ships `hidden`; /js/signup.js shows it, in
+// place of the page's contact form, only when the sign-up service answers that the flow is open
+// (the OS go-live switch signup_quote_mode, or a link carrying the preview key). Closed, slow or
+// no scripts: the page is exactly what it was. So this can merge before the copy is approved.
+//
+// Copy note: every string below is a DRAFT nobody has approved. It becomes live copy the moment the
+// switch is opened, so opening it is the approval (WEBSITE_RUNBOOK.md §1: Blake drafts, Dan
+// approves, the CCO checks claims). The step names, what happens and the typical times come from
+// the service (signup_steps), not from this file. No fee is written here: every figure is the
+// service's, read from the signed fee schedule.
+//
+// NOT the lead path. The lead scripts and /api/lead/ are untouched; a lead from this flow is made
+// by the sign-up service through lead-intake.
+import { site } from '../site.config.mjs';
+---
+<div id="su-map-wrap" class="su-map-wrap" hidden>
+  <h3 class="su-map-title">How signing up works</h3>
+  <ol id="su-map" class="su-map"></ol>
+</div>
+
+<div id="signup" class="su" hidden data-broker={site.brokerLine}>
+  <p id="su-test" class="su-test" hidden>Preview. This is a test: nothing you enter here reaches our team.</p>
+
+  <form id="su-check" class="su-panel" novalidate>
+    <h2 class="su-title">Check your property</h2>
+    <p class="su-intro">See whether we manage there and what our fee would be on your rent. No name or email needed.</p>
+    <p class="su-hp" aria-hidden="true"><label for="su-website">Website</label><input type="text" id="su-website" name="website" tabindex="-1" autocomplete="off"></p>
+    <div class="su-field">
+      <label for="su-address">Property address</label>
+      <input id="su-address" name="address" type="text" autocomplete="street-address" placeholder="123 Main St, Jersey City, NJ 07302" aria-describedby="su-address-err" required>
+      <p id="su-address-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div class="su-row">
+      <div class="su-field">
+        <label for="su-units-n">Rental units</label>
+        <input id="su-units-n" name="unit_count" type="text" inputmode="numeric" autocomplete="off" value="1" aria-describedby="su-units-n-err" required>
+        <p id="su-units-n-err" class="su-err" role="alert" hidden></p>
+      </div>
+      <div class="su-field su-grow">
+        <label for="su-type">Property type</label>
+        <select id="su-type" name="property_type" aria-describedby="su-type-err" required>
+          <option value="">Select one</option>
+          <option value="single_family">Single-family home</option>
+          <option value="condo_townhome">Condo or townhome</option>
+          <option value="multi_2_4">Two to four family</option>
+          <option value="multi_5_plus">Five or more units</option>
+          <option value="other">Something else</option>
+        </select>
+        <p id="su-type-err" class="su-err" role="alert" hidden></p>
+      </div>
+    </div>
+    <div class="su-field">
+      <label for="su-occ">Is it rented now?</label>
+      <select id="su-occ" name="occupancy" aria-describedby="su-occ-err" required>
+        <option value="">Select one</option>
+        <option value="vacant">Vacant</option>
+        <option value="tenanted">Rented</option>
+        <option value="mixed">Some units rented, some vacant</option>
+        <option value="owner_occupied">I live there and am moving out</option>
+      </select>
+      <p id="su-occ-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div class="su-field">
+      <label for="su-term">How will it be rented?</label>
+      <select id="su-term" name="rental_term">
+        <option value="long_term">Leases of 12 months or more</option>
+        <option value="short_term">Shorter stays (furnished or short-term)</option>
+      </select>
+    </div>
+    <div class="su-field">
+      <label for="su-start">When do you want to start?</label>
+      <select id="su-start" name="desired_start">
+        <option value="not_sure">Not sure yet</option>
+        <option value="asap">As soon as possible</option>
+        <option value="within_30_days">Within 30 days</option>
+        <option value="within_90_days">Within 90 days</option>
+        <option value="later">Later</option>
+      </select>
+    </div>
+    <p id="su-check-err" class="su-err" role="alert" hidden></p>
+    <button type="submit" class="btn btn-primary su-submit">Check my property</button>
+  </form>
+
+  <div id="su-answer" class="su-answer" aria-live="polite" hidden></div>
+
+  <form id="su-price" class="su-panel" novalidate hidden>
+    <h2 class="su-title">What does it rent for?</h2>
+    <p class="su-intro">Use the rent you collect now, or what you expect to ask. Bedrooms and bathrooms are optional.</p>
+    <div id="su-units"></div>
+    <p id="su-price-err" class="su-err" role="alert" hidden></p>
+    <button type="submit" class="btn btn-primary su-submit">See my price</button>
+  </form>
+
+  <div id="su-quote" class="su-panel" hidden>
+    <h2 class="su-title">Your management fee</h2>
+    <div id="su-quote-body" aria-live="polite"></div>
+    <div class="su-actions">
+      <button type="button" id="su-continue" class="btn btn-primary su-submit">Continue</button>
+      <button type="button" id="su-edit-rent" class="su-link">Change the rent</button>
+    </div>
+  </div>
+
+  <form id="su-contact" class="su-panel" novalidate hidden>
+    <h2 id="su-contact-title" class="su-title">Save this and take the next step</h2>
+    <p class="su-hp" aria-hidden="true"><label for="su-website-2">Website</label><input type="text" id="su-website-2" name="website" tabindex="-1" autocomplete="off"></p>
+    <div class="su-field">
+      <label for="su-name">Your name</label>
+      <input id="su-name" name="name" type="text" autocomplete="name" aria-describedby="su-name-err" required>
+      <p id="su-name-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div class="su-field">
+      <label for="su-email">Email address</label>
+      <input id="su-email" name="email" type="email" autocomplete="email" aria-describedby="su-email-err" required>
+      <p id="su-email-err" class="su-err" role="alert" hidden></p>
+    </div>
+    <div class="su-field">
+      <label for="su-phone">Phone number (optional)</label>
+      <input id="su-phone" name="phone" type="tel" autocomplete="tel">
+    </div>
+    <p id="su-contact-err" class="su-err" role="alert" hidden></p>
+    <button type="submit" class="btn btn-primary su-submit">Save my details</button>
+    <p class="su-note">We reply within one business day.</p>
+  </form>
+
+  <div id="su-done" class="su-panel" hidden>
+    <h2 class="su-title">Thank you</h2>
+    <p id="su-done-text" aria-live="polite"></p>
+    <p class="su-note">Want to talk sooner? Call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a>.</p>
+  </div>
+
+  <p class="su-fallback">Prefer to talk it through? Call <a href={`tel:${site.phone.tel}`}>{site.phone.display}</a> or <button type="button" id="su-classic" class="su-link">use the contact form</button>.</p>
+</div>
+<script is:inline defer src="/js/signup.js"></script>
